@@ -4,37 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
+import cs.eng1.piazzapanic.TestActor;
 
 public class GameScreen implements Screen {
 
   private final PiazzaPanicGame game;
   private final Stage stage;
-
-  static class TestActor extends Actor {
-
-    Texture image;
-    float speed = 25.0f;
-    public TestActor() {
-      image = new Texture(Gdx.files.internal("badlogic.jpg"));
-    }
-
-    @Override
-    public void act(float delta) {
-      super.act(delta);
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-      batch.draw(image, getX(), getY(), getWidth(), getHeight());
-    }
-  }
 
   public GameScreen(PiazzaPanicGame game) {
     this.game = game;
