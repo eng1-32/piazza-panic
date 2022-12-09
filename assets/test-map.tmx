@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
  <tileset firstgid="1" source="Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml"/>
  <layer id="1" name="Background" width="10" height="10">
   <data encoding="csv">
@@ -31,5 +31,6 @@
  </layer>
  <objectgroup id="3" name="Stations">
   <object id="2" name="Cooking Station 1" class="cookingStation" gid="1073742191" x="64" y="16" width="16" height="16"/>
+  <object id="3" name="Chef" gid="131" x="32" y="128" width="16" height="16"/>
  </objectgroup>
 </map>

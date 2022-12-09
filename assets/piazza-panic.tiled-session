@@ -3,11 +3,11 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Test map.tmx",
+    "activeFile": "test-map.tmx",
     "expandedProjectPaths": [
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)",
-        "Kenney-Game-Assets-2",
         "Kenney-Game-Assets-2/2D assets",
+        "Kenney-Game-Assets-2",
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -18,7 +18,7 @@
         },
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml": {
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 4
         },
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown-Shooter-2.tsx": {
             "scaleInDock": 1,
@@ -31,23 +31,32 @@
                 "x": 80.16060050624073,
                 "y": 74.5744959413459
             }
+        },
+        "test-map.tmx": {
+            "scale": 5.260624999999999,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 66.34192705239397,
+                "y": 79.64833075917785
+            }
         }
     },
     "last.externalTilesetPath": "/home/alistairf/Documents/eng1/piazza-panic/assets/Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)",
-    "last.imagePath": "/home/alistairf/Documents/eng1/piazza-panic/assets/Kenney-Game-Assets-1/2D assets/Roguelike Base Pack/Spritesheet",
+    "last.imagePath": "/home/alistairf/IdeaProjects/piazza-panic/assets/Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Tilesheet",
     "map.height": 10,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
     "map.width": 10,
     "openFiles": [
-        "Test map.tmx",
+        "test-map.tmx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml"
     ],
     "project": "piazza-panic.tiled-project",
     "property.type": "string",
     "recentFiles": [
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml",
+        "test-map.tmx",
         "Test map.tmx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.tsx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown-Shooter-2.tsx"
@@ -59,5 +68,5 @@
         "height": 16,
         "width": 16
     },
-    "tileset.useTransparentColor": true
+    "tileset.useTransparentColor": false
 }
