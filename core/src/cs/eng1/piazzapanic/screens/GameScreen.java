@@ -20,9 +20,10 @@ public class GameScreen implements Screen {
   private final OrthogonalTiledMapRenderer renderer;
 
   public GameScreen() {
-    float sizeX = 10f;
-    float sizeY = 10f;
-    float tileUnitSize = 1 / 16f;
+    TiledMap map = new TmxMapLoader().load("big-map.tmx");
+    int sizeX = map.getProperties().get("width", Integer.class);
+    int sizeY = map.getProperties().get("height", Integer.class);
+    float tileUnitSize = 1 / (float) map.getProperties().get("tilewidth", Integer.class);
 
     // Initialise stage and camera
     OrthographicCamera camera = new OrthographicCamera();
@@ -30,7 +31,6 @@ public class GameScreen implements Screen {
     this.stage = new Stage(viewport);
 
     // Initialise tilemap
-    TiledMap map = new TmxMapLoader().load("test-map.tmx");
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
     MapLayer objectLayer = map.getLayers().get("Stations");
 
