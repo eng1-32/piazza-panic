@@ -12,7 +12,11 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import cs.eng1.piazzapanic.TestActor;
+import cs.eng1.piazzapanic.Ingredient;
+import cs.eng1.piazzapanic.stations.ChoppingStation;
+import cs.eng1.piazzapanic.stations.CookingStation;
+import cs.eng1.piazzapanic.stations.IngredientStation;
+import cs.eng1.piazzapanic.stations.Station;
 
 public class GameScreen implements Screen {
 
@@ -38,9 +42,24 @@ public class GameScreen implements Screen {
     for (MapObject object : objectLayer.getObjects()) {
       if (object instanceof TiledMapTileMapObject) {
         TiledMapTileMapObject tileObject = (TiledMapTileMapObject) object;
-        TestActor testActor = new TestActor(tileObject.getTextureRegion());
-        testActor.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
-        stage.addActor(testActor);
+        if (tileObject.getProperties().containsKey("stationType")) {
+          Station thisStation;
+          switch (tileObject.getProperties().get("stationType", String.class)) {
+            case "cookingStation":
+              thisStation = new CookingStation(tileObject.getTextureRegion(), new Ingredient[]{});
+              break;
+            case "ingredientStation":
+              thisStation = new IngredientStation(tileObject.getTextureRegion(), null);
+              break;
+            case "choppingStation":
+              thisStation = new ChoppingStation(tileObject.getTextureRegion(), new Ingredient[]{});
+              break;
+            default:
+              thisStation = new Station(tileObject.getTextureRegion());
+          }
+          thisStation.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
+          stage.addActor(thisStation);
+        }
       }
     }
   }
