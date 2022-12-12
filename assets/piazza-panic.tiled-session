@@ -3,15 +3,21 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "test-map.tmx",
+    "activeFile": "big-map.tmx",
     "expandedProjectPaths": [
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)",
-        "Kenney-Game-Assets-2/2D assets",
+        ".",
         "Kenney-Game-Assets-2",
-        "."
+        "Kenney-Game-Assets-2/2D assets",
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)",
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 0.25
+        },
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.tsx": {
             "scaleInDock": 0.9003,
             "scaleInEditor": 10.4699
@@ -32,12 +38,23 @@
                 "y": 74.5744959413459
             }
         },
-        "test-map.tmx": {
-            "scale": 5.260624999999999,
-            "selectedLayer": 0,
+        "big-map.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 0.25,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 42.58049186170845,
-                "y": 79.64833075917785
+                "x": 1346,
+                "y": 2368
+            }
+        },
+        "test-map.tmx": {
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 80.16666666666666,
+                "y": 80
             }
         }
     },
@@ -50,13 +67,17 @@
     "map.width": 30,
     "openFiles": [
         "test-map.tmx",
-        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml"
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml",
+        "big-map.tmx",
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml"
     ],
     "project": "piazza-panic.tiled-project",
-    "property.type": "string",
+    "property.type": "object",
     "recentFiles": [
-        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml",
         "test-map.tmx",
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml",
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml",
+        "big-map.tmx",
         "Test map.tmx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.tsx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown-Shooter-2.tsx"
