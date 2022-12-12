@@ -1,0 +1,46 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "propertyTypes": [
+        {
+            "id": 1,
+            "name": "StationType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "choppingStation",
+                "cookingStation",
+                "tableStation"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "id": 2,
+            "members": [
+                {
+                    "name": "collisionObject",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "stationType",
+                    "propertyType": "StationType",
+                    "type": "string",
+                    "value": "tableStation"
+                }
+            ],
+            "name": "Station",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="128" tileheight="128" infinite="0" nextlayerid="4" nextobjectid="10">
+ <tileset firstgid="1" source="Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml"/>
+ <layer id="1" name="Background" width="15" height="10">
+  <data encoding="csv">
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398,
+398,398,398,398,398,398,398,398,398,398,398,398,398,398,398
+</data>
+ </layer>
+ <layer id="2" name="Foreground" width="15" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,321,0,0,0,321,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="3" name="Stations">
+  <object id="2" name="Cooker" class="Station" gid="324" x="768" y="1024" width="128" height="128">
+   <properties>
+    <property name="stationType" propertytype="StationType" value="cookingStation"/>
+   </properties>
+  </object>
+  <object id="3" name="Chopping Board" class="Station" gid="267" x="256" y="1024" width="128" height="128">
+   <properties>
+    <property name="stationType" propertytype="StationType" value="cookingStation"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
