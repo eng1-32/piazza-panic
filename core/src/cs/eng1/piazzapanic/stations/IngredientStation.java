@@ -1,7 +1,7 @@
 package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import cs.eng1.piazzapanic.Ingredient;
+import cs.eng1.piazzapanic.ingredients.Ingredient;
 
 public class IngredientStation extends Station {
 
