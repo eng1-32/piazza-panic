@@ -12,7 +12,7 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import cs.eng1.piazzapanic.Ingredient;
+import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.ChoppingStation;
 import cs.eng1.piazzapanic.stations.CookingStation;
 import cs.eng1.piazzapanic.stations.IngredientStation;
@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
               thisStation = new CookingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
               break;
             case "ingredientStation":
-              thisStation = new IngredientStation(tileObject.getTextureRegion(), new Ingredient(ingredients));
+              thisStation = new IngredientStation(tileObject.getTextureRegion(), Ingredient.fromString(ingredients));
               break;
             case "choppingStation":
               thisStation = new ChoppingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));

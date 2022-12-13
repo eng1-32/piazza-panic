@@ -2,7 +2,7 @@ package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
-import cs.eng1.piazzapanic.Ingredient;
+import cs.eng1.piazzapanic.ingredients.Ingredient;
 
 
 public class CookingStation extends Station {
@@ -28,7 +28,7 @@ public class CookingStation extends Station {
   }
 
   public void cookFood(Ingredient foodItem) {
-    if (this.inUse || !(correctIngredient(foodItem))) {
+    if (this.inUse || !(isCorrectIngredient(foodItem))) {
       return; //If the station is in use or the wrong ingredient is used
       //then nothing happens.
     }
@@ -53,7 +53,7 @@ public class CookingStation extends Station {
     }
   }
 
-  private Boolean correctIngredient(Ingredient ingredientToCheck) {
+  private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
     for (Ingredient item : this.validIngredients) {
       if (item.getType().equals(ingredientToCheck.getType())) {
         return true;
