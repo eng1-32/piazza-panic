@@ -39,7 +39,7 @@
                     "name": "stationType",
                     "propertyType": "StationType",
                     "type": "string",
-                    "value": "ingredientStation"
+                    "value": "choppingStation"
                 }
             ],
             "name": "Station",
