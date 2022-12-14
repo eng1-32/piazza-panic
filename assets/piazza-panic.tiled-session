@@ -5,12 +5,12 @@
     },
     "activeFile": "big-map.tmx",
     "expandedProjectPaths": [
-        ".",
-        "Kenney-Game-Assets-2",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)",
-        "Kenney-Game-Assets-2/2D assets",
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)",
-        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet"
+        "Kenney-Game-Assets-2/2D assets",
+        ".",
+        "Kenney-Game-Assets-2"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -45,8 +45,8 @@
             "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 184.848484848485,
-                "y": 933.3333333333334
+                "x": 84.84848484848499,
+                "y": 1024.2424242424242
             }
         },
         "test-map.tmx": {
@@ -74,7 +74,7 @@
         "big-map.tmx"
     ],
     "project": "piazza-panic.tiled-project",
-    "property.type": "StationType",
+    "property.type": "int",
     "recentFiles": [
         "test-map.tmx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml",

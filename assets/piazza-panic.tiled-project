@@ -25,9 +25,9 @@
             "id": 2,
             "members": [
                 {
-                    "name": "collisionObject",
-                    "type": "object",
-                    "value": 0
+                    "name": "collisionObjectID",
+                    "type": "int",
+                    "value": -1
                 },
                 {
                     "name": "ingredients",

@@ -5,18 +5,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
-import cs.eng1.piazzapanic.stations.ChoppingStation;
-import cs.eng1.piazzapanic.stations.CookingStation;
-import cs.eng1.piazzapanic.stations.IngredientStation;
-import cs.eng1.piazzapanic.stations.Station;
+import cs.eng1.piazzapanic.stations.*;
+
+import java.util.HashMap;
 
 public class GameScreen implements Screen {
 
@@ -39,28 +40,52 @@ public class GameScreen implements Screen {
     MapLayer objectLayer = map.getLayers().get("Stations");
 
     // Add tile objects
-    for (MapObject object : objectLayer.getObjects()) {
-      if (object instanceof TiledMapTileMapObject) {
-        TiledMapTileMapObject tileObject = (TiledMapTileMapObject) object;
-        if (tileObject.getProperties().containsKey("stationType")) {
-          Station thisStation;
-          String ingredients = tileObject.getProperties().get("ingredients", String.class);
-          switch (tileObject.getProperties().get("stationType", String.class)) {
-            case "cookingStation":
-              thisStation = new CookingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
-              break;
-            case "ingredientStation":
-              thisStation = new IngredientStation(tileObject.getTextureRegion(), Ingredient.fromString(ingredients));
-              break;
-            case "choppingStation":
-              thisStation = new ChoppingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
-              break;
-            default:
-              thisStation = new Station(tileObject.getTextureRegion());
-          }
-          thisStation.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
-          stage.addActor(thisStation);
-        }
+    initialiseStations(tileUnitSize, objectLayer);
+  }
+
+  private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
+    Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects().getByType(TiledMapTileMapObject.class);
+    Array<RectangleMapObject> colliderObjects = objectLayer.getObjects().getByType(RectangleMapObject.class);
+    HashMap<Integer, StationCollider> colliders = new HashMap<>();
+
+    for (RectangleMapObject colliderObject : new Array.ArrayIterator<>(colliderObjects)) {
+      Integer id = colliderObject.getProperties().get("id", Integer.class);
+      StationCollider collider = new StationCollider();
+      Rectangle bounds = colliderObject.getRectangle();
+      collider.setBounds(bounds.getX() * tileUnitSize, bounds.getY() * tileUnitSize,
+          bounds.getWidth() * tileUnitSize, bounds.getHeight() * tileUnitSize);
+      stage.addActor(collider);
+      colliders.put(id, collider);
+    }
+
+    for (TiledMapTileMapObject tileObject : new Array.ArrayIterator<>(tileObjects)) {
+      // Check if it is actually a station
+      if (!tileObject.getProperties().containsKey("stationType")) {
+        continue;
+      }
+
+      Station station;
+      String ingredients = tileObject.getProperties().get("ingredients", String.class);
+      switch (tileObject.getProperties().get("stationType", String.class)) {
+        case "cookingStation":
+          station = new CookingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
+          break;
+        case "ingredientStation":
+          station = new IngredientStation(tileObject.getTextureRegion(), Ingredient.fromString(ingredients));
+          break;
+        case "choppingStation":
+          station = new ChoppingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
+          break;
+        default:
+          station = new Station(tileObject.getTextureRegion());
+      }
+      station.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
+      stage.addActor(station);
+
+      Integer colliderID = tileObject.getProperties().get("collisionObjectID", Integer.class);
+      StationCollider collider = colliders.get(colliderID);
+      if (collider != null) {
+        collider.register(station);
       }
     }
   }
@@ -74,13 +99,14 @@ public class GameScreen implements Screen {
   public void render(float delta) {
     // Initialise screen
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    stage.getCamera().update();
 
     // Render background
     renderer.setView((OrthographicCamera) stage.getCamera());
     renderer.render();
 
     // Render stage
-    stage.getCamera().update();
+    stage.setDebugAll(true); // TODO: remove after testing
     stage.act(delta);
     stage.draw();
   }
