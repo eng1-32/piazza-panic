@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
 
@@ -22,6 +23,7 @@ import java.util.HashMap;
 public class GameScreen implements Screen {
 
   private final Stage stage;
+  private final Stage uiStage;
   private final OrthogonalTiledMapRenderer renderer;
 
   public GameScreen() {
@@ -33,7 +35,9 @@ public class GameScreen implements Screen {
     // Initialise stage and camera
     OrthographicCamera camera = new OrthographicCamera();
     ExtendViewport viewport = new ExtendViewport(sizeX, sizeY, camera); // Number of tiles
+    ScreenViewport uiViewport = new ScreenViewport();
     this.stage = new Stage(viewport);
+    this.uiStage = new Stage(uiViewport);
 
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
