@@ -1,7 +1,7 @@
 package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import cs.eng1.piazzapanic.Chef;
+import cs.eng1.piazzapanic.Chef.Chef;
 import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
 
