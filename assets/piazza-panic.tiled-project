@@ -8,31 +8,38 @@
     ],
     "propertyTypes": [
         {
-            "id": 1,
-            "name": "StationType",
+            "id": 3,
+            "name": "Ingredient",
             "storageType": "string",
             "type": "enum",
             "values": [
-                "choppingStation",
-                "cookingStation",
-                "tableStation"
+                "lettuce",
+                "patty",
+                "bun",
+                "tomato"
             ],
-            "valuesAsFlags": false
+            "valuesAsFlags": true
         },
         {
             "color": "#ffa0a0a4",
             "id": 2,
             "members": [
                 {
-                    "name": "collisionObject",
-                    "type": "object",
-                    "value": 0
+                    "name": "collisionObjectID",
+                    "type": "int",
+                    "value": -1
+                },
+                {
+                    "name": "ingredients",
+                    "propertyType": "Ingredient",
+                    "type": "string",
+                    "value": ""
                 },
                 {
                     "name": "stationType",
                     "propertyType": "StationType",
                     "type": "string",
-                    "value": "tableStation"
+                    "value": "choppingStation"
                 }
             ],
             "name": "Station",
@@ -41,6 +48,18 @@
                 "property",
                 "object"
             ]
+        },
+        {
+            "id": 1,
+            "name": "StationType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "choppingStation",
+                "cookingStation",
+                "ingredientStation"
+            ],
+            "valuesAsFlags": false
         }
     ]
 }

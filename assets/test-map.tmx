@@ -30,7 +30,12 @@
 </data>
  </layer>
  <objectgroup id="3" name="Stations">
-  <object id="2" name="Cooking Station 1" class="cookingStation" gid="1073742191" x="64" y="16" width="16" height="16"/>
+  <object id="2" name="Cooking Station 1" class="Station" gid="1073742191" x="64" y="16" width="16" height="16">
+   <properties>
+    <property name="ingredients" propertytype="Ingredient" value="patty"/>
+    <property name="stationType" propertytype="StationType" value="cookingStation"/>
+   </properties>
+  </object>
   <object id="3" name="Chef" gid="131" x="32" y="128" width="16" height="16"/>
  </objectgroup>
 </map>
