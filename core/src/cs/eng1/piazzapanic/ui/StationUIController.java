@@ -12,6 +12,7 @@ public class StationUIController {
 
   public void showActions(Station station, String[] actions) {
     StationActionButtons buttons = new StationActionButtons(station, actions);
+    buttons.setActionAlignment(StationActionButtons.ActionAlignment.TOP);
     uiStage.addActor(buttons);
   }
 }

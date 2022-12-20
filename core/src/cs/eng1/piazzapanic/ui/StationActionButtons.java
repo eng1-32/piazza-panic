@@ -11,13 +11,15 @@ import cs.eng1.piazzapanic.stations.Station;
 public class StationActionButtons extends Table {
   private ActionAlignment actionAlignment = ActionAlignment.TOP;
 
-  public static enum ActionAlignment {
+  public enum ActionAlignment {
     LEFT,
     TOP,
     RIGHT,
     BOTTOM
   }
+
   Station station;
+
   public StationActionButtons(Station station, String[] actions) {
     this.station = station;
     for (String action : actions) {
@@ -25,11 +27,27 @@ public class StationActionButtons extends Table {
       add(actionButton).width(100).height(30).pad(2f);
       row();
     }
+    center();
     bottom();
   }
 
   public void setActionAlignment(ActionAlignment actionAlignment) {
     this.actionAlignment = actionAlignment;
+    center();
+    switch (actionAlignment) {
+      case TOP:
+        bottom();
+        break;
+      case BOTTOM:
+        top();
+        break;
+      case LEFT:
+        right();
+        break;
+      case RIGHT:
+        left();
+        break;
+    }
   }
 
   @Override
@@ -39,41 +57,30 @@ public class StationActionButtons extends Table {
   }
 
   private void calculatePositionFromAlignment() {
-    Vector3 worldPosition;
-    Vector3 screenPosition;
+    Vector3 worldPosition = new Vector3();
     switch (actionAlignment) {
       case LEFT:
         // Get left center of station in screen coordinates
-        worldPosition = new Vector3(station.getX(),
-            station.getY() + station.getHeight() / 2f, 0f);
-        screenPosition = station.getStage().getCamera().project(worldPosition);
-        // Adjust for lower left of table
-        setPosition(screenPosition.x - getWidth(), screenPosition.y - getHeight() / 2f);
+        worldPosition.x = station.getX();
+        worldPosition.y = station.getY() + station.getHeight() / 2f;
         break;
       case TOP:
         // Get upper middle of station in screen coordinates
-        worldPosition = new Vector3(station.getX() + station.getWidth() / 2f,
-            station.getY() + station.getHeight(), 0f);
-        screenPosition = station.getStage().getCamera().project(worldPosition);
-        // Adjust for lower left of table
-        setPosition(screenPosition.x - getWidth() / 2f, screenPosition.y);
+        worldPosition.x = station.getX() + station.getWidth() / 2f;
+        worldPosition.y = station.getY() + station.getHeight();
         break;
       case RIGHT:
         // Get right center of station in screen coordinates
-        worldPosition = new Vector3(station.getX() + station.getWidth(),
-            station.getY() + station.getHeight() / 2f, 0f);
-        screenPosition = station.getStage().getCamera().project(worldPosition);
-        // Adjust for lower left of table
-        setPosition(screenPosition.x, screenPosition.y - getHeight() / 2f);
+        worldPosition.x = station.getX() + station.getWidth();
+        worldPosition.y = station.getY() + station.getHeight() / 2f;
         break;
       case BOTTOM:
         // Get lower middle of station in screen coordinates
-        worldPosition = new Vector3(station.getX() + station.getWidth() / 2f,
-            station.getY(), 0f);
-        screenPosition = station.getStage().getCamera().project(worldPosition);
-        // Adjust for lower left of table
-        setPosition(screenPosition.x - getWidth() / 2f, screenPosition.y);
+        worldPosition.x = station.getX() + station.getWidth() / 2f;
+        worldPosition.y = station.getY();
         break;
     }
+    Vector3 screenPosition = station.getStage().getCamera().project(worldPosition);
+    setPosition(screenPosition.x, screenPosition.y);
   }
 }
