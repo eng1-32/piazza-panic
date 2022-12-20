@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationUIController;
@@ -29,8 +28,7 @@ public class GameScreen implements Screen {
   private final OrthogonalTiledMapRenderer renderer;
   private final StationUIController stationUIController;
 
-  public GameScreen(PiazzaPanicGame game) {
-
+  public GameScreen() {
     TiledMap map = new TmxMapLoader().load("big-map.tmx");
     int sizeX = map.getProperties().get("width", Integer.class);
     int sizeY = map.getProperties().get("height", Integer.class);
@@ -43,7 +41,7 @@ public class GameScreen implements Screen {
 
     ScreenViewport uiViewport = new ScreenViewport();
     this.uiStage = new Stage(uiViewport);
-    this.stationUIController = new StationUIController(uiStage, game.getFontManager());
+    this.stationUIController = new StationUIController(uiStage);
 
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
@@ -79,23 +77,19 @@ public class GameScreen implements Screen {
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
           station = new CookingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
-          station.setName("Cooking Station");
           break;
         case "ingredientStation":
           station = new IngredientStation(tileObject.getTextureRegion(), Ingredient.fromString(ingredients));
-          station.setName("Ingredient Station");
           break;
         case "choppingStation":
           station = new ChoppingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
-          station.setName("Chopping Station");
           break;
         default:
           station = new Station(tileObject.getTextureRegion());
-          station.setName("Default Station");
       }
       station.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
       stage.addActor(station);
-      stationUIController.showActions(station, new String[] {});
+      stationUIController.showActions(station, new String[] { "Action 1", "Action 2", "Action 3"});
 
       Integer colliderID = tileObject.getProperties().get("collisionObjectID", Integer.class);
       StationCollider collider = colliders.get(colliderID);
@@ -133,7 +127,7 @@ public class GameScreen implements Screen {
   @Override
   public void resize(int width, int height) {
     this.stage.getViewport().update(width, height, true);
-    this.uiStage.getViewport().update(width, height, false);
+    this.uiStage.getViewport().update(width, height, true);
   }
 
   @Override

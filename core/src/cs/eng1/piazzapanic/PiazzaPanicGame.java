@@ -5,11 +5,11 @@ import cs.eng1.piazzapanic.screens.GameScreen;
 import cs.eng1.piazzapanic.ui.FontManager;
 
 public class PiazzaPanicGame extends Game {
-	private FontManager fontManager;
+	private static FontManager fontManager;
 	@Override
 	public void create () {
-		this.fontManager = new FontManager();
-		setScreen(new GameScreen(this));
+		fontManager = new FontManager();
+		setScreen(new GameScreen());
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class PiazzaPanicGame extends Game {
 		fontManager.dispose();
 	}
 
-	public FontManager getFontManager() {
+	public static FontManager getFontManager() {
 		return fontManager;
 	}
 }
