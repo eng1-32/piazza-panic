@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
+import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.HashMap;
 
@@ -25,6 +26,7 @@ public class GameScreen implements Screen {
   private final Stage stage;
   private final Stage uiStage;
   private final OrthogonalTiledMapRenderer renderer;
+  private final StationUIController stationUIController;
 
   public GameScreen() {
     TiledMap map = new TmxMapLoader().load("big-map.tmx");
@@ -35,9 +37,11 @@ public class GameScreen implements Screen {
     // Initialise stage and camera
     OrthographicCamera camera = new OrthographicCamera();
     ExtendViewport viewport = new ExtendViewport(sizeX, sizeY, camera); // Number of tiles
-    ScreenViewport uiViewport = new ScreenViewport();
     this.stage = new Stage(viewport);
+
+    ScreenViewport uiViewport = new ScreenViewport();
     this.uiStage = new Stage(uiViewport);
+    this.stationUIController = new StationUIController(uiStage);
 
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
@@ -118,6 +122,7 @@ public class GameScreen implements Screen {
   @Override
   public void resize(int width, int height) {
     this.stage.getViewport().update(width, height, true);
+    this.uiStage.getViewport().update(width, height, true);
   }
 
   @Override
