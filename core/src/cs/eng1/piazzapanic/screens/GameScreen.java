@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -42,6 +43,12 @@ public class GameScreen implements Screen {
     ScreenViewport uiViewport = new ScreenViewport();
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage);
+
+    InputMultiplexer multiplexer = new InputMultiplexer();
+    multiplexer.addProcessor(uiStage);
+    multiplexer.addProcessor(stage);
+    Gdx.input.setInputProcessor(multiplexer);
+
 
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
@@ -116,7 +123,7 @@ public class GameScreen implements Screen {
 
     // Render stage
     stage.setDebugAll(true); // TODO: remove after testing
-    uiStage.setDebugAll(true);
+//    uiStage.setDebugAll(true);
     stage.act(delta);
     uiStage.act();
 

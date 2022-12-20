@@ -23,7 +23,7 @@ public class FontManager {
     headerFont = fontGenerator.generateFont(headerFontParameters);
 
     FreeTypeFontParameter labelFontParameters = new FreeTypeFontParameter();
-    labelFontParameters.size = 12;
+    labelFontParameters.size = 10;
     labelFont = fontGenerator.generateFont(labelFontParameters);
   }
 
