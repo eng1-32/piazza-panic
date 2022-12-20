@@ -13,6 +13,7 @@ public class StationCollider extends Actor implements Subject<Chef> {
 
   public StationCollider() {
     this.observers = new LinkedList<>();
+    final StationCollider collider = this;
   }
 
   @Override

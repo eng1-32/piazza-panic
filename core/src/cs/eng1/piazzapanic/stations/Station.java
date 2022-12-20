@@ -9,15 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
+import cs.eng1.piazzapanic.ui.StationUIController;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Station extends Actor implements Observer<Chef> {
+  private final StationUIController uiController;
   protected TextureRegion stationImage;
   protected Boolean inUse = false;
 
   protected Subject<Chef> chefSubject = null;
+  protected Chef nearbyChef = null;
 
-  public Station(TextureRegion image) {
+  public Station(TextureRegion image, StationUIController uiController) {
     stationImage = image; // Texture of the object
+    this.uiController = uiController;
   }
 
   @Override
@@ -46,6 +53,10 @@ public class Station extends Actor implements Observer<Chef> {
   @Override
   public void update(Chef chef) {
     // TODO: display possible actions on UI when chef is in range
+    if (chef != null) {
+      this.nearbyChef = chef;
+      uiController.showActions(this, getActionTypes());
+    }
   }
 
   @Override
@@ -56,5 +67,12 @@ public class Station extends Actor implements Observer<Chef> {
   @Override
   public Subject<Chef> getSubject() {
     return this.chefSubject;
+  }
+
+  public List<StationAction.ActionType> getActionTypes() {
+    return new LinkedList<>();
+  }
+
+  public void doStationAction(StationAction.ActionType action) {
   }
 }

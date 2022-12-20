@@ -44,12 +44,6 @@ public class GameScreen implements Screen {
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage);
 
-    InputMultiplexer multiplexer = new InputMultiplexer();
-    multiplexer.addProcessor(uiStage);
-    multiplexer.addProcessor(stage);
-    Gdx.input.setInputProcessor(multiplexer);
-
-
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
     MapLayer objectLayer = map.getLayers().get("Stations");
@@ -83,20 +77,19 @@ public class GameScreen implements Screen {
       String ingredients = tileObject.getProperties().get("ingredients", String.class);
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
-          station = new CookingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
+          station = new CookingStation(tileObject.getTextureRegion(), stationUIController, Ingredient.arrayFromString(ingredients));
           break;
         case "ingredientStation":
-          station = new IngredientStation(tileObject.getTextureRegion(), Ingredient.fromString(ingredients));
+          station = new IngredientStation(tileObject.getTextureRegion(), stationUIController, Ingredient.fromString(ingredients));
           break;
         case "choppingStation":
-          station = new ChoppingStation(tileObject.getTextureRegion(), Ingredient.arrayFromString(ingredients));
+          station = new ChoppingStation(tileObject.getTextureRegion(), stationUIController, Ingredient.arrayFromString(ingredients));
           break;
         default:
-          station = new Station(tileObject.getTextureRegion());
+          station = new Station(tileObject.getTextureRegion(), stationUIController);
       }
       station.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
       stage.addActor(station);
-      stationUIController.showActions(station, new String[] { "Action 1", "Action 2", "Action 3"});
 
       Integer colliderID = tileObject.getProperties().get("collisionObjectID", Integer.class);
       StationCollider collider = colliders.get(colliderID);
@@ -108,7 +101,10 @@ public class GameScreen implements Screen {
 
   @Override
   public void show() {
-
+    InputMultiplexer multiplexer = new InputMultiplexer();
+    multiplexer.addProcessor(uiStage);
+    multiplexer.addProcessor(stage);
+    Gdx.input.setInputProcessor(multiplexer);
   }
 
   @Override

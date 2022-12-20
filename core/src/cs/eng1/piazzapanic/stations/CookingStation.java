@@ -3,24 +3,28 @@ package cs.eng1.piazzapanic.stations;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
+import cs.eng1.piazzapanic.ui.StationUIController;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class CookingStation extends Station {
   protected Ingredient[] validIngredients;
-  protected Ingredient ingredientCooking;
+  protected Ingredient currentIngredient;
   protected long timeCooked;
 
-  public CookingStation(TextureRegion image, Ingredient[] ingredients) {
-    super(image);
+  public CookingStation(TextureRegion image, StationUIController uiController, Ingredient[] ingredients) {
+    super(image, uiController);
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }
 
   public void stationInteract() {
     //TODO: Change if statement to check for a flipped patty or a
     // uncooked patty once ingredients class is implemented
-    if (this.ingredientCooking == ingredientCooking) {
+    if (this.currentIngredient == currentIngredient) {
       collectPatty();
-    } else if (this.ingredientCooking == ingredientCooking) {
+    } else if (this.currentIngredient == currentIngredient) {
       flipPatty();
     } else {
       //cookFood(top ingredient in food stack);
@@ -34,7 +38,7 @@ public class CookingStation extends Station {
     }
     this.inUse = true;
     timeCooked = TimeUtils.millis();
-    ingredientCooking = foodItem;
+    currentIngredient = foodItem;
 
   }
 
@@ -49,7 +53,7 @@ public class CookingStation extends Station {
       //ingredientCooking = new Ingredient(flippedPatty);
       //TODO: Add cooked patty back to chef's ingredient stack
       this.inUse = false;
-      this.ingredientCooking = null;
+      this.currentIngredient = null;
     }
   }
 
@@ -60,5 +64,37 @@ public class CookingStation extends Station {
       }
     }
     return false;
+  }
+
+  @Override
+  public List<StationAction.ActionType> getActionTypes() {
+    LinkedList<StationAction.ActionType> actionTypes = new LinkedList<>();
+    if (nearbyChef == null) return actionTypes;
+    if (currentIngredient == null) {
+      actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+    } else {
+      actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+      actionTypes.add(StationAction.ActionType.COOK_ACTION);
+    }
+    return actionTypes;
+  }
+
+  @Override
+  public void doStationAction(StationAction.ActionType action) {
+    switch (action) {
+      case COOK_ACTION:
+        break;
+      case PLACE_INGREDIENT:
+        if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
+          currentIngredient = nearbyChef.placeIngredient();
+        }
+        break;
+      case GRAB_INGREDIENT:
+        if (this.nearbyChef != null && nearbyChef.canGrabIngredient() && currentIngredient != null) {
+          nearbyChef.grabIngredient(currentIngredient);
+          currentIngredient = null;
+        }
+        break;
+    }
   }
 }

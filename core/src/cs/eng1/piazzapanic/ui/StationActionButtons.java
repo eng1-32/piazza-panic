@@ -2,10 +2,15 @@ package cs.eng1.piazzapanic.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.stations.Station;
+import cs.eng1.piazzapanic.stations.StationAction;
+
+import java.util.List;
 
 
 public class StationActionButtons extends Table {
@@ -20,10 +25,18 @@ public class StationActionButtons extends Table {
 
   Station station;
 
-  public StationActionButtons(Station station, String[] actions) {
+  public StationActionButtons(final Station station, List<StationAction.ActionType> actions) {
     this.station = station;
-    for (String action : actions) {
-      TextButton actionButton = PiazzaPanicGame.getButtonManager().createTextButton(action, ButtonManager.ButtonColour.BLUE);
+    for (final StationAction.ActionType action : actions) {
+      String actionDescription = StationAction.getActionDescription(action);
+      TextButton actionButton = PiazzaPanicGame.getButtonManager().createTextButton(actionDescription, ButtonManager.ButtonColour.BLUE);
+      actionButton.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+          station.doStationAction(action);
+          super.clicked(event, x, y);
+        }
+      });
       add(actionButton).width(100).height(30).pad(2f);
       row();
     }
