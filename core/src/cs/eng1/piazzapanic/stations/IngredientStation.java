@@ -34,7 +34,7 @@ public class IngredientStation extends Station {
   public void doStationAction(StationAction.ActionType action) {
     if (action == StationAction.ActionType.GRAB_INGREDIENT) {
       if (this.nearbyChef != null && nearbyChef.canGrabIngredient()) {
-        nearbyChef.grabIngredient(new Ingredient(ingredientDispensed.getType()));
+        nearbyChef.grabIngredient(Ingredient.fromString(ingredientDispensed.getType()));
       }
     }
   }
