@@ -52,11 +52,13 @@ public class GameScreen implements Screen {
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png")));
     Chef chef = new Chef(chefSprite);
     chef.setBounds(2, 3, chefSprite.getWidth() * tileUnitSize * 2.5f, chefSprite.getHeight() * tileUnitSize * 2.5f);
+    chef.setInputEnabled(false);
 
     Sprite chef2Sprite = new Sprite(new Texture(Gdx.files.internal(
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png")));
     Chef chef2 = new Chef(chef2Sprite);
-    chef2.setBounds(4, 3, chef2Sprite.getWidth() * tileUnitSize * 2.5f, chef2Sprite.getHeight() * tileUnitSize * 2.5f);
+    chef2.setBounds(4, 5, chef2Sprite.getWidth() * tileUnitSize * 2.5f, chef2Sprite.getHeight() * tileUnitSize * 2.5f);
+    chef2.setInputEnabled(true);
 
     stage.addActor(chef);
     stage.addActor(chef2);
