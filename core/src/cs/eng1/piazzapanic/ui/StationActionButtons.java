@@ -25,8 +25,15 @@ public class StationActionButtons extends Table {
 
   Station station;
 
-  public StationActionButtons(final Station station, List<StationAction.ActionType> actions) {
+  public StationActionButtons(final Station station) {
     this.station = station;
+    setVisible(false);
+    center();
+    bottom();
+  }
+
+  public void showActions(List<StationAction.ActionType> actions) {
+    clearChildren();
     for (final StationAction.ActionType action : actions) {
       String actionDescription = StationAction.getActionDescription(action);
       TextButton actionButton = PiazzaPanicGame.getButtonManager().createTextButton(actionDescription, ButtonManager.ButtonColour.BLUE);
@@ -40,8 +47,12 @@ public class StationActionButtons extends Table {
       add(actionButton).width(100).height(30).pad(2f);
       row();
     }
-    center();
-    bottom();
+    setVisible(true);
+  }
+
+  public void hideActions() {
+    setVisible(false);
+    clearChildren();
   }
 
   public void setActionAlignment(ActionAlignment actionAlignment) {

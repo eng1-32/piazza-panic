@@ -9,21 +9,26 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
+import cs.eng1.piazzapanic.ui.StationActionButtons;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class Station extends Actor implements Observer<Chef> {
-  private final StationUIController uiController;
+  protected final int id;
+  protected final StationUIController uiController;
+  protected final StationActionButtons.ActionAlignment actionAlignment;
   protected TextureRegion stationImage;
   protected Boolean inUse = false;
 
   protected Subject<Chef> chefSubject = null;
   protected Chef nearbyChef = null;
 
-  public Station(TextureRegion image, StationUIController uiController) {
+  public Station(int id, TextureRegion image, StationUIController uiController, StationActionButtons.ActionAlignment alignment) {
+    this.id = id;
     stationImage = image; // Texture of the object
+    actionAlignment = alignment;
     this.uiController = uiController;
   }
 
@@ -56,6 +61,9 @@ public class Station extends Actor implements Observer<Chef> {
     if (chef != null) {
       this.nearbyChef = chef;
       uiController.showActions(this, getActionTypes());
+    } else {
+      this.nearbyChef = null;
+      uiController.hideActions(this);
     }
   }
 
@@ -74,5 +82,13 @@ public class Station extends Actor implements Observer<Chef> {
   }
 
   public void doStationAction(StationAction.ActionType action) {
+  }
+
+  public StationActionButtons.ActionAlignment getActionAlignment() {
+    return actionAlignment;
+  }
+
+  public int getId() {
+    return id;
   }
 }

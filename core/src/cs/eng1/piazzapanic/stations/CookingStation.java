@@ -3,6 +3,7 @@ package cs.eng1.piazzapanic.stations;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
+import cs.eng1.piazzapanic.ui.StationActionButtons;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
@@ -14,8 +15,9 @@ public class CookingStation extends Station {
   protected Ingredient currentIngredient;
   protected long timeCooked;
 
-  public CookingStation(TextureRegion image, StationUIController uiController, Ingredient[] ingredients) {
-    super(image, uiController);
+  public CookingStation(int id, TextureRegion image, StationUIController uiController,
+                        StationActionButtons.ActionAlignment alignment, Ingredient[] ingredients) {
+    super(id, image, uiController, alignment);
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }
 

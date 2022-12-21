@@ -5,6 +5,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -16,8 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
+import cs.eng1.piazzapanic.ui.StationActionButtons;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.HashMap;
@@ -43,6 +47,19 @@ public class GameScreen implements Screen {
     ScreenViewport uiViewport = new ScreenViewport();
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage);
+
+    Sprite chefSprite = new Sprite(new Texture(Gdx.files.internal(
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png")));
+    Chef chef = new Chef(chefSprite);
+    chef.setBounds(2, 3, chefSprite.getWidth() * tileUnitSize * 2.5f, chefSprite.getHeight() * tileUnitSize * 2.5f);
+
+    Sprite chef2Sprite = new Sprite(new Texture(Gdx.files.internal(
+        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png")));
+    Chef chef2 = new Chef(chef2Sprite);
+    chef2.setBounds(4, 3, chef2Sprite.getWidth() * tileUnitSize * 2.5f, chef2Sprite.getHeight() * tileUnitSize * 2.5f);
+
+    stage.addActor(chef);
+    stage.addActor(chef2);
 
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
@@ -74,19 +91,26 @@ public class GameScreen implements Screen {
       }
 
       Station station;
+      int id = tileObject.getProperties().get("id", Integer.class);
       String ingredients = tileObject.getProperties().get("ingredients", String.class);
+      StationActionButtons.ActionAlignment alignment = StationActionButtons.ActionAlignment.valueOf(
+          tileObject.getProperties().get("actionAlignment", "TOP", String.class));
+
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
-          station = new CookingStation(tileObject.getTextureRegion(), stationUIController, Ingredient.arrayFromString(ingredients));
+          station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
+              alignment, Ingredient.arrayFromString(ingredients));
           break;
         case "ingredientStation":
-          station = new IngredientStation(tileObject.getTextureRegion(), stationUIController, Ingredient.fromString(ingredients));
+          station = new IngredientStation(id, tileObject.getTextureRegion(), stationUIController,
+              alignment, Ingredient.fromString(ingredients));
           break;
         case "choppingStation":
-          station = new ChoppingStation(tileObject.getTextureRegion(), stationUIController, Ingredient.arrayFromString(ingredients));
+          station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController, alignment,
+              Ingredient.arrayFromString(ingredients));
           break;
         default:
-          station = new Station(tileObject.getTextureRegion(), stationUIController);
+          station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);
       }
       station.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
       stage.addActor(station);
