@@ -1,4 +1,4 @@
-<TextureAtlas imagePath="sheet.png">
+<TextureAtlas imagePath="greySheet.png">
 	<SubTexture name="grey_arrowDownGrey.png" x="78" y="498" width="15" height="10"/>
 	<SubTexture name="grey_arrowDownWhite.png" x="123" y="496" width="15" height="10"/>
 	<SubTexture name="grey_arrowUpGrey.png" x="108" y="498" width="15" height="10"/>
