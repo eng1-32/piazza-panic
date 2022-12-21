@@ -8,6 +8,19 @@
     ],
     "propertyTypes": [
         {
+            "id": 4,
+            "name": "ActionAlignment",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "LEFT",
+                "TOP",
+                "RIGHT",
+                "BOTTOM"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "id": 3,
             "name": "Ingredient",
             "storageType": "string",
@@ -24,6 +37,12 @@
             "color": "#ffa0a0a4",
             "id": 2,
             "members": [
+                {
+                    "name": "actionAlignment",
+                    "propertyType": "ActionAlignment",
+                    "type": "string",
+                    "value": "TOP"
+                },
                 {
                     "name": "collisionObjectID",
                     "type": "int",

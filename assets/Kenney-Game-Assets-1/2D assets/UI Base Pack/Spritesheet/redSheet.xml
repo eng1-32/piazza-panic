@@ -1,4 +1,4 @@
-<TextureAtlas imagePath="sheet.png">
+<TextureAtlas imagePath="redSheet.png">
 	<SubTexture name="red_boxCheckmark.png" x="380" y="0" width="38" height="36"/>
 	<SubTexture name="red_boxCross.png" x="380" y="36" width="38" height="36"/>
 	<SubTexture name="red_boxTick.png" x="386" y="178" width="36" height="36"/>

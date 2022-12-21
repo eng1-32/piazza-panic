@@ -1,7 +1,7 @@
 package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import cs.eng1.piazzapanic.Chef.Chef;
+import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
 
@@ -13,6 +13,7 @@ public class StationCollider extends Actor implements Subject<Chef> {
 
   public StationCollider() {
     this.observers = new LinkedList<>();
+    final StationCollider collider = this;
   }
 
   @Override

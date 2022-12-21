@@ -33,9 +33,4 @@ public class Ingredient {
   public String getType() {
     return type;
   }
-
-  public boolean doAction(IngredientAction action) {
-    // TODO: work out how to integrate this with time
-    return false;
-  }
 }
