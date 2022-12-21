@@ -8,11 +8,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
-import cs.eng1.piazzapanic.stations.StationCollider;
 
 public class Chef extends Actor {
   private final Sprite image;
-  private StationCollider currentCollider = null;
   private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
 
   private final Vector2 inputVector;
@@ -32,8 +30,6 @@ public class Chef extends Actor {
 
   @Override
   public void act(float delta) {
-    checkStationColliders();
-
     getInput();
 
     calculateMovement(delta);
@@ -64,22 +60,6 @@ public class Chef extends Actor {
 
   private void calculateMovement(float delta) {
     addAction(Actions.moveBy(inputVector.x * speed * delta, inputVector.y * speed * delta));
-  }
-
-  private void checkStationColliders() {
-    Actor actorHit = getStage().hit(getX() + getWidth() / 2f, getY() + getHeight() / 2f, false);
-    if (actorHit instanceof StationCollider) {
-      if (currentCollider != actorHit) {
-        if (currentCollider != null) {
-          currentCollider.notifyObservers(null);
-        }
-        currentCollider = (StationCollider) actorHit;
-        currentCollider.notifyObservers(this);
-      }
-    } else if (currentCollider != null) {
-      currentCollider.notifyObservers(null);
-      currentCollider = null;
-    }
   }
 
   public boolean hasIngredient() {

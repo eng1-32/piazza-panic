@@ -5,8 +5,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -18,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import cs.eng1.piazzapanic.chef.Chef;
+import cs.eng1.piazzapanic.chef.ChefManager;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationActionButtons;
@@ -30,6 +28,7 @@ public class GameScreen implements Screen {
 
   private final Stage stage;
   private final Stage uiStage;
+  private final ChefManager chefManager;
   private final OrthogonalTiledMapRenderer renderer;
   private final StationUIController stationUIController;
 
@@ -48,27 +47,14 @@ public class GameScreen implements Screen {
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage);
 
-    Sprite chefSprite = new Sprite(new Texture(Gdx.files.internal(
-        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png")));
-    Chef chef = new Chef(chefSprite);
-    chef.setBounds(2, 3, chefSprite.getWidth() * tileUnitSize * 2.5f, chefSprite.getHeight() * tileUnitSize * 2.5f);
-    chef.setInputEnabled(false);
-
-    Sprite chef2Sprite = new Sprite(new Texture(Gdx.files.internal(
-        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png")));
-    Chef chef2 = new Chef(chef2Sprite);
-    chef2.setBounds(4, 5, chef2Sprite.getWidth() * tileUnitSize * 2.5f, chef2Sprite.getHeight() * tileUnitSize * 2.5f);
-    chef2.setInputEnabled(true);
-
-    stage.addActor(chef);
-    stage.addActor(chef2);
-
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
     MapLayer objectLayer = map.getLayers().get("Stations");
 
+    chefManager = new ChefManager(tileUnitSize * 2.5f);
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
+    chefManager.addChefsToStage(stage);
   }
 
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
@@ -78,7 +64,7 @@ public class GameScreen implements Screen {
 
     for (RectangleMapObject colliderObject : new Array.ArrayIterator<>(colliderObjects)) {
       Integer id = colliderObject.getProperties().get("id", Integer.class);
-      StationCollider collider = new StationCollider();
+      StationCollider collider = new StationCollider(chefManager);
       Rectangle bounds = colliderObject.getRectangle();
       collider.setBounds(bounds.getX() * tileUnitSize, bounds.getY() * tileUnitSize,
           bounds.getWidth() * tileUnitSize, bounds.getHeight() * tileUnitSize);
