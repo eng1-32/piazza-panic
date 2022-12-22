@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.utils.Disposable;
 
-public class FontManager {
+public class FontManager implements Disposable {
 
   private final FreeTypeFontGenerator fontGenerator;
   private final BitmapFont titleFont;
@@ -44,6 +45,7 @@ public class FontManager {
     return fontGenerator.generateFont(parameter);
   }
 
+  @Override
   public void dispose() {
     fontGenerator.dispose();
   }

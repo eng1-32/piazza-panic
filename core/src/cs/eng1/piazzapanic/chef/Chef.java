@@ -2,19 +2,18 @@ package cs.eng1.piazzapanic.chef;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
 public class Chef extends Actor {
 
-  private final Sprite image;
+  private final Texture image;
   private final ChefManager chefManager;
   private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
 
@@ -24,7 +23,7 @@ public class Chef extends Actor {
   private boolean inputEnabled = true;
 
   //interactions between chef and stations are implemented
-  public Chef(Sprite image, ChefManager chefManager) {
+  public Chef(Texture image, ChefManager chefManager) {
     this.image = image;
     this.chefManager = chefManager;
     inputVector = new Vector2();
@@ -40,7 +39,7 @@ public class Chef extends Actor {
     getInput();
 
     Vector2 movement = calculateMovement(delta);
-    addAction(Actions.moveBy(movement.x, movement.y));
+    moveBy(movement.x, movement.y);
 
     super.act(delta);
   }
@@ -96,24 +95,33 @@ public class Chef extends Actor {
     if (xMovement > 0.0001f) {
       float rightBorder = getX() + getWidth() + xMovement;
       Rectangle hitBoundsBottom = getCollisionObjectBoundaries(rightBorder, getY());
+      Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(rightBorder,
+          getY() + getHeight() / 2f);
       Rectangle hitBoundsTop = getCollisionObjectBoundaries(rightBorder, getY() + getHeight());
       float adjustment = -getWidth() - collisionSkin - getX();
 
       if (hitBoundsBottom != null) {
         xMovement = hitBoundsBottom.x + adjustment;
       }
+      if (hitBoundsMiddle != null) {
+        xMovement = Math.min(xMovement, hitBoundsMiddle.x + adjustment);
+      }
       if (hitBoundsTop != null) {
-        // Account for the case that the bottom collision is closer
         xMovement = Math.min(xMovement, hitBoundsTop.x + adjustment);
       }
     } else if (xMovement < -0.0001f) {
       float leftBorder = getX() + xMovement;
       Rectangle hitBoundsBottom = getCollisionObjectBoundaries(leftBorder, getY());
+      Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(leftBorder,
+          getY() + getHeight() / 2f);
       Rectangle hitBoundsTop = getCollisionObjectBoundaries(leftBorder, getY() + getHeight());
       float adjustment = collisionSkin - getX();
 
       if (hitBoundsBottom != null) {
         xMovement = hitBoundsBottom.x + hitBoundsBottom.width + adjustment;
+      }
+      if (hitBoundsMiddle != null) {
+        xMovement = Math.max(xMovement, hitBoundsMiddle.x + hitBoundsMiddle.width + adjustment);
       }
       if (hitBoundsTop != null) {
         xMovement = Math.max(xMovement, hitBoundsTop.x + hitBoundsTop.width + adjustment);
@@ -126,11 +134,15 @@ public class Chef extends Actor {
     if (yMovement > 0.0001f) {
       float topBorder = getY() + getHeight() + yMovement;
       Rectangle hitBoundsLeft = getCollisionObjectBoundaries(getX(), topBorder);
+      Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(getX() + getWidth() / 2f, topBorder);
       Rectangle hitBoundsRight = getCollisionObjectBoundaries(getX() + getWidth(), topBorder);
       float adjustment = -getHeight() - collisionSkin - getY();
 
       if (hitBoundsLeft != null) {
         yMovement = hitBoundsLeft.y + adjustment;
+      }
+      if (hitBoundsMiddle != null) {
+        yMovement = Math.min(yMovement, hitBoundsMiddle.y + adjustment);
       }
       if (hitBoundsRight != null) {
         yMovement = Math.min(yMovement, hitBoundsRight.y + adjustment);
@@ -138,11 +150,16 @@ public class Chef extends Actor {
     } else if (yMovement < -0.0001f) {
       float bottomBorder = getY() + yMovement;
       Rectangle hitBoundsLeft = getCollisionObjectBoundaries(getX(), bottomBorder);
+      Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(getX() + getWidth() / 2f,
+          bottomBorder);
       Rectangle hitBoundsRight = getCollisionObjectBoundaries(getX() + getWidth(), bottomBorder);
       float adjustment = collisionSkin - getY();
 
       if (hitBoundsLeft != null) {
         yMovement = hitBoundsLeft.y + hitBoundsLeft.height + adjustment;
+      }
+      if (hitBoundsMiddle != null) {
+        yMovement = Math.max(yMovement, hitBoundsMiddle.y + hitBoundsMiddle.height + adjustment);
       }
       if (hitBoundsRight != null) {
         yMovement = Math.max(yMovement, hitBoundsRight.y + hitBoundsRight.height + adjustment);

@@ -5,11 +5,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 
 import java.util.HashMap;
 
-public class ButtonManager {
+public class ButtonManager implements Disposable {
 
   public enum ButtonColour {
     BLUE,
@@ -46,6 +47,7 @@ public class ButtonManager {
     return new TextButton(text, textButtonStyles.get(colour));
   }
 
+  @Override
   public void dispose() {
     for (TextButton.TextButtonStyle style : textButtonStyles.values()) {
       ((TextureRegionDrawable) style.up).getRegion().getTexture().dispose();

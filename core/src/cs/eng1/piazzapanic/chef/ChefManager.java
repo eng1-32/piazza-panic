@@ -2,7 +2,6 @@ package cs.eng1.piazzapanic.chef;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -29,10 +28,10 @@ public class ChefManager {
 
     for (int i = 0; i < chefSprites.length; i++) {
       String sprite = chefSprites[i];
-      Sprite chefSprite = new Sprite(new Texture(Gdx.files.internal(sprite)));
-      Chef chef = new Chef(chefSprite, this);
-      chef.setBounds(2 + 2 * i, 3, chefSprite.getWidth() * chefScale,
-          chefSprite.getHeight() * chefScale);
+      Texture chefTexture = new Texture(Gdx.files.internal(sprite));
+      Chef chef = new Chef(chefTexture, this);
+      chef.setBounds(2 + 2 * i, 3, chefTexture.getWidth() * chefScale,
+          chefTexture.getHeight() * chefScale);
       chef.setInputEnabled(false);
       chefs.add(chef);
     }
