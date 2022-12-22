@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -50,8 +51,9 @@ public class GameScreen implements Screen {
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
     MapLayer objectLayer = map.getLayers().get("Stations");
+    TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get("Foreground");
 
-    chefManager = new ChefManager(tileUnitSize * 2.5f);
+    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer);
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);

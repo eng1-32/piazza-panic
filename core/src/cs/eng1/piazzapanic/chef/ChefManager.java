@@ -3,6 +3,8 @@ package cs.eng1.piazzapanic.chef;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,8 +17,10 @@ public class ChefManager {
 
   private final ArrayList<Chef> chefs;
   private Chef currentChef = null;
+  private final TiledMapTileLayer collisionLayer;
 
-  public ChefManager(float chefScale) {
+  public ChefManager(float chefScale, TiledMapTileLayer collisionLayer) {
+    this.collisionLayer = collisionLayer;
     String[] chefSprites = new String[]{
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png"
@@ -26,12 +30,16 @@ public class ChefManager {
     for (int i = 0; i < chefSprites.length; i++) {
       String sprite = chefSprites[i];
       Sprite chefSprite = new Sprite(new Texture(Gdx.files.internal(sprite)));
-      Chef chef = new Chef(chefSprite);
+      Chef chef = new Chef(chefSprite, this);
       chef.setBounds(2 + 2 * i, 3, chefSprite.getWidth() * chefScale,
           chefSprite.getHeight() * chefScale);
       chef.setInputEnabled(false);
       chefs.add(chef);
     }
+  }
+
+  public Cell getCellAtPosition(float x, float y) {
+    return collisionLayer.getCell((int) Math.floor(x), (int) Math.floor(y));
   }
 
   public List<Chef> getChefs() {
