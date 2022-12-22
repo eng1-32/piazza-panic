@@ -14,6 +14,7 @@ import java.util.List;
 
 
 public class StationActionButtons extends Table {
+
   private ActionAlignment actionAlignment = ActionAlignment.TOP;
 
   public enum ActionAlignment {
@@ -36,7 +37,8 @@ public class StationActionButtons extends Table {
     clearChildren();
     for (final StationAction.ActionType action : actions) {
       String actionDescription = StationAction.getActionDescription(action);
-      TextButton actionButton = PiazzaPanicGame.getButtonManager().createTextButton(actionDescription, ButtonManager.ButtonColour.BLUE);
+      TextButton actionButton = PiazzaPanicGame.getButtonManager()
+          .createTextButton(actionDescription, ButtonManager.ButtonColour.BLUE);
       actionButton.addListener(new ClickListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {

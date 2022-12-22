@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.stations;
 
 public class StationAction {
+
   public enum ActionType {
     CHOP_ACTION,
     COOK_ACTION,

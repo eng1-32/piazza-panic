@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class StationCollider extends Actor implements Subject<Chef> {
+
   private final ChefManager chefManager;
   protected List<Observer<Chef>> observers;
 
@@ -25,7 +26,7 @@ public class StationCollider extends Actor implements Subject<Chef> {
       float chefCentreX = chef.getX() + chef.getWidth() / 2f;
       float chefCentreY = chef.getY() + chef.getHeight() / 2f;
       if (chefCentreX >= getX() && chefCentreX < getX() + getWidth()
-      && chefCentreY >= getY() && chefCentreY < getY() + getHeight()) {
+          && chefCentreY >= getY() && chefCentreY < getY() + getHeight()) {
         notifyObservers(chef);
         hasChef = true;
         break;
@@ -38,7 +39,9 @@ public class StationCollider extends Actor implements Subject<Chef> {
 
   @Override
   public void register(Observer<Chef> observer) {
-    if (observer == null) throw new NullPointerException("Observer cannot be null");
+    if (observer == null) {
+      throw new NullPointerException("Observer cannot be null");
+    }
     if (!observers.contains(observer)) {
       observers.add(observer);
       observer.setSubject(this);

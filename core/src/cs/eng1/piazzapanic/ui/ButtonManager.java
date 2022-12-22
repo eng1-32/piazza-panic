@@ -27,9 +27,11 @@ public class ButtonManager {
       String basePath = "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/";
       TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
           new TextureRegionDrawable(
-              new Texture(Gdx.files.internal(basePath + buttonColour.name().toLowerCase() + "_button_flat_up.png"))),
+              new Texture(Gdx.files.internal(
+                  basePath + buttonColour.name().toLowerCase() + "_button_flat_up.png"))),
           new TextureRegionDrawable(
-              new Texture(Gdx.files.internal(basePath + buttonColour.name().toLowerCase() + "_button_flat_down.png"))),
+              new Texture(Gdx.files.internal(
+                  basePath + buttonColour.name().toLowerCase() + "_button_flat_down.png"))),
           null,
           PiazzaPanicGame.getFontManager().getLabelFont()
       );

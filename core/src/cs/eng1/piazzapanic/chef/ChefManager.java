@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChefManager {
+
   private final ArrayList<Chef> chefs;
   private Chef currentChef = null;
 
@@ -26,7 +27,8 @@ public class ChefManager {
       String sprite = chefSprites[i];
       Sprite chefSprite = new Sprite(new Texture(Gdx.files.internal(sprite)));
       Chef chef = new Chef(chefSprite);
-      chef.setBounds(2 + 2 * i, 3, chefSprite.getWidth() * chefScale, chefSprite.getHeight() * chefScale);
+      chef.setBounds(2 + 2 * i, 3, chefSprite.getWidth() * chefScale,
+          chefSprite.getHeight() * chefScale);
       chef.setInputEnabled(false);
       chefs.add(chef);
     }
@@ -45,10 +47,11 @@ public class ChefManager {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         Actor actorHit = stage.hit(x, y, false);
-        if (actorHit instanceof Chef)
+        if (actorHit instanceof Chef) {
           manager.setCurrentChef((Chef) actorHit);
-        else
+        } else {
           manager.setCurrentChef(null);
+        }
       }
     });
   }

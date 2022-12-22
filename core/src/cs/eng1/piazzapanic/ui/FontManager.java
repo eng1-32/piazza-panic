@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class FontManager {
+
   private final FreeTypeFontGenerator fontGenerator;
   private final BitmapFont titleFont;
   private final BitmapFont headerFont;

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 
 public class Chef extends Actor {
+
   private final Sprite image;
   private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
 
@@ -40,7 +41,9 @@ public class Chef extends Actor {
   private void getInput() {
     inputVector.x = 0;
     inputVector.y = 0;
-    if (!isInputEnabled()) return;
+    if (!isInputEnabled()) {
+      return;
+    }
     float x = 0f;
     float y = 0f;
     if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -81,7 +84,9 @@ public class Chef extends Actor {
   public void setInputVector(float x, float y) {
     inputVector.x = x;
     inputVector.y = y;
-    if (inputVector.len() > 1f) inputVector.nor();
+    if (inputVector.len() > 1f) {
+      inputVector.nor();
+    }
   }
 
   public boolean isInputEnabled() {

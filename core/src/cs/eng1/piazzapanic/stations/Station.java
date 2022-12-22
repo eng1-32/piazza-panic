@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Station extends Actor implements Observer<Chef> {
+
   protected final int id;
   protected final StationUIController uiController;
   protected final StationActionButtons.ActionAlignment actionAlignment;
@@ -25,7 +26,8 @@ public class Station extends Actor implements Observer<Chef> {
   protected Subject<Chef> chefSubject = null;
   protected Chef nearbyChef = null;
 
-  public Station(int id, TextureRegion image, StationUIController uiController, StationActionButtons.ActionAlignment alignment) {
+  public Station(int id, TextureRegion image, StationUIController uiController,
+      StationActionButtons.ActionAlignment alignment) {
     this.id = id;
     stationImage = image; // Texture of the object
     actionAlignment = alignment;

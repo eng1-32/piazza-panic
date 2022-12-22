@@ -58,8 +58,10 @@ public class GameScreen implements Screen {
   }
 
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
-    Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects().getByType(TiledMapTileMapObject.class);
-    Array<RectangleMapObject> colliderObjects = objectLayer.getObjects().getByType(RectangleMapObject.class);
+    Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects()
+        .getByType(TiledMapTileMapObject.class);
+    Array<RectangleMapObject> colliderObjects = objectLayer.getObjects()
+        .getByType(RectangleMapObject.class);
     HashMap<Integer, StationCollider> colliders = new HashMap<>();
 
     for (RectangleMapObject colliderObject : new Array.ArrayIterator<>(colliderObjects)) {
@@ -94,8 +96,8 @@ public class GameScreen implements Screen {
               alignment, Ingredient.fromString(ingredients));
           break;
         case "choppingStation":
-          station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController, alignment,
-              Ingredient.arrayFromString(ingredients));
+          station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
+              alignment, Ingredient.arrayFromString(ingredients));
           break;
         default:
           station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);

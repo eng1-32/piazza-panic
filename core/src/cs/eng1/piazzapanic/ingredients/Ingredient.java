@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Ingredient {
+
   private final String type;
   private Texture texture;
   protected List<IngredientAction> possibleActions;
@@ -31,6 +32,7 @@ public class Ingredient {
         return null;
     }
   }
+
   public static Ingredient[] arrayFromString(String csvIngredientNames) {
     String[] ingredientNames = csvIngredientNames.split(",");
     Ingredient[] ingredients = new Ingredient[ingredientNames.length];
