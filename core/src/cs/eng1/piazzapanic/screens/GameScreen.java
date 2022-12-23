@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -50,16 +51,19 @@ public class GameScreen implements Screen {
     // Initialise tilemap
     this.renderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
     MapLayer objectLayer = map.getLayers().get("Stations");
+    TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get("Foreground");
 
-    chefManager = new ChefManager(tileUnitSize * 2.5f);
+    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer);
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
   }
 
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
-    Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects().getByType(TiledMapTileMapObject.class);
-    Array<RectangleMapObject> colliderObjects = objectLayer.getObjects().getByType(RectangleMapObject.class);
+    Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects()
+        .getByType(TiledMapTileMapObject.class);
+    Array<RectangleMapObject> colliderObjects = objectLayer.getObjects()
+        .getByType(RectangleMapObject.class);
     HashMap<Integer, StationCollider> colliders = new HashMap<>();
 
     for (RectangleMapObject colliderObject : new Array.ArrayIterator<>(colliderObjects)) {
@@ -94,8 +98,8 @@ public class GameScreen implements Screen {
               alignment, Ingredient.fromString(ingredients));
           break;
         case "choppingStation":
-          station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController, alignment,
-              Ingredient.arrayFromString(ingredients));
+          station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
+              alignment, Ingredient.arrayFromString(ingredients));
           break;
         default:
           station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);

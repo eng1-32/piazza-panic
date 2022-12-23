@@ -11,12 +11,13 @@ import java.util.List;
 
 
 public class CookingStation extends Station {
+
   protected Ingredient[] validIngredients;
   protected Ingredient currentIngredient;
   protected long timeCooked;
 
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
-                        StationActionButtons.ActionAlignment alignment, Ingredient[] ingredients) {
+      StationActionButtons.ActionAlignment alignment, Ingredient[] ingredients) {
     super(id, image, uiController, alignment);
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }
@@ -71,7 +72,9 @@ public class CookingStation extends Station {
   @Override
   public List<StationAction.ActionType> getActionTypes() {
     LinkedList<StationAction.ActionType> actionTypes = new LinkedList<>();
-    if (nearbyChef == null) return actionTypes;
+    if (nearbyChef == null) {
+      return actionTypes;
+    }
     if (currentIngredient == null) {
       actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
     } else {
@@ -85,6 +88,7 @@ public class CookingStation extends Station {
   public void doStationAction(StationAction.ActionType action) {
     switch (action) {
       case COOK_ACTION:
+        // TODO: implement
         break;
       case PLACE_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
@@ -92,7 +96,8 @@ public class CookingStation extends Station {
         }
         break;
       case GRAB_INGREDIENT:
-        if (this.nearbyChef != null && nearbyChef.canGrabIngredient() && currentIngredient != null) {
+        if (this.nearbyChef != null && nearbyChef.canGrabIngredient()
+            && currentIngredient != null) {
           nearbyChef.grabIngredient(currentIngredient);
           currentIngredient = null;
         }
