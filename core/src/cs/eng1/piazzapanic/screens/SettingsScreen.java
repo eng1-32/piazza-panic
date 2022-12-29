@@ -3,6 +3,7 @@ package cs.eng1.piazzapanic.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -30,7 +31,7 @@ public class SettingsScreen implements Screen {
 
     public SettingsScreen(PiazzaPanicGame game){
         this.game = game;
-        this.stage = new Stage(new ScreenViewport());
+        this.stage = new Stage(new ExtendViewport(1280, 720)); // temporary default screen size
         this.table = new Table();
 
     }
@@ -46,12 +47,18 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(1f,1f,1f,1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        stage.act();
+        stage.draw();
+
 
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height);
     }
 
     @Override
@@ -75,7 +82,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void initButtons(){
-        backButton = PiazzaPanicGame.getButtonManager().createTextButton("Back", ButtonManager.ButtonColour.GREY);
+        backButton = game.getButtonManager().createTextButton("Back", ButtonManager.ButtonColour.GREY);
         stage.addActor(backButton);
         table.add(backButton).expandX();
         backButton.addListener(new ClickListener() {
@@ -85,7 +92,7 @@ public class SettingsScreen implements Screen {
             }
         });
 
-        saveButton = PiazzaPanicGame.getButtonManager().createTextButton("Back", ButtonManager.ButtonColour.GREY);
+        saveButton = game.getButtonManager().createTextButton("Save", ButtonManager.ButtonColour.GREY);
         // TO DO Add functionality to save button if needed
         stage.addActor(saveButton);
         table.add(saveButton);
