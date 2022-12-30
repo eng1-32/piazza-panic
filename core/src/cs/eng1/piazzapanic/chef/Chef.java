@@ -14,6 +14,8 @@ import cs.eng1.piazzapanic.stations.Station;
 public class Chef extends Actor {
 
   private final Texture image;
+  private final Vector2 imageBounds;
+  private float imageRotation = 0f;
   private final ChefManager chefManager;
   private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
 
@@ -23,15 +25,18 @@ public class Chef extends Actor {
   private boolean inputEnabled = true;
 
   //interactions between chef and stations are implemented
-  public Chef(Texture image, ChefManager chefManager) {
+  public Chef(Texture image, Vector2 imageBounds, ChefManager chefManager) {
     this.image = image;
+    this.imageBounds = imageBounds;
     this.chefManager = chefManager;
     inputVector = new Vector2();
   }
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    batch.draw(image, getX(), getY(), getWidth(), getHeight());
+//    batch.draw(image, getX(), getY(), getWidth(), getHeight());
+    batch.draw(image, getX(), getY(), getWidth() / 2f, getHeight() / 2f, imageBounds.x, imageBounds.y,
+        1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false, false);
   }
 
   @Override
@@ -68,6 +73,9 @@ public class Chef extends Actor {
       x -= 1f;
     }
     setInputVector(x, y);
+    if (inputVector.len() > 0.01f) {
+      imageRotation = inputVector.angleDeg(Vector2.X);
+    }
   }
 
   /**

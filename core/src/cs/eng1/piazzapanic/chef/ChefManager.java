@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,8 +30,9 @@ public class ChefManager {
     for (int i = 0; i < chefSprites.length; i++) {
       String sprite = chefSprites[i];
       Texture chefTexture = new Texture(Gdx.files.internal(sprite));
-      Chef chef = new Chef(chefTexture, this);
-      chef.setBounds(2 + 2 * i, 3, chefTexture.getWidth() * chefScale,
+      Chef chef = new Chef(chefTexture, new Vector2(chefTexture.getWidth() * chefScale,
+          chefTexture.getHeight() * chefScale), this);
+      chef.setBounds(2 + 2 * i, 3, chefTexture.getHeight() * chefScale,
           chefTexture.getHeight() * chefScale);
       chef.setInputEnabled(false);
       chefs.add(chef);
