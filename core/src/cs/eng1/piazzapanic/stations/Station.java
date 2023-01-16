@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Station extends Actor implements Observer<Chef> {
+
   protected final int id;
   protected final StationUIController uiController;
   protected final StationActionButtons.ActionAlignment actionAlignment;
@@ -25,7 +26,8 @@ public class Station extends Actor implements Observer<Chef> {
   protected Subject<Chef> chefSubject = null;
   protected Chef nearbyChef = null;
 
-  public Station(int id, TextureRegion image, StationUIController uiController, StationActionButtons.ActionAlignment alignment) {
+  public Station(int id, TextureRegion image, StationUIController uiController,
+      StationActionButtons.ActionAlignment alignment) {
     this.id = id;
     stationImage = image; // Texture of the object
     actionAlignment = alignment;
@@ -57,11 +59,10 @@ public class Station extends Actor implements Observer<Chef> {
 
   @Override
   public void update(Chef chef) {
-    // TODO: display possible actions on UI when chef is in range
-    if (chef != null) {
+    if (chef != null && this.nearbyChef != chef) {
       this.nearbyChef = chef;
       uiController.showActions(this, getActionTypes());
-    } else {
+    } else if (chef == null && this.nearbyChef != null) {
       this.nearbyChef = null;
       uiController.hideActions(this);
     }

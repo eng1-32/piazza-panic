@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class StationUIController {
+
   private final Stage uiStage;
   private final HashMap<Integer, StationActionButtons> stationActionButtons;
 
