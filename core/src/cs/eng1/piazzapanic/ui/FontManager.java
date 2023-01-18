@@ -14,7 +14,7 @@ public class FontManager implements Disposable {
   private final BitmapFont labelFont;
 
   public FontManager() {
-    fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kenney Bold.ttf"));
+    fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/MontserratMedium.ttf"));
 
     FreeTypeFontParameter titleFontParameters = new FreeTypeFontParameter();
     titleFontParameters.size = 32;
@@ -25,7 +25,7 @@ public class FontManager implements Disposable {
     headerFont = fontGenerator.generateFont(headerFontParameters);
 
     FreeTypeFontParameter labelFontParameters = new FreeTypeFontParameter();
-    labelFontParameters.size = 10;
+    labelFontParameters.size = 12;
     labelFont = fontGenerator.generateFont(labelFontParameters);
   }
 
