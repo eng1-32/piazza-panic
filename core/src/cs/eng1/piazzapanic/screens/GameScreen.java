@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
 
         ScreenViewport uiViewport = new ScreenViewport();
         this.uiStage = new Stage(uiViewport);
-        this.stationUIController = new StationUIController(uiStage);
+        this.stationUIController = new StationUIController(uiStage, game);
 
         // Initialise tilemap
         this.tileMapRenderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);

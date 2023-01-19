@@ -25,9 +25,10 @@ public class HomeScreen implements Screen {
         uiStage.addActor(table);
 
         Label welcomeLabel = new Label("Welcome to Piazza Panic!",
-                new Label.LabelStyle(PiazzaPanicGame.getFontManager().getTitleFont(), null));
+            new Label.LabelStyle(game.getFontManager().getTitleFont(), null));
 
-        TextButton startButton = PiazzaPanicGame.getButtonManager().createTextButton("Start", ButtonManager.ButtonColour.BLUE);
+        TextButton startButton = game.getButtonManager()
+            .createTextButton("Start", ButtonManager.ButtonColour.BLUE);
         startButton.sizeBy(3f);
         startButton.addListener(new ClickListener() {
             @Override
@@ -36,12 +37,13 @@ public class HomeScreen implements Screen {
             }
         });
 
-        TextButton quitButton = PiazzaPanicGame.getButtonManager().createTextButton("Exit to Desktop", ButtonManager.ButtonColour.RED);
+        TextButton quitButton = game.getButtonManager()
+            .createTextButton("Exit to Desktop", ButtonManager.ButtonColour.RED);
         quitButton.sizeBy(3f);
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.quit();
+                Gdx.app.exit();
             }
         });
 

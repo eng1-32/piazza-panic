@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import cs.eng1.piazzapanic.screens.GameScreen;
 import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.ui.ButtonManager;
@@ -8,20 +9,26 @@ import cs.eng1.piazzapanic.ui.FontManager;
 
 public class PiazzaPanicGame extends Game {
 
-    private static FontManager fontManager;
-    private static ButtonManager buttonManager;
+    private FontManager fontManager;
+    private ButtonManager buttonManager;
     private GameScreen gameScreen;
     private HomeScreen homeScreen;
 
     @Override
     public void create() {
         fontManager = new FontManager();
-        buttonManager = new ButtonManager();
+        buttonManager = new ButtonManager(fontManager);
         loadHomeScreen();
     }
 
     @Override
     public void dispose() {
+        if (gameScreen != null) {
+            gameScreen.dispose();
+        }
+        if (homeScreen != null) {
+            homeScreen.dispose();
+        }
         fontManager.dispose();
         buttonManager.dispose();
     }
@@ -40,21 +47,11 @@ public class PiazzaPanicGame extends Game {
         setScreen(gameScreen);
     }
 
-    public void quit() {
-        if (gameScreen != null) {
-            gameScreen.dispose();
-        }
-        if (homeScreen != null) {
-            homeScreen.dispose();
-        }
-        dispose();
-    }
-
-    public static FontManager getFontManager() {
+    public FontManager getFontManager() {
         return fontManager;
     }
 
-    public static ButtonManager getButtonManager() {
+    public ButtonManager getButtonManager() {
         return buttonManager;
     }
 

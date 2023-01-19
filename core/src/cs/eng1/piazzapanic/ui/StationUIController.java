@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.stations.Station;
 import cs.eng1.piazzapanic.stations.StationAction;
 
@@ -10,15 +11,17 @@ import java.util.List;
 public class StationUIController {
 
   private final Stage uiStage;
+  private final PiazzaPanicGame game;
   private final HashMap<Integer, StationActionButtons> stationActionButtons;
 
-  public StationUIController(Stage uiStage) {
+  public StationUIController(Stage uiStage, PiazzaPanicGame game) {
     this.uiStage = uiStage;
+    this.game = game;
     stationActionButtons = new HashMap<>();
   }
 
   public void addStation(Station station) {
-    StationActionButtons buttons = new StationActionButtons(station);
+    StationActionButtons buttons = new StationActionButtons(station, game);
     buttons.setActionAlignment(station.getActionAlignment());
     uiStage.addActor(buttons);
     stationActionButtons.put(station.getId(), buttons);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 
+import java.awt.Font;
 import java.util.HashMap;
 
 public class ButtonManager implements Disposable {
@@ -22,19 +23,19 @@ public class ButtonManager implements Disposable {
     HashMap<ButtonColour, TextButton.TextButtonStyle> textButtonStyles;
     HashMap<ButtonColour, Button.ButtonStyle> imageButtonBaseStyles;
 
-    public ButtonManager() {
-        textButtonStyles = new HashMap<>();
-        imageButtonBaseStyles = new HashMap<>();
-        for (ButtonColour buttonColour : ButtonColour.values()) {
-            String basePath = "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/";
+  public ButtonManager(FontManager fontManager) {
+    textButtonStyles = new HashMap<>();
+    imageButtonBaseStyles = new HashMap<>();
+    for (ButtonColour buttonColour : ButtonColour.values()) {
+      String basePath = "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/";
 
-            TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(
-                    new TextureRegionDrawable(new Texture(Gdx.files.internal(
-                            basePath + buttonColour.name().toLowerCase() + "_button_flat_up.png"))),
-                    new TextureRegionDrawable(new Texture(Gdx.files.internal(
-                            basePath + buttonColour.name().toLowerCase() + "_button_flat_down.png"))),
-                    null,
-                    PiazzaPanicGame.getFontManager().getLabelFont());
+      TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(
+          new TextureRegionDrawable(new Texture(Gdx.files.internal(
+              basePath + buttonColour.name().toLowerCase() + "_button_flat_up.png"))),
+          new TextureRegionDrawable(new Texture(Gdx.files.internal(
+              basePath + buttonColour.name().toLowerCase() + "_button_flat_down.png"))),
+          null,
+          fontManager.getLabelFont());
             if (buttonColour == ButtonColour.GREY || buttonColour == ButtonColour.YELLOW) {
                 textButtonStyle.fontColor = Color.BLACK;
             }

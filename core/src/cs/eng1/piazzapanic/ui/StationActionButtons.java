@@ -25,9 +25,12 @@ public class StationActionButtons extends Table {
   }
 
   Station station;
+  PiazzaPanicGame game;
 
-  public StationActionButtons(final Station station) {
+
+  public StationActionButtons(final Station station, final PiazzaPanicGame game) {
     this.station = station;
+    this.game = game;
     setVisible(false);
     center();
     bottom();
@@ -37,7 +40,7 @@ public class StationActionButtons extends Table {
     clearChildren();
     for (final StationAction.ActionType action : actions) {
       String actionDescription = StationAction.getActionDescription(action);
-      TextButton actionButton = PiazzaPanicGame.getButtonManager()
+      TextButton actionButton = game.getButtonManager()
           .createTextButton(actionDescription, ButtonManager.ButtonColour.BLUE);
       actionButton.addListener(new ClickListener() {
         @Override
