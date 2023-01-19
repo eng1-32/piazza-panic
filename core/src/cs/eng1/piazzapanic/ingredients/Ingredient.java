@@ -2,6 +2,7 @@ package cs.eng1.piazzapanic.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import com.badlogic.gdx.utils.Disposable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,12 @@ public class Ingredient {
     possibleActions = new LinkedList<>();
   }
 
+  /**
+   * Initialize an Ingredient based on a string name
+   *
+   * @param ingredientName the name of the ingredient which can be defined from Tiled
+   * @return the Ingredient of the type defined by the input
+   */
   public static Ingredient fromString(String ingredientName) {
     switch (ingredientName) {
       case "patty":
@@ -33,6 +40,13 @@ public class Ingredient {
     }
   }
 
+  /**
+   * Initialize an array of ingredients based on the input string.
+   *
+   * @param csvIngredientNames A string containing a list of ingredient names seperated by commas
+   *                           with no whitespace as defined in Tiled
+   * @return An array of Ingredient based on the input string
+   */
   public static Ingredient[] arrayFromString(String csvIngredientNames) {
     String[] ingredientNames = csvIngredientNames.split(",");
     Ingredient[] ingredients = new Ingredient[ingredientNames.length];

@@ -18,6 +18,7 @@ public class HomeScreen implements Screen {
   private final Stage uiStage;
 
   public HomeScreen(final PiazzaPanicGame game) {
+    // Initialize the root UI stage and table
     ScreenViewport uiViewport = new ScreenViewport();
     uiStage = new Stage(uiViewport);
     Table table = new Table();
@@ -27,6 +28,7 @@ public class HomeScreen implements Screen {
     Label welcomeLabel = new Label("Welcome to Piazza Panic!",
         new Label.LabelStyle(game.getFontManager().getTitleFont(), null));
 
+    // Initialize buttons and callbacks
     TextButton startButton = game.getButtonManager()
         .createTextButton("Start", ButtonManager.ButtonColour.BLUE);
     startButton.sizeBy(3f);
@@ -47,6 +49,7 @@ public class HomeScreen implements Screen {
       }
     });
 
+    // Add UI elements to the table and position them
     table.add(welcomeLabel).padBottom(100f);
     table.row();
     table.add(startButton).padBottom(50f);
@@ -61,12 +64,11 @@ public class HomeScreen implements Screen {
 
   @Override
   public void render(float delta) {
-    // Initialise screen
+    // Initialize screen
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     uiStage.getCamera().update();
 
     // Render stage
-    uiStage.setDebugAll(true); // TODO: remove after testing
     uiStage.act(delta);
     uiStage.draw();
   }

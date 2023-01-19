@@ -26,6 +26,11 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.HashMap;
 
+/**
+ * The screen which can be used to load the tilemap and keep track of everything happening in the
+ * game. It does all the initialization and then lets each actor do its actions based on the current
+ * frame.
+ */
 public class GameScreen implements Screen {
 
   private final Stage stage;
@@ -40,7 +45,7 @@ public class GameScreen implements Screen {
     int sizeY = map.getProperties().get("height", Integer.class);
     float tileUnitSize = 1 / (float) map.getProperties().get("tilewidth", Integer.class);
 
-    // Initialise stage and camera
+    // Initialize stage and camera
     OrthographicCamera camera = new OrthographicCamera();
     ExtendViewport viewport = new ExtendViewport(sizeX, sizeY, camera); // Number of tiles
     this.stage = new Stage(viewport);
@@ -49,7 +54,7 @@ public class GameScreen implements Screen {
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage, game);
 
-    // Initialise tilemap
+    // Initialize tilemap
     this.tileMapRenderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
     MapLayer objectLayer = map.getLayers().get("Stations");
     TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get("Foreground");
@@ -60,6 +65,12 @@ public class GameScreen implements Screen {
     chefManager.addChefsToStage(stage);
   }
 
+  /**
+   * @param tileUnitSize The ratio of world units over the pixel width of a single tile/station
+   * @param objectLayer  The layer on the TMX tilemap which contains all the information about the
+   *                     stations and station colliders including position, bounds and station
+   *                     capabilities.
+   */
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
     Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects()
         .getByType(TiledMapTileMapObject.class);
@@ -126,17 +137,16 @@ public class GameScreen implements Screen {
 
   @Override
   public void render(float delta) {
-    // Initialise screen
+    // Initialize screen
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     stage.getCamera().update();
+    uiStage.getCamera().update();
 
     // Render background
     tileMapRenderer.setView((OrthographicCamera) stage.getCamera());
     tileMapRenderer.render();
 
     // Render stage
-    stage.setDebugAll(true); // TODO: remove after testing
-//    uiStage.setDebugAll(true);
     stage.act(delta);
     uiStage.act(delta);
 
@@ -162,7 +172,7 @@ public class GameScreen implements Screen {
 
   @Override
   public void hide() {
-    System.out.println("Hide game screen");
+
   }
 
   @Override
@@ -170,6 +180,5 @@ public class GameScreen implements Screen {
     stage.dispose();
     uiStage.dispose();
     tileMapRenderer.dispose();
-    System.out.println("Dispose game screen");
   }
 }

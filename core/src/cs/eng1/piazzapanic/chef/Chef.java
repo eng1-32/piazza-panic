@@ -11,8 +11,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
+/**
+ * The Chef class is an actor representing a chef in the kitchen. It can pick up and put down
+ * ingredients and interact with stations.
+ */
 public class Chef extends Actor {
 
+
+  /**
+   * image, imageBounds and imageRotation are all used to display the chef to the user and show the
+   * user where the chef is and what direction it is moving without changing any collision details.
+   */
   private final Texture image;
   private final Vector2 imageBounds;
   private float imageRotation = 0f;
@@ -24,7 +33,13 @@ public class Chef extends Actor {
   private final float collisionSkin = 0.01f;
   private boolean inputEnabled = true;
 
-  //interactions between chef and stations are implemented
+  /**
+   * @param image       the texture to display to the user
+   * @param imageBounds the bounds of the texture independent of the chef's own bounds to use for
+   *                    drawing the image to scale.
+   * @param chefManager the controller from which we can get information about all of the chefs and
+   *                    their surrounding environment
+   */
   public Chef(Texture image, Vector2 imageBounds, ChefManager chefManager) {
     this.image = image;
     this.imageBounds = imageBounds;

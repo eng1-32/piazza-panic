@@ -10,6 +10,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 
+/**
+ * It takes a TrueTypeFont (ttf) and converts it to all the necessary BitmapFonts that are required
+ * for the UI elements.
+ */
 public class FontManager implements Disposable {
 
   private final FreeTypeFontGenerator fontGenerator;

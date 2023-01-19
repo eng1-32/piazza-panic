@@ -39,13 +39,22 @@ public class Station extends Actor implements Observer<Chef> {
     batch.draw(stationImage, getX(), getY(), getWidth(), getHeight());
   }
 
+  /**
+   * Draw the outline of the shape of the station as a rectangle and draw a blue line from the
+   * centre of this station (which is an Observer) to the centre of the stationCollider that it is
+   * linked to (the Subject that this is registered to).
+   *
+   * @param shapes The renderer to use to draw debugging information
+   */
   @Override
   public void drawDebug(ShapeRenderer shapes) {
     Color oldColor = shapes.getColor();
 
+    // Draw bounds of this station
     shapes.setColor(Color.RED);
     shapes.rect(getX(), getY(), getWidth(), getHeight());
 
+    // Draw line to linked station collider
     if (chefSubject != null && chefSubject instanceof Actor) {
       Actor collider = (Actor) chefSubject;
       Vector2 start = new Vector2(getX() + getWidth() / 2f, getY() + getHeight() / 2f);
@@ -54,6 +63,8 @@ public class Station extends Actor implements Observer<Chef> {
       shapes.setColor(Color.BLUE);
       shapes.line(start, end);
     }
+
+    // Reset colour
     shapes.setColor(oldColor);
   }
 
@@ -78,13 +89,25 @@ public class Station extends Actor implements Observer<Chef> {
     return this.chefSubject;
   }
 
+  /**
+   * @return the list of possible actions that this station based on the current state
+   */
   public List<StationAction.ActionType> getActionTypes() {
     return new LinkedList<>();
   }
 
+  /**
+   * Given an action, the station should attempt to do that action based on the chef that is nearby
+   * or what ingredient(s) are currently on the station.
+   *
+   * @param action the action that needs to be done by this station if it can.
+   */
   public void doStationAction(StationAction.ActionType action) {
   }
 
+  /**
+   * @return the direction in which the action buttons should be displayed.
+   */
   public StationActionButtons.ActionAlignment getActionAlignment() {
     return actionAlignment;
   }
