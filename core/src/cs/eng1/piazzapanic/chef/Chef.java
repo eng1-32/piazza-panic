@@ -35,7 +35,8 @@ public class Chef extends Actor {
   @Override
   public void draw(Batch batch, float parentAlpha) {
 //    batch.draw(image, getX(), getY(), getWidth(), getHeight());
-    batch.draw(image, getX(), getY(), getWidth() / 2f, getHeight() / 2f, imageBounds.x, imageBounds.y,
+    batch.draw(image, getX(), getY(), getWidth() / 2f, getHeight() / 2f, imageBounds.x,
+        imageBounds.y,
         1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false, false);
   }
 
