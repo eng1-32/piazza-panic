@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -22,6 +23,7 @@ import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationActionButtons;
 import cs.eng1.piazzapanic.ui.StationUIController;
+import cs.eng1.piazzapanic.ui.UiOverlay;
 
 import java.util.HashMap;
 
@@ -32,6 +34,7 @@ public class GameScreen implements Screen {
   private final ChefManager chefManager;
   private final OrthogonalTiledMapRenderer renderer;
   private final StationUIController stationUIController;
+  private final UiOverlay uiOverlay;
 
   public GameScreen() {
     TiledMap map = new TmxMapLoader().load("big-map.tmx");
@@ -57,6 +60,7 @@ public class GameScreen implements Screen {
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
+    this.uiOverlay = new UiOverlay(uiStage);
   }
 
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
@@ -137,6 +141,7 @@ public class GameScreen implements Screen {
     stage.setDebugAll(true); // TODO: remove after testing
 //    uiStage.setDebugAll(true);
     stage.act(delta);
+    uiOverlay.updateChefUI(chefManager);
     uiStage.act();
 
     stage.draw();

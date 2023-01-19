@@ -228,6 +228,8 @@ public class Chef extends Actor {
     return ingredientStack.pop();
   }
 
+  public FixedStack<Ingredient> getIngredientStack() {return ingredientStack;}
+
   /**
    * Sets the input vector based on x and y, but ensuring that the vector is never greater than a
    * length of 1

@@ -78,4 +78,8 @@ public class ChefManager {
       currentChef.setInputEnabled(true);
     }
   }
+
+  public Chef getCurrentChef() {
+    return currentChef;
+  }
 }
