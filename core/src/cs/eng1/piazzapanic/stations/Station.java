@@ -21,7 +21,8 @@ public class Station extends Actor implements Observer<Chef> {
   protected final StationUIController uiController;
   protected final StationActionButtons.ActionAlignment actionAlignment;
   protected TextureRegion stationImage;
-  protected Boolean inUse = false;
+
+  protected  boolean inUse = false;
 
   protected Subject<Chef> chefSubject = null;
   protected Chef nearbyChef = null;
