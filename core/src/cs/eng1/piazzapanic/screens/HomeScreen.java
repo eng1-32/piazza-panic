@@ -25,6 +25,9 @@ public class HomeScreen implements Screen {
     table.setFillParent(true);
     uiStage.addActor(table);
 
+    final TutorialOverlay overlay = game.getTutorialOverlay();
+    overlay.addToStage(uiStage);
+
     Label welcomeLabel = new Label("Welcome to Piazza Panic!",
         new Label.LabelStyle(game.getFontManager().getTitleFont(), null));
 
@@ -36,6 +39,16 @@ public class HomeScreen implements Screen {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         game.loadGameScreen();
+      }
+    });
+
+    TextButton tutorialButton = game.getButtonManager()
+        .createTextButton("Tutorial", ButtonManager.ButtonColour.BLUE);
+    tutorialButton.sizeBy(3f);
+    tutorialButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        overlay.show();
       }
     });
 
@@ -52,7 +65,9 @@ public class HomeScreen implements Screen {
     // Add UI elements to the table and position them
     table.add(welcomeLabel).padBottom(100f);
     table.row();
-    table.add(startButton).padBottom(50f);
+    table.add(startButton).padBottom(20f);
+    table.row();
+    table.add(tutorialButton).padBottom(20f);
     table.row();
     table.add(quitButton);
   }
