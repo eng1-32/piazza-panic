@@ -6,6 +6,7 @@ import cs.eng1.piazzapanic.ui.ButtonManager;
 import cs.eng1.piazzapanic.ui.FontManager;
 
 public class PiazzaPanicGame extends Game {
+
   private static FontManager fontManager;
   private static ButtonManager buttonManager;
 
