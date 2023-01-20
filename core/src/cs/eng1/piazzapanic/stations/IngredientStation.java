@@ -37,6 +37,7 @@ public class IngredientStation extends Station {
     if (action == StationAction.ActionType.GRAB_INGREDIENT) {
       if (this.nearbyChef != null && nearbyChef.canGrabIngredient()) {
         nearbyChef.grabIngredient(Ingredient.fromString(ingredientDispensed.getType()));
+        System.out.println(nearbyChef.getStack());
       }
     }
   }

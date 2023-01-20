@@ -13,7 +13,7 @@ public class FixedStack<T> extends Stack<T> {
 
   @Override
   public T push(T item) {
-    if (hasSpace()) {
+    if (!hasSpace()) {
       return null;
     }
     return super.push(item);

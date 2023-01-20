@@ -10,6 +10,8 @@ public class Ingredient {
   private final String type;
   private Texture texture;
   protected List<IngredientAction> possibleActions;
+  protected boolean isCooked = false;
+  protected  boolean isChopped = false;
 
   public Ingredient(String type, Texture texture) {
     // TODO: specify textures in subclasses as well as possible actions
@@ -52,5 +54,21 @@ public class Ingredient {
 
   public void setTexture(Texture texture) {
     this.texture = texture;
+  }
+
+  public void setCooked(boolean value){
+    isCooked = value;
+  }
+
+  public boolean getCooked(){
+    return isCooked;
+  }
+
+  public void setChopped(boolean value){
+    isChopped = value;
+  }
+
+  public boolean getChopped(){
+    return isChopped;
   }
 }
