@@ -21,6 +21,7 @@ public class Chef extends Actor {
   private final float speed = 3f;
   private final float collisionSkin = 0.01f;
   private boolean inputEnabled = true;
+  private boolean paused = false;
 
   //interactions between chef and stations are implemented
   public Chef(Texture image, ChefManager chefManager) {
@@ -50,7 +51,7 @@ public class Chef extends Actor {
   private void getInput() {
     inputVector.x = 0;
     inputVector.y = 0;
-    if (!isInputEnabled()) {
+    if (!isInputEnabled() || isPaused() ) {
       return;
     }
     float x = 0f;
@@ -220,6 +221,8 @@ public class Chef extends Actor {
     return ingredientStack.pop();
   }
 
+  public FixedStack<Ingredient> getStack(){return ingredientStack;}
+
   /**
    * Sets the input vector based on x and y, but ensuring that the vector is never greater than a
    * length of 1
@@ -241,5 +244,13 @@ public class Chef extends Actor {
 
   public void setInputEnabled(boolean inputEnabled) {
     this.inputEnabled = inputEnabled;
+  }
+
+  public boolean isPaused(){
+    return paused;
+  }
+
+  public void setPaused(boolean pauseValue){
+    this.paused = pauseValue;
   }
 }
