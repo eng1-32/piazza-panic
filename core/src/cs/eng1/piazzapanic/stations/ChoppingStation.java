@@ -3,7 +3,7 @@ package cs.eng1.piazzapanic.stations;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
-import cs.eng1.piazzapanic.ui.StationActionButtons;
+import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ public class ChoppingStation extends Station {
   protected float waitTime = 5;
 
   public ChoppingStation(int id, TextureRegion image, StationUIController uiController,
-      StationActionButtons.ActionAlignment alignment, Ingredient[] ingredients) {
+      StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
     super(id, image, uiController, alignment);
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }

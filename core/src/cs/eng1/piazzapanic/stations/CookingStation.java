@@ -4,10 +4,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.ingredients.Patty;
-import cs.eng1.piazzapanic.ui.StationActionButtons;
+import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,9 +17,10 @@ public class CookingStation extends Station {
   protected Ingredient currentIngredient;
   protected long timeCooked;
   protected Patty statusPatty = new Patty();
-//TODO: Create doc strings for functions
+
+  //TODO: Create doc strings for functions
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
-                        StationActionButtons.ActionAlignment alignment, Ingredient[] ingredients) {
+      StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
     super(id, image, uiController, alignment);
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }
