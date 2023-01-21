@@ -35,18 +35,18 @@ public class TutorialOverlay {
         new TextureRegion(new Texture(bgPixmap)));
     table.setBackground(textureRegionDrawableBg);
 
+    int labelWidth = Math.max((int) (0.9f * Gdx.graphics.getWidth()), 1000);
+
     LabelStyle labelStyle = new LabelStyle(game.getFontManager().getHeaderFont(), Color.BLACK);
     Label chefMovement = new Label(
         "Left click on a chef to select them. Then use WASD or the arrow keys to move around.",
         labelStyle);
     chefMovement.setWrap(true);
-    chefMovement.setWidth(1000f);
 
     Label stationUsage = new Label(
         "Move towards a station to get possible actions to appear as buttons including placing ingredients, picking up ingredients, and dealing with the ingredients.",
         labelStyle);
     stationUsage.setWrap(true);
-    stationUsage.setWidth(1000f);
 
     TextButton backButton = game.getButtonManager()
         .createTextButton("Done", ButtonManager.ButtonColour.GREY);
@@ -57,9 +57,10 @@ public class TutorialOverlay {
       }
     });
 
-    table.add(chefMovement).width(1000f).padBottom(20f);
+    table.pad(100f);
+    table.add(chefMovement).fillX().expandX().pad(20f).padTop(0f);
     table.row();
-    table.add(stationUsage).width(1000f).padBottom(20f);
+    table.add(stationUsage).fillX().expandX().pad(20f).padTop(0f);
     table.row();
     table.add(backButton).padTop(20f);
   }
