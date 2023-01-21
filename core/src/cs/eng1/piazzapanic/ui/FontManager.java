@@ -1,11 +1,19 @@
 package cs.eng1.piazzapanic.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.utils.Disposable;
+import cs.eng1.piazzapanic.PiazzaPanicGame;
 
+/**
+ * It takes a TrueTypeFont (ttf) and converts it to all the necessary BitmapFonts that are required
+ * for the UI elements.
+ */
 public class FontManager implements Disposable {
 
   private final FreeTypeFontGenerator fontGenerator;
@@ -14,7 +22,7 @@ public class FontManager implements Disposable {
   private final BitmapFont labelFont;
 
   public FontManager() {
-    fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kenney Bold.ttf"));
+    fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/MontserratMedium.ttf"));
 
     FreeTypeFontParameter titleFontParameters = new FreeTypeFontParameter();
     titleFontParameters.size = 32;
@@ -25,7 +33,7 @@ public class FontManager implements Disposable {
     headerFont = fontGenerator.generateFont(headerFontParameters);
 
     FreeTypeFontParameter labelFontParameters = new FreeTypeFontParameter();
-    labelFontParameters.size = 10;
+    labelFontParameters.size = 12;
     labelFont = fontGenerator.generateFont(labelFontParameters);
   }
 

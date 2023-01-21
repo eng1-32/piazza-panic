@@ -25,19 +25,28 @@ public class StationActionButtons extends Table {
   }
 
   Station station;
+  PiazzaPanicGame game;
 
-  public StationActionButtons(final Station station) {
+
+  public StationActionButtons(final Station station, final PiazzaPanicGame game) {
     this.station = station;
+    this.game = game;
     setVisible(false);
     center();
     bottom();
   }
 
+  /**
+   * Take a list of actions, clear the current visible buttons and replace them with one for every
+   * possible action and generate callbacks to the station.
+   *
+   * @param actions The list of possible station actions to display.
+   */
   public void showActions(List<StationAction.ActionType> actions) {
     clearChildren();
     for (final StationAction.ActionType action : actions) {
       String actionDescription = StationAction.getActionDescription(action);
-      TextButton actionButton = PiazzaPanicGame.getButtonManager()
+      TextButton actionButton = game.getButtonManager()
           .createTextButton(actionDescription, ButtonManager.ButtonColour.BLUE);
       actionButton.addListener(new ClickListener() {
         @Override
@@ -82,6 +91,10 @@ public class StationActionButtons extends Table {
     super.draw(batch, parentAlpha);
   }
 
+  /**
+   * Take the set alignment of buttons and position them and this class on the given side of the
+   * station by transforming the station's world position to screen position.
+   */
   private void calculatePositionFromAlignment() {
     Vector3 worldPosition = new Vector3();
     switch (actionAlignment) {
