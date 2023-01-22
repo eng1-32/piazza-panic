@@ -15,7 +15,9 @@ public class CookingStation extends Station {
 
   protected Ingredient[] validIngredients;
   protected Ingredient currentIngredient;
-  protected long timeCooked;
+  protected float timeCooked;
+  protected float totalTimeToCook = 10f;
+  private boolean progressVisible = false;
   protected Patty statusPatty = new Patty();
 
   //TODO: Create doc strings for functions
@@ -25,8 +27,21 @@ public class CookingStation extends Station {
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }
 
+  @Override
+  public void act(float delta) {
+    if (inUse) {
+      timeCooked += delta;
+      uiController.updateProgressValue(this, (timeCooked / totalTimeToCook) * 100f);
+      if (timeCooked >= totalTimeToCook && progressVisible) {
+        uiController.hideProgressBar(this);
+        uiController.showActions(this, getActionTypes());
+        progressVisible = false;
+      }
+    }
+  }
+
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if(!ingredientToCheck.getCooked()){
+    if (!ingredientToCheck.getCooked()) {
       for (Ingredient item : this.validIngredients) {
         if (ingredientToCheck.getType() == item.getType()) {
           return true;
@@ -45,16 +60,17 @@ public class CookingStation extends Station {
     if (currentIngredient == null) {
       actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
     } else {
-      switch(currentIngredient.getType()){
+      switch (currentIngredient.getType()) {
         case "patty":
-          //check to see if 10 seconds has passed to progress the state of the patty.
-          if(TimeUtils.timeSinceMillis(timeCooked) >= 10000 && inUse && !statusPatty.getHalfCooked()){
+          //check to see if total number of seconds has passed to progress the state of the patty.
+          if (timeCooked >= totalTimeToCook && inUse
+              && !statusPatty.getHalfCooked()) {
             actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-          } else if (TimeUtils.timeSinceMillis(timeCooked) >= 10000 && inUse && statusPatty.getHalfCooked()) {
+          } else if (timeCooked >= totalTimeToCook && inUse && statusPatty.getHalfCooked()) {
             actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
           }
       }
-      if(!inUse){
+      if (!inUse) {
         actionTypes.add(StationAction.ActionType.COOK_ACTION);
       }
     }
@@ -67,28 +83,35 @@ public class CookingStation extends Station {
       case COOK_ACTION:
         //timeCooked is used to track how long the
         //ingredient has been cooking for.
-        timeCooked = TimeUtils.millis();
+        timeCooked = 0;
         inUse = true;
+        uiController.hideActions(this);
+        uiController.showProgressBar(this);
+        progressVisible = true;
         break;
 
       case FLIP_ACTION:
         statusPatty.setHalfCooked();
         currentIngredient = statusPatty;
-        timeCooked = TimeUtils.millis();
+        timeCooked = 0;
+        uiController.hideActions(this);
+        uiController.showProgressBar(this);
+        progressVisible = true;
         break;
 
       case PLACE_INGREDIENT:
-        if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null ) {
-          if(this.isCorrectIngredient(nearbyChef.getStack().peek())){
+        if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
+          if (this.isCorrectIngredient(nearbyChef.getStack().peek())) {
             currentIngredient = nearbyChef.placeIngredient();
           }
           //TODO: Display a warning when an incorrect ingredient is presented
         }
+        uiController.showActions(this, getActionTypes());
         break;
 
       case GRAB_INGREDIENT:
         if (nearbyChef.canGrabIngredient()) {
-          switch (currentIngredient.getType()){
+          switch (currentIngredient.getType()) {
             case "patty":
               statusPatty.setCooked(true);
               currentIngredient = statusPatty;
@@ -98,8 +121,8 @@ public class CookingStation extends Station {
           currentIngredient = null;
           inUse = false;
         }
+        uiController.showActions(this, getActionTypes());
         break;
     }
-    uiController.showActions(this, getActionTypes());
   }
 }

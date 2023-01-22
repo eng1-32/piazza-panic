@@ -18,10 +18,6 @@ public class IngredientStation extends Station {
     ingredientDispensed = ingredient; //What ingredient the station will give to the player.
   }
 
-  public Ingredient dispenseNewIngredient() {
-    return Ingredient.fromString(ingredientDispensed.getType());
-  }
-
   @Override
   public List<StationAction.ActionType> getActionTypes() {
     LinkedList<StationAction.ActionType> actionTypes = new LinkedList<>();

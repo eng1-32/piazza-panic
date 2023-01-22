@@ -23,7 +23,7 @@ public class ChoppingStation extends Station {
   }
 
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if(!ingredientToCheck.getCooked()){
+    if (!ingredientToCheck.getCooked()) {
       for (Ingredient item : this.validIngredients) {
         if (ingredientToCheck.getType() == item.getType()) {
           return true;
@@ -32,6 +32,7 @@ public class ChoppingStation extends Station {
     }
     return false;
   }
+
   @Override
   public List<StationAction.ActionType> getActionTypes() {
     LinkedList<StationAction.ActionType> actionTypes = new LinkedList<>();
@@ -41,7 +42,7 @@ public class ChoppingStation extends Station {
     if (currentIngredient == null) {
       actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
     } else {
-      if(!inUse){
+      if (!inUse) {
         actionTypes.add(StationAction.ActionType.CHOP_ACTION);
       }
       actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
@@ -53,9 +54,9 @@ public class ChoppingStation extends Station {
   @Override
   public void act(float delta) {
     //TODO: add time related things here!
-    if (inUse){
+    if (inUse) {
       waitTime -= delta;
-      if (waitTime <= 0){
+      if (waitTime <= 0) {
         currentIngredient.setChopped(true);
         nearbyChef.setPaused(false);
         waitTime = 5;
@@ -76,7 +77,7 @@ public class ChoppingStation extends Station {
         break;
       case PLACE_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
-          if((this.isCorrectIngredient(nearbyChef.getStack().peek()))){
+          if ((this.isCorrectIngredient(nearbyChef.getStack().peek()))) {
             currentIngredient = nearbyChef.placeIngredient();
           }
         }

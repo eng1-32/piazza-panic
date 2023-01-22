@@ -42,7 +42,7 @@
    <properties>
     <property name="actionAlignment" value="BOTTOM"/>
     <property name="collisionObjectID" type="int" value="16"/>
-    <property name="ingredients" value="tomato"/>
+    <property name="ingredients" value="patty"/>
     <property name="stationType" value="ingredientStation"/>
    </properties>
   </object>

@@ -46,13 +46,13 @@ public class StationActionUI extends Table {
         Gdx.files.internal(
             "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_button_outline_up.png"))), null);
     progressBarStyle.knobBefore = new TextureRegionDrawable(new Texture(Gdx.files.internal(
-        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_sliderLeft.png")));
+        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_button_gradient_up.png")));
     progress = new ProgressBar(0, 100, 0.1f, false, progressBarStyle);
   }
 
   public void showProgressBar() {
     progress.setValue(0);
-    add(progress);
+    add(progress).pad(10f);
     setVisible(true);
   }
 
@@ -95,11 +95,13 @@ public class StationActionUI extends Table {
   public void hideActions() {
     setVisible(false);
 
-    for (Actor child : getChildren()) {
-      child.clearListeners();
-    }
+    boolean hasProgress = getChildren().contains(progress, true);
 
     clearChildren();
+    if (hasProgress) {
+      add(progress).pad(10f);
+      setVisible(true);
+    }
   }
 
   public void setActionAlignment(ActionAlignment actionAlignment) {

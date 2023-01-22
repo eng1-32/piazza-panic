@@ -83,6 +83,23 @@ public class StationUIController {
   }
 
   /**
+   * Update progress bar for a station. If the station is not one that this class knows, then it
+   * will initialize the UI for it and then show the actions.
+   *
+   * @param station The station for which the progress should be updated.
+   * @param value   The value to be shown on the progress bar.
+   */
+  public void updateProgressValue(Station station, float value) {
+    StationActionUI buttons = stationActionUI.get(station.getId());
+    if (buttons == null) {
+      addStation(station);
+      buttons = stationActionUI.get(station.getId());
+    }
+
+    buttons.updateProgress(value);
+  }
+
+  /**
    * Hide any actions that may be visible for a given station.
    *
    * @param station The station for which action should be hidden.
