@@ -21,7 +21,7 @@ import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.ChefManager;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
-import cs.eng1.piazzapanic.ui.StationActionButtons;
+import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.HashMap;
@@ -97,7 +97,7 @@ public class GameScreen implements Screen {
       Station station;
       int id = tileObject.getProperties().get("id", Integer.class);
       String ingredients = tileObject.getProperties().get("ingredients", String.class);
-      StationActionButtons.ActionAlignment alignment = StationActionButtons.ActionAlignment.valueOf(
+      StationActionUI.ActionAlignment alignment = StationActionUI.ActionAlignment.valueOf(
           tileObject.getProperties().get("actionAlignment", "TOP", String.class));
 
       switch (tileObject.getProperties().get("stationType", String.class)) {

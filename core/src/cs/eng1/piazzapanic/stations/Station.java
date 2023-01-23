@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
-import cs.eng1.piazzapanic.ui.StationActionButtons;
+import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
@@ -19,16 +19,16 @@ public class Station extends Actor implements Observer<Chef> {
 
   protected final int id;
   protected final StationUIController uiController;
-  protected final StationActionButtons.ActionAlignment actionAlignment;
+  protected final StationActionUI.ActionAlignment actionAlignment;
   protected TextureRegion stationImage;
 
-  protected  boolean inUse = false;
+  protected boolean inUse = false;
 
   protected Subject<Chef> chefSubject = null;
   protected Chef nearbyChef = null;
 
   public Station(int id, TextureRegion image, StationUIController uiController,
-      StationActionButtons.ActionAlignment alignment) {
+      StationActionUI.ActionAlignment alignment) {
     this.id = id;
     stationImage = image; // Texture of the object
     actionAlignment = alignment;
@@ -109,7 +109,7 @@ public class Station extends Actor implements Observer<Chef> {
   /**
    * @return the direction in which the action buttons should be displayed.
    */
-  public StationActionButtons.ActionAlignment getActionAlignment() {
+  public StationActionUI.ActionAlignment getActionAlignment() {
     return actionAlignment;
   }
 

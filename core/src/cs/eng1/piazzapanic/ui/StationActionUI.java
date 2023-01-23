@@ -1,11 +1,17 @@
 package cs.eng1.piazzapanic.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.stations.Station;
 import cs.eng1.piazzapanic.stations.StationAction;
@@ -13,7 +19,7 @@ import cs.eng1.piazzapanic.stations.StationAction;
 import java.util.List;
 
 
-public class StationActionButtons extends Table {
+public class StationActionUI extends Table {
 
   private ActionAlignment actionAlignment = ActionAlignment.TOP;
 
@@ -24,16 +30,41 @@ public class StationActionButtons extends Table {
     BOTTOM
   }
 
-  Station station;
-  PiazzaPanicGame game;
+  private final Station station;
+  private final PiazzaPanicGame game;
+  private final ProgressBar progress;
 
 
-  public StationActionButtons(final Station station, final PiazzaPanicGame game) {
+  public StationActionUI(final Station station, final PiazzaPanicGame game) {
     this.station = station;
     this.game = game;
     setVisible(false);
     center();
     bottom();
+
+    ProgressBarStyle progressBarStyle = new ProgressBarStyle(new TextureRegionDrawable(new Texture(
+        Gdx.files.internal(
+            "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_button_outline_up.png"))), null);
+    progressBarStyle.knobBefore = new TextureRegionDrawable(new Texture(Gdx.files.internal(
+        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_button_gradient_up.png")));
+    progress = new ProgressBar(0, 100, 0.1f, false, progressBarStyle);
+  }
+
+  public void showProgressBar() {
+    progress.setValue(0);
+    add(progress).pad(10f);
+    setVisible(true);
+  }
+
+  /**
+   * @param percentage A value between 0 and 100 representing the percentage completed
+   */
+  public void updateProgress(float percentage) {
+    progress.setValue(percentage);
+  }
+
+  public void hideProgressBar() {
+    removeActor(progress);
   }
 
   /**
@@ -43,7 +74,7 @@ public class StationActionButtons extends Table {
    * @param actions The list of possible station actions to display.
    */
   public void showActions(List<StationAction.ActionType> actions) {
-    clearChildren();
+    hideActions();
     for (final StationAction.ActionType action : actions) {
       String actionDescription = StationAction.getActionDescription(action);
       TextButton actionButton = game.getButtonManager()
@@ -63,7 +94,14 @@ public class StationActionButtons extends Table {
 
   public void hideActions() {
     setVisible(false);
+
+    boolean hasProgress = getChildren().contains(progress, true);
+
     clearChildren();
+    if (hasProgress) {
+      add(progress).pad(10f);
+      setVisible(true);
+    }
   }
 
   public void setActionAlignment(ActionAlignment actionAlignment) {
