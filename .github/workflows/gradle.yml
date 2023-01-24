@@ -35,5 +35,5 @@ jobs:
     - name: Upload game JAR
       uses: actions/upload-artifact@v3.1.2
       with:
-        name: piazza-panic.jar
+        name: piazza-panic
         path: desktop/build/libs/desktop-1.0.jar
