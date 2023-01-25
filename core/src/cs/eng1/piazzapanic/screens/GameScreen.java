@@ -63,6 +63,7 @@ public class GameScreen implements Screen {
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
+    uiStage.setDebugAll(true);
   }
 
   /**

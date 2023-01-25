@@ -13,30 +13,33 @@ import cs.eng1.piazzapanic.chef.ChefManager;
 public class UiOverlay {
 
     Label ingredientLabel;
-    public UiOverlay(Stage uiStage) {
+    public UiOverlay(Stage uiStage, PiazzaPanicGame game) {
         Table table = new Table();
         table.setFillParent(true);
         uiStage.addActor(table);
 
         TextureRegionDrawable home = new TextureRegionDrawable(new Texture(Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png")));
-        table.add(PiazzaPanicGame.getButtonManager().createImageButton(home, ButtonManager.ButtonColour.BLUE, -1.5f));
+        table.add(game.getButtonManager().createImageButton(home, ButtonManager.ButtonColour.BLUE, -1.5f));
         table.right().top();
 
 
         TextureRegionDrawable burger = new TextureRegionDrawable(new Texture(Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/1x/arrowDown.png")));
-        table.add(PiazzaPanicGame.getButtonManager().createImageButton(burger, ButtonManager.ButtonColour.BLUE, -1.5f));
+        table.add(game.getButtonManager().createImageButton(burger, ButtonManager.ButtonColour.BLUE, -1.5f));
 
 
          this.ingredientLabel = new Label("",
-                new Label.LabelStyle(PiazzaPanicGame.getFontManager().getLabelFont(), null));
+                new Label.LabelStyle(game.getFontManager().getLabelFont(), null));
         table.add(ingredientLabel);
+
+        Timer timer = new Timer(game);
+        table.add(timer);
 
     }
 
     public void updateChefUI(ChefManager chefManager){
         Chef chef = chefManager.getCurrentChef();
         if (chef!=null) {
-            ingredientLabel.setText(chef.getIngredientStack().toString());
+            ingredientLabel.setText(chef.getStack().toString());
         }
         else{
             ingredientLabel.setText("");
