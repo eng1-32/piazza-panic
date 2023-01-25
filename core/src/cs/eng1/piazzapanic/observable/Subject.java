@@ -29,4 +29,6 @@ public interface Subject<T> {
    * @param update The new T to send to every registered observer
    */
   void notifyObservers(T update);
+
+  T getLastNotification();
 }

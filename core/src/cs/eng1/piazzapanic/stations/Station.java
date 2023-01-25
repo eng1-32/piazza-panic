@@ -85,12 +85,26 @@ public class Station extends Actor implements Observer<Chef> {
 
   @Override
   public void update(Chef chef) {
-    if (chef != null && this.nearbyChef != chef) {
+    if (chef != null) {
       this.nearbyChef = chef;
       uiController.showActions(this, getActionTypes());
-    } else if (chef == null && this.nearbyChef != null) {
-      this.nearbyChef = null;
-      uiController.hideActions(this);
+    } else if (this.nearbyChef != null) {
+      Chef remainingChef = null;
+      for (Subject<Chef> chefSubject : chefSubjects) {
+        remainingChef = chefSubject.getLastNotification();
+        if (remainingChef != null) {
+          break;
+        }
+      }
+      if (remainingChef == null) {
+        this.nearbyChef = null;
+        uiController.hideActions(this);
+      } else if (remainingChef != nearbyChef) {
+        this.nearbyChef = remainingChef;
+        uiController.showActions(this, getActionTypes());
+      } else {
+        uiController.showActions(this, getActionTypes());
+      }
     }
   }
 

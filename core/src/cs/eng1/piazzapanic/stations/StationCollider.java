@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class StationCollider extends Actor implements Subject<Chef> {
 
+  private Chef recentChef;
   private final ChefManager chefManager;
   protected List<Observer<Chef>> observers;
 
@@ -70,8 +71,17 @@ public class StationCollider extends Actor implements Subject<Chef> {
 
   @Override
   public void notifyObservers(Chef chef) {
+    if (recentChef == chef) {
+      return;
+    }
+    recentChef = chef;
     for (Observer<Chef> observer : observers) {
       observer.update(chef);
     }
+  }
+
+  @Override
+  public Chef getLastNotification() {
+    return recentChef;
   }
 }
