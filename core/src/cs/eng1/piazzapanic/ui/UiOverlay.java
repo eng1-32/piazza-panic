@@ -33,6 +33,7 @@ public class UiOverlay {
 
         Timer timer = new Timer(game);
         table.add(timer);
+        table.left().top();
 
     }
 

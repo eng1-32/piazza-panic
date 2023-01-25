@@ -23,6 +23,7 @@ import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
+import cs.eng1.piazzapanic.ui.UiOverlay;
 
 import java.util.HashMap;
 
@@ -38,6 +39,7 @@ public class GameScreen implements Screen {
   private final ChefManager chefManager;
   private final OrthogonalTiledMapRenderer tileMapRenderer;
   private final StationUIController stationUIController;
+  private final UiOverlay uiOverlay;
 
   public GameScreen(final PiazzaPanicGame game) {
     TiledMap map = new TmxMapLoader().load("big-map.tmx");
@@ -63,6 +65,7 @@ public class GameScreen implements Screen {
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
+    this.uiOverlay = new UiOverlay(uiStage, game);
     uiStage.setDebugAll(true);
   }
 
