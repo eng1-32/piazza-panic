@@ -45,8 +45,19 @@
             "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 251.5151515151515,
-                "y": 1021.2121212121212
+                "x": 469.69696969696975,
+                "y": 1378.787878787879
+            }
+        },
+        "main-game-map.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 728,
+                "y": 756
             }
         },
         "test-map.tmx": {
@@ -63,18 +74,18 @@
     },
     "last.externalTilesetPath": "/home/alistairf/Documents/eng1/piazza-panic/assets/Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)",
     "last.imagePath": "/home/alistairf/IdeaProjects/piazza-panic/assets/Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet",
-    "map.height": 20,
+    "map.height": 9,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 128,
     "map.tileWidth": 128,
-    "map.width": 30,
+    "map.width": 16,
     "openFiles": [
         "test-map.tmx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml",
         "big-map.tmx"
     ],
     "project": "piazza-panic.tiled-project",
-    "property.type": "ActionAlignment",
+    "property.type": "Station",
     "recentFiles": [
         "test-map.tmx",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (pixel) (620 assets)/Topdown Shooter 2.xml",

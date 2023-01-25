@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="4" nextobjectid="34">
+ <tileset firstgid="1" source="Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml"/>
+ <layer id="1" name="Background" width="16" height="9">
+  <data encoding="csv">
+96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,
+96,96,96,96,96,96,96,3758096483,96,96,96,96,96,96,96,96,
+96,96,96,98,96,96,96,96,96,96,96,98,96,96,96,96,
+96,96,96,96,96,98,96,96,3758096483,2147483748,2147483748,2147483748,96,96,96,96,
+96,96,2147483746,2147483748,96,96,96,96,96,96,96,96,96,2147483746,96,96,
+96,96,96,3758096483,96,100,2147483746,2147483748,2147483748,100,3758096483,96,96,96,96,96,
+96,96,96,96,96,96,96,2147483748,2147483748,1610612835,2147483748,2147483746,96,96,96,96,
+96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,
+96,96,96,96,2147483748,96,96,96,100,2147483748,96,96,96,96,96,96
+</data>
+ </layer>
+ <layer id="2" name="Foreground" width="16" height="9">
+  <data encoding="csv">
+0,3221225794,3221225793,3221225793,3221225793,3221225793,3221225793,3221225793,3221225793,3221225793,3221225793,3221225793,3221225793,3221225793,1610613058,0,
+0,2684354881,0,0,0,0,0,0,0,0,0,0,0,0,1610613057,0,
+0,2684354881,0,0,0,0,0,0,0,0,0,0,0,0,1610613057,0,
+0,2684354881,0,0,0,0,0,0,0,0,0,0,0,0,1610613057,0,
+0,2684354881,0,0,0,0,0,0,0,0,0,0,0,0,1610613057,0,
+0,2684354881,0,0,0,0,0,0,0,0,0,0,0,0,1610613057,0,
+0,2684354881,0,0,0,0,0,0,0,0,0,0,0,0,1610613057,0,
+0,430,431,431,432,0,430,431,431,432,0,430,431,431,432,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="3" name="Stations">
+  <object id="1" gid="511" x="1280" y="1024" width="128" height="128"/>
+  <object id="2" gid="511" x="640" y="1024" width="128" height="128"/>
+  <object id="11" gid="129" x="768" y="384" width="128" height="128"/>
+  <object id="12" gid="129" x="1152" y="384" width="128" height="128"/>
+  <object id="13" gid="129" x="1152" y="640" width="128" height="128"/>
+  <object id="14" gid="129" x="768" y="640" width="128" height="128"/>
+  <object id="15" name="Cooker 1" class="Station" gid="324" x="1920" y="384" width="128" height="128" rotation="-90">
+   <properties>
+    <property name="actionAlignment" propertytype="ActionAlignment" value="TOP"/>
+    <property name="collisionObjectID" type="int" value="22"/>
+    <property name="ingredients" propertytype="Ingredient" value="patty"/>
+    <property name="stationType" propertytype="StationType" value="cookingStation"/>
+   </properties>
+  </object>
+  <object id="16" name="Cooker 2" class="Station" gid="324" x="1920" y="640" width="128" height="128" rotation="-90">
+   <properties>
+    <property name="actionAlignment" propertytype="ActionAlignment" value="BOTTOM"/>
+    <property name="collisionObjectID" type="int" value="24"/>
+    <property name="ingredients" propertytype="Ingredient" value="patty"/>
+    <property name="stationType" propertytype="StationType" value="cookingStation"/>
+   </properties>
+  </object>
+  <object id="17" name="Chopping Board 1" class="Station" gid="267" x="256" y="384" width="128" height="128" rotation="-90">
+   <properties>
+    <property name="actionAlignment" propertytype="ActionAlignment" value="TOP"/>
+    <property name="collisionObjectID" type="int" value="32"/>
+    <property name="ingredients" propertytype="Ingredient" value="lettuce,tomato"/>
+    <property name="stationType" propertytype="StationType" value="choppingStation"/>
+   </properties>
+  </object>
+  <object id="18" name="Chopping Board 2" class="Station" gid="267" x="256" y="640" width="128" height="128" rotation="-90">
+   <properties>
+    <property name="actionAlignment" propertytype="ActionAlignment" value="BOTTOM"/>
+    <property name="collisionObjectID" type="int" value="31"/>
+    <property name="ingredients" propertytype="Ingredient" value="lettuce,tomato"/>
+    <property name="stationType" propertytype="StationType" value="choppingStation"/>
+   </properties>
+  </object>
+  <object id="22" name="Cooker Collider 1" x="1664" y="256" width="128" height="128"/>
+  <object id="24" name="Coocker Collider 2" x="1664" y="512" width="128" height="128"/>
+  <object id="29" x="1280" y="768" width="128" height="128"/>
+  <object id="30" x="640" y="768" width="128" height="128"/>
+  <object id="31" name="Chopping Board Collider 2" x="256" y="512" width="128" height="128"/>
+  <object id="32" name="Chopping Board Collider 1" x="256" y="256" width="128" height="128"/>
+ </objectgroup>
+</map>
