@@ -3,7 +3,8 @@ package cs.eng1.piazzapanic.stations;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
-import cs.eng1.piazzapanic.ui.StationActionButtons;
+import cs.eng1.piazzapanic.ingredients.Patty;
+import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
@@ -14,56 +15,37 @@ public class CookingStation extends Station {
 
   protected Ingredient[] validIngredients;
   protected Ingredient currentIngredient;
-  protected long timeCooked;
+  protected float timeCooked;
+  protected float totalTimeToCook = 10f;
+  private boolean progressVisible = false;
+  protected Patty statusPatty = new Patty();
 
+  //TODO: Create doc strings for functions
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
-      StationActionButtons.ActionAlignment alignment, Ingredient[] ingredients) {
+      StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
     super(id, image, uiController, alignment);
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }
 
-  public void stationInteract() {
-    //TODO: Change if statement to check for a flipped patty or a
-    // uncooked patty once ingredients class is implemented
-    if (this.currentIngredient == currentIngredient) {
-      collectPatty();
-    } else if (this.currentIngredient == currentIngredient) {
-      flipPatty();
-    } else {
-      //cookFood(top ingredient in food stack);
-    }
-  }
-
-  public void cookFood(Ingredient foodItem) {
-    if (this.inUse || !(isCorrectIngredient(foodItem))) {
-      return; //If the station is in use or the wrong ingredient is used
-      //then nothing happens.
-    }
-    this.inUse = true;
-    timeCooked = TimeUtils.millis();
-    currentIngredient = foodItem;
-
-  }
-
-  public void flipPatty() {
-    if (TimeUtils.timeSinceMillis(timeCooked) >= 10) {
-      //ingredientCooking = new Ingredient(flippedPatty);
-    }
-  }
-
-  public void collectPatty() {
-    if (TimeUtils.timeSinceMillis(timeCooked) >= 10) {
-      //ingredientCooking = new Ingredient(flippedPatty);
-      //TODO: Add cooked patty back to chef's ingredient stack
-      this.inUse = false;
-      this.currentIngredient = null;
+  @Override
+  public void act(float delta) {
+    if (inUse) {
+      timeCooked += delta;
+      uiController.updateProgressValue(this, (timeCooked / totalTimeToCook) * 100f);
+      if (timeCooked >= totalTimeToCook && progressVisible) {
+        uiController.hideProgressBar(this);
+        uiController.showActions(this, getActionTypes());
+        progressVisible = false;
+      }
     }
   }
 
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    for (Ingredient item : this.validIngredients) {
-      if (item.getType().equals(ingredientToCheck.getType())) {
-        return true;
+    if (!ingredientToCheck.getCooked()) {
+      for (Ingredient item : this.validIngredients) {
+        if (ingredientToCheck.getType() == item.getType()) {
+          return true;
+        }
       }
     }
     return false;
@@ -78,8 +60,19 @@ public class CookingStation extends Station {
     if (currentIngredient == null) {
       actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
     } else {
-      actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
-      actionTypes.add(StationAction.ActionType.COOK_ACTION);
+      switch (currentIngredient.getType()) {
+        case "patty":
+          //check to see if total number of seconds has passed to progress the state of the patty.
+          if (timeCooked >= totalTimeToCook && inUse
+              && !statusPatty.getHalfCooked()) {
+            actionTypes.add(StationAction.ActionType.FLIP_ACTION);
+          } else if (timeCooked >= totalTimeToCook && inUse && statusPatty.getHalfCooked()) {
+            actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+          }
+      }
+      if (!inUse) {
+        actionTypes.add(StationAction.ActionType.COOK_ACTION);
+      }
     }
     return actionTypes;
   }
@@ -88,19 +81,47 @@ public class CookingStation extends Station {
   public void doStationAction(StationAction.ActionType action) {
     switch (action) {
       case COOK_ACTION:
-        // TODO: implement
+        //timeCooked is used to track how long the
+        //ingredient has been cooking for.
+        timeCooked = 0;
+        inUse = true;
+        uiController.hideActions(this);
+        uiController.showProgressBar(this);
+        progressVisible = true;
         break;
+
+      case FLIP_ACTION:
+        statusPatty.setHalfCooked();
+        currentIngredient = statusPatty;
+        timeCooked = 0;
+        uiController.hideActions(this);
+        uiController.showProgressBar(this);
+        progressVisible = true;
+        break;
+
       case PLACE_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
-          currentIngredient = nearbyChef.placeIngredient();
+          if (this.isCorrectIngredient(nearbyChef.getStack().peek())) {
+            currentIngredient = nearbyChef.placeIngredient();
+          }
+          //TODO: Display a warning when an incorrect ingredient is presented
         }
+        uiController.showActions(this, getActionTypes());
         break;
+
       case GRAB_INGREDIENT:
-        if (this.nearbyChef != null && nearbyChef.canGrabIngredient()
-            && currentIngredient != null) {
+        if (nearbyChef.canGrabIngredient()) {
+          switch (currentIngredient.getType()) {
+            case "patty":
+              statusPatty.setCooked(true);
+              currentIngredient = statusPatty;
+          }
           nearbyChef.grabIngredient(currentIngredient);
+          statusPatty = new Patty();
           currentIngredient = null;
+          inUse = false;
         }
+        uiController.showActions(this, getActionTypes());
         break;
     }
   }

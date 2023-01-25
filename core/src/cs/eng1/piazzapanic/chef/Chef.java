@@ -11,8 +11,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
+/**
+ * The Chef class is an actor representing a chef in the kitchen. It can pick up and put down
+ * ingredients and interact with stations.
+ */
 public class Chef extends Actor {
 
+
+  /**
+   * image, imageBounds and imageRotation are all used to display the chef to the user and show the
+   * user where the chef is and what direction it is moving without changing any collision details.
+   */
   private final Texture image;
   private final Vector2 imageBounds;
   private float imageRotation = 0f;
@@ -23,8 +32,15 @@ public class Chef extends Actor {
   private final float speed = 3f;
   private final float collisionSkin = 0.01f;
   private boolean inputEnabled = true;
+  private boolean paused = false;
 
-  //interactions between chef and stations are implemented
+  /**
+   * @param image       the texture to display to the user
+   * @param imageBounds the bounds of the texture independent of the chef's own bounds to use for
+   *                    drawing the image to scale.
+   * @param chefManager the controller from which we can get information about all of the chefs and
+   *                    their surrounding environment
+   */
   public Chef(Texture image, Vector2 imageBounds, ChefManager chefManager) {
     this.image = image;
     this.imageBounds = imageBounds;
@@ -35,7 +51,8 @@ public class Chef extends Actor {
   @Override
   public void draw(Batch batch, float parentAlpha) {
 //    batch.draw(image, getX(), getY(), getWidth(), getHeight());
-    batch.draw(image, getX(), getY(), getWidth() / 2f, getHeight() / 2f, imageBounds.x, imageBounds.y,
+    batch.draw(image, getX(), getY(), getWidth() / 2f, getHeight() / 2f, imageBounds.x,
+        imageBounds.y,
         1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false, false);
   }
 
@@ -55,7 +72,7 @@ public class Chef extends Actor {
   private void getInput() {
     inputVector.x = 0;
     inputVector.y = 0;
-    if (!isInputEnabled()) {
+    if (!isInputEnabled() || isPaused() ) {
       return;
     }
     float x = 0f;
@@ -228,7 +245,7 @@ public class Chef extends Actor {
     return ingredientStack.pop();
   }
 
-  public FixedStack<Ingredient> getIngredientStack() {return ingredientStack;}
+  public FixedStack<Ingredient> getStack(){return ingredientStack;}
 
   /**
    * Sets the input vector based on x and y, but ensuring that the vector is never greater than a
@@ -251,5 +268,13 @@ public class Chef extends Actor {
 
   public void setInputEnabled(boolean inputEnabled) {
     this.inputEnabled = inputEnabled;
+  }
+
+  public boolean isPaused(){
+    return paused;
+  }
+
+  public void setPaused(boolean pauseValue){
+    this.paused = pauseValue;
   }
 }
