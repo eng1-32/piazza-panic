@@ -95,12 +95,14 @@ public class GameScreen implements Screen {
         continue;
       }
 
+      // Get basic station properties
       Station station;
       int id = tileObject.getProperties().get("id", Integer.class);
       String ingredients = tileObject.getProperties().get("ingredients", String.class);
       StationActionUI.ActionAlignment alignment = StationActionUI.ActionAlignment.valueOf(
           tileObject.getProperties().get("actionAlignment", "TOP", String.class));
 
+      // Initialize specific station types
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
           station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
@@ -114,6 +116,9 @@ public class GameScreen implements Screen {
           station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
               alignment, Ingredient.arrayFromString(ingredients));
           break;
+        case "recipeStation":
+          station = new RecipeStation(id, tileObject.getTextureRegion(), stationUIController,
+              alignment);
         default:
           station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);
       }

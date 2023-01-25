@@ -57,8 +57,8 @@ public class ChefManager {
     }
   }
 
-  public Cell getCellAtPosition(float x, float y) {
-    return collisionLayer.getCell((int) Math.floor(x), (int) Math.floor(y));
+  public Cell getCellAtPosition(int x, int y) {
+    return collisionLayer.getCell(x, y);
   }
 
   public List<Chef> getChefs() {
