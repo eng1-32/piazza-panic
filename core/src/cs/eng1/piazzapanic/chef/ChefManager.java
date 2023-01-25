@@ -36,6 +36,12 @@ public class ChefManager {
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
         "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png"
     };
+    float[] chefX = new float[]{
+        5f, 10f
+    };
+    float[] chefY = new float[]{
+        3f, 3f
+    };
     chefs = new ArrayList<>(chefSprites.length);
 
     // Initialize chefs
@@ -44,7 +50,7 @@ public class ChefManager {
       Texture chefTexture = new Texture(Gdx.files.internal(sprite));
       Chef chef = new Chef(chefTexture, new Vector2(chefTexture.getWidth() * chefScale,
           chefTexture.getHeight() * chefScale), this);
-      chef.setBounds(2 + 2 * i, 3, chefTexture.getHeight() * chefScale,
+      chef.setBounds(chefX[i], chefY[i], chefTexture.getHeight() * chefScale,
           chefTexture.getHeight() * chefScale);
       chef.setInputEnabled(false);
       chefs.add(chef);

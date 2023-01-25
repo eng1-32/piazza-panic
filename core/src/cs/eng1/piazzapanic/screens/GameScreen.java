@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
   private final StationUIController stationUIController;
 
   public GameScreen(final PiazzaPanicGame game) {
-    TiledMap map = new TmxMapLoader().load("big-map.tmx");
+    TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
     int sizeX = map.getProperties().get("width", Integer.class);
     int sizeY = map.getProperties().get("height", Integer.class);
     float tileUnitSize = 1 / (float) map.getProperties().get("tilewidth", Integer.class);
@@ -63,6 +63,7 @@ public class GameScreen implements Screen {
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
+    stage.setDebugAll(true);
   }
 
   /**
@@ -116,13 +117,36 @@ public class GameScreen implements Screen {
         default:
           station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);
       }
-      station.setBounds(tileObject.getX() * tileUnitSize, tileObject.getY() * tileUnitSize, 1, 1);
+      float tileX = tileObject.getX() * tileUnitSize;
+      float tileY = tileObject.getY() * tileUnitSize;
+      float rotation = tileObject.getRotation();
+
+      // Adjust x and y positions based on Tiled quirks with rotation changing the position of the tile
+      if (rotation == 90) {
+        tileY -= 1;
+      } else if (rotation == 180) {
+        tileX -= 1;
+        tileY -= 1;
+      } else if (rotation == -90 || rotation == 270) {
+        tileX -= 1;
+      }
+
+      station.setBounds(tileX, tileY, 1, 1);
+      station.setImageRotation(-tileObject.getRotation());
       stage.addActor(station);
 
-      Integer colliderID = tileObject.getProperties().get("collisionObjectID", Integer.class);
-      StationCollider collider = colliders.get(colliderID);
-      if (collider != null) {
-        collider.register(station);
+      String colliderIDs = tileObject.getProperties().get("collisionObjectIDs", String.class);
+      for (String idString : colliderIDs.split(",")) {
+        try {
+          Integer colliderID = Integer.parseInt(idString);
+          StationCollider collider = colliders.get(colliderID);
+          if (collider != null) {
+            collider.register(station);
+          }
+        } catch (NumberFormatException e) {
+          System.out.println("Error parsing collider ID: " + e.getMessage());
+        }
+
       }
     }
   }

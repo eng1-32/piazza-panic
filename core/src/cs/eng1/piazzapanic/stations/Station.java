@@ -24,8 +24,9 @@ public class Station extends Actor implements Observer<Chef> {
 
   protected boolean inUse = false;
 
-  protected Subject<Chef> chefSubject = null;
+  protected List<Subject<Chef>> chefSubjects = new LinkedList<>();
   protected Chef nearbyChef = null;
+  private float imageRotation = 0.0f;
 
   public Station(int id, TextureRegion image, StationUIController uiController,
       StationActionUI.ActionAlignment alignment) {
@@ -35,9 +36,14 @@ public class Station extends Actor implements Observer<Chef> {
     this.uiController = uiController;
   }
 
+  public void setImageRotation(float rotation) {
+    this.imageRotation = rotation;
+  }
+
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    batch.draw(stationImage, getX(), getY(), getWidth(), getHeight());
+    batch.draw(stationImage, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1f, 1f,
+        imageRotation);
   }
 
   /**
@@ -55,14 +61,22 @@ public class Station extends Actor implements Observer<Chef> {
     shapes.setColor(Color.RED);
     shapes.rect(getX(), getY(), getWidth(), getHeight());
 
-    // Draw line to linked station collider
-    if (chefSubject != null && chefSubject instanceof Actor) {
-      Actor collider = (Actor) chefSubject;
-      Vector2 start = new Vector2(getX() + getWidth() / 2f, getY() + getHeight() / 2f);
-      Vector2 end = new Vector2(collider.getX() + collider.getWidth() / 2f,
-          collider.getY() + collider.getHeight() / 2f);
-      shapes.setColor(Color.BLUE);
-      shapes.line(start, end);
+    // Check for any station colliders
+    if (chefSubjects.isEmpty()) {
+      shapes.setColor(oldColor);
+      return;
+    }
+
+    // Draw lines to linked station colliders
+    shapes.setColor(Color.BLUE);
+    for (Subject<Chef> chefSubject : chefSubjects) {
+      if (chefSubject instanceof Actor) {
+        Actor collider = (Actor) chefSubject;
+        Vector2 start = new Vector2(getX() + getWidth() / 2f, getY() + getHeight() / 2f);
+        Vector2 end = new Vector2(collider.getX() + collider.getWidth() / 2f,
+            collider.getY() + collider.getHeight() / 2f);
+        shapes.line(start, end);
+      }
     }
 
     // Reset colour
@@ -81,13 +95,26 @@ public class Station extends Actor implements Observer<Chef> {
   }
 
   @Override
-  public void setSubject(Subject<Chef> chefSubject) {
-    this.chefSubject = chefSubject;
+  public void addSubject(Subject<Chef> chefSubject) {
+    this.chefSubjects.add(chefSubject);
   }
 
   @Override
-  public Subject<Chef> getSubject() {
-    return this.chefSubject;
+  public void removeSubject(Subject<Chef> chefSubject) {
+    this.chefSubjects.remove(chefSubject);
+  }
+
+  @Override
+  public void deregisterFromAllSubjects() {
+    for (Subject<Chef> chefSubject : this.chefSubjects) {
+      chefSubject.deregister(this);
+    }
+    this.chefSubjects.clear();
+  }
+
+  @Override
+  public List<Subject<Chef>> getSubjects() {
+    return this.chefSubjects;
   }
 
   /**
