@@ -33,7 +33,7 @@
   <object id="12" name="Cooker" class="Station" gid="324" x="768" y="1024" width="128" height="128">
    <properties>
     <property name="actionAlignment" value="RIGHT"/>
-    <property name="collisionObjectID" type="int" value="17"/>
+    <property name="collisionObjectIDs" value="17"/>
     <property name="ingredients" value="patty,bun"/>
     <property name="stationType" value="cookingStation"/>
    </properties>
@@ -41,7 +41,7 @@
   <object id="13" name="Ingredient Station" class="Station" gid="129" x="512" y="1024" width="128" height="128">
    <properties>
     <property name="actionAlignment" value="BOTTOM"/>
-    <property name="collisionObjectID" type="int" value="16"/>
+    <property name="collisionObjectIDs" value="16"/>
     <property name="ingredients" value="patty"/>
     <property name="stationType" value="ingredientStation"/>
    </properties>
@@ -49,7 +49,7 @@
   <object id="14" name="Chopping Board" class="Station" gid="267" x="256" y="1024" width="128" height="128">
    <properties>
     <property name="actionAlignment" value="LEFT"/>
-    <property name="collisionObjectID" type="int" value="15"/>
+    <property name="collisionObjectIDs" value="15"/>
     <property name="ingredients" value="lettuce,tomato"/>
     <property name="stationType" value="choppingStation"/>
    </properties>

@@ -72,7 +72,7 @@ public class Chef extends Actor {
   private void getInput() {
     inputVector.x = 0;
     inputVector.y = 0;
-    if (!isInputEnabled() || isPaused() ) {
+    if (!isInputEnabled() || isPaused()) {
       return;
     }
     float x = 0f;
@@ -122,7 +122,7 @@ public class Chef extends Actor {
    */
   private Rectangle getCollisionObjectBoundaries(float x, float y) {
     Actor actorHit = getStage().hit(x, y, false);
-    Cell tileHit = chefManager.getCellAtPosition(x, getY());
+    Cell tileHit = chefManager.getCellAtPosition((int) Math.floor(x), (int) Math.floor(y));
 
     if (tileHit != null) {
       return new Rectangle((float) Math.floor(x), (float) Math.floor(y), 1, 1);
@@ -198,7 +198,7 @@ public class Chef extends Actor {
       // Calculate new change in y relative to the collision object boundaries
       float adjustment = -getHeight() - collisionSkin - getY();
       if (hitBoundsLeft != null) {
-        yMovement = hitBoundsLeft.y + adjustment;
+        yMovement = Math.min(yMovement, hitBoundsLeft.y + adjustment);
       }
       if (hitBoundsMiddle != null) {
         yMovement = Math.min(yMovement, hitBoundsMiddle.y + adjustment);
@@ -217,7 +217,7 @@ public class Chef extends Actor {
       // Calculate new change in y relative to the collision object boundaries
       float adjustment = collisionSkin - getY();
       if (hitBoundsLeft != null) {
-        yMovement = hitBoundsLeft.y + hitBoundsLeft.height + adjustment;
+        yMovement = Math.max(yMovement, hitBoundsLeft.y + hitBoundsLeft.height + adjustment);
       }
       if (hitBoundsMiddle != null) {
         yMovement = Math.max(yMovement, hitBoundsMiddle.y + hitBoundsMiddle.height + adjustment);
@@ -245,7 +245,9 @@ public class Chef extends Actor {
     return ingredientStack.pop();
   }
 
-  public FixedStack<Ingredient> getStack(){return ingredientStack;}
+  public FixedStack<Ingredient> getStack() {
+    return ingredientStack;
+  }
 
   /**
    * Sets the input vector based on x and y, but ensuring that the vector is never greater than a
@@ -270,11 +272,11 @@ public class Chef extends Actor {
     this.inputEnabled = inputEnabled;
   }
 
-  public boolean isPaused(){
+  public boolean isPaused() {
     return paused;
   }
 
-  public void setPaused(boolean pauseValue){
+  public void setPaused(boolean pauseValue) {
     this.paused = pauseValue;
   }
 }

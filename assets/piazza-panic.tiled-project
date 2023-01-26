@@ -44,9 +44,9 @@
                     "value": "TOP"
                 },
                 {
-                    "name": "collisionObjectID",
-                    "type": "int",
-                    "value": -1
+                    "name": "collisionObjectIDs",
+                    "type": "string",
+                    "value": ""
                 },
                 {
                     "name": "ingredients",
@@ -76,7 +76,8 @@
             "values": [
                 "choppingStation",
                 "cookingStation",
-                "ingredientStation"
+                "ingredientStation",
+                "recipeStation"
             ],
             "valuesAsFlags": false
         }
