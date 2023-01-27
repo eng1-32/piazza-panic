@@ -1,5 +1,6 @@
 package cs.eng1.piazzapanic.stations;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
@@ -23,7 +24,7 @@ public class ChoppingStation extends Station {
   }
 
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if (!ingredientToCheck.getCooked()) {
+    if (!ingredientToCheck.getIsCooked()) {
       for (Ingredient item : this.validIngredients) {
         if (ingredientToCheck.getType() == item.getType()) {
           return true;
@@ -31,6 +32,14 @@ public class ChoppingStation extends Station {
       }
     }
     return false;
+  }
+
+  @Override
+  public void draw(Batch batch, float parentAlpha) {
+    super.draw(batch, parentAlpha);
+    if (currentIngredient != null) {
+      batch.draw(currentIngredient.getTexture(), getX() + .2f, getY() + .2f, .6f, .6f);
+    }
   }
 
   @Override
@@ -57,7 +66,7 @@ public class ChoppingStation extends Station {
     if (inUse) {
       waitTime -= delta;
       if (waitTime <= 0) {
-        currentIngredient.setChopped(true);
+        currentIngredient.setIsChopped(true);
         nearbyChef.setPaused(false);
         waitTime = 5;
       }

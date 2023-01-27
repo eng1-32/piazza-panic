@@ -4,8 +4,8 @@ public class Patty extends Ingredient {
 
   protected boolean halfCooked = false;
 
-  public Patty() {
-    super("patty", null);
+  public Patty(IngredientTextureManager textureManager) {
+    super("patty", textureManager);
   }
 
   public void setHalfCooked() {

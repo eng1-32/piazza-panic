@@ -1,7 +1,7 @@
 package cs.eng1.piazzapanic.stations;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.TimeUtils;
 import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.ingredients.Patty;
 import cs.eng1.piazzapanic.ui.StationActionUI;
@@ -18,7 +18,6 @@ public class CookingStation extends Station {
   protected float timeCooked;
   protected float totalTimeToCook = 10f;
   private boolean progressVisible = false;
-  protected Patty statusPatty = new Patty();
 
   //TODO: Create doc strings for functions
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
@@ -36,12 +35,18 @@ public class CookingStation extends Station {
         uiController.hideProgressBar(this);
         uiController.showActions(this, getActionTypes());
         progressVisible = false;
+        if (currentIngredient instanceof Patty && !((Patty) currentIngredient).getHalfCooked()) {
+          ((Patty) currentIngredient).setHalfCooked();
+        } else if (currentIngredient instanceof Patty
+            && ((Patty) currentIngredient).getHalfCooked() && !currentIngredient.getIsCooked()) {
+          currentIngredient.setIsCooked(true);
+        }
       }
     }
   }
 
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if (!ingredientToCheck.getCooked()) {
+    if (!ingredientToCheck.getIsCooked()) {
       for (Ingredient item : this.validIngredients) {
         if (ingredientToCheck.getType() == item.getType()) {
           return true;
@@ -60,15 +65,15 @@ public class CookingStation extends Station {
     if (currentIngredient == null) {
       actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
     } else {
-      switch (currentIngredient.getType()) {
-        case "patty":
-          //check to see if total number of seconds has passed to progress the state of the patty.
-          if (timeCooked >= totalTimeToCook && inUse
-              && !statusPatty.getHalfCooked()) {
-            actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-          } else if (timeCooked >= totalTimeToCook && inUse && statusPatty.getHalfCooked()) {
-            actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
-          }
+      if (currentIngredient instanceof Patty) {
+        //check to see if total number of seconds has passed to progress the state of the patty.
+        if (timeCooked >= totalTimeToCook && inUse
+            && !((Patty) currentIngredient).getHalfCooked()) {
+          actionTypes.add(StationAction.ActionType.FLIP_ACTION);
+        } else if (timeCooked >= totalTimeToCook && inUse
+            && ((Patty) currentIngredient).getHalfCooked()) {
+          actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+        }
       }
       if (!inUse) {
         actionTypes.add(StationAction.ActionType.COOK_ACTION);
@@ -91,8 +96,6 @@ public class CookingStation extends Station {
         break;
 
       case FLIP_ACTION:
-        statusPatty.setHalfCooked();
-        currentIngredient = statusPatty;
         timeCooked = 0;
         uiController.hideActions(this);
         uiController.showProgressBar(this);
@@ -111,18 +114,20 @@ public class CookingStation extends Station {
 
       case GRAB_INGREDIENT:
         if (nearbyChef.canGrabIngredient()) {
-          switch (currentIngredient.getType()) {
-            case "patty":
-              statusPatty.setCooked(true);
-              currentIngredient = statusPatty;
-          }
           nearbyChef.grabIngredient(currentIngredient);
-          statusPatty = new Patty();
           currentIngredient = null;
           inUse = false;
         }
         uiController.showActions(this, getActionTypes());
         break;
+    }
+  }
+
+  @Override
+  public void draw(Batch batch, float parentAlpha) {
+    super.draw(batch, parentAlpha);
+    if (currentIngredient != null) {
+      batch.draw(currentIngredient.getTexture(), getX() + .2f, getY() + .2f, .6f, .6f);
     }
   }
 }

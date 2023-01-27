@@ -2,23 +2,16 @@ package cs.eng1.piazzapanic.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import com.badlogic.gdx.utils.Disposable;
-import java.util.LinkedList;
-import java.util.List;
-
 public class Ingredient {
 
   private final String type;
-  private Texture texture;
-  protected List<IngredientAction> possibleActions;
+  protected IngredientTextureManager textureManager;
   protected boolean isCooked = false;
   protected  boolean isChopped = false;
 
-  public Ingredient(String type, Texture texture) {
-    // TODO: specify textures in subclasses as well as possible actions
+  public Ingredient(String type, IngredientTextureManager textureManager) {
     this.type = type;
-    this.texture = texture;
-    possibleActions = new LinkedList<>();
+    this.textureManager = textureManager;
   }
 
   /**
@@ -27,16 +20,17 @@ public class Ingredient {
    * @param ingredientName the name of the ingredient which can be defined from Tiled
    * @return the Ingredient of the type defined by the input
    */
-  public static Ingredient fromString(String ingredientName) {
+  public static Ingredient fromString(String ingredientName,
+      IngredientTextureManager textureManager) {
     switch (ingredientName) {
       case "patty":
-        return new Patty();
+        return new Patty(textureManager);
       case "tomato":
-        return new Tomato();
+        return new Tomato(textureManager);
       case "lettuce":
-        return new Lettuce();
+        return new Lettuce(textureManager);
       case "bun":
-        return new Bun();
+        return new Bun(textureManager);
       default:
         return null;
     }
@@ -49,11 +43,12 @@ public class Ingredient {
    *                           with no whitespace as defined in Tiled
    * @return An array of Ingredient based on the input string
    */
-  public static Ingredient[] arrayFromString(String csvIngredientNames) {
+  public static Ingredient[] arrayFromString(String csvIngredientNames,
+      IngredientTextureManager textureManager) {
     String[] ingredientNames = csvIngredientNames.split(",");
     Ingredient[] ingredients = new Ingredient[ingredientNames.length];
     for (int i = 0; i < ingredientNames.length; i++) {
-      ingredients[i] = fromString(ingredientNames[i]);
+      ingredients[i] = fromString(ingredientNames[i], textureManager);
     }
     return ingredients;
   }
@@ -63,26 +58,26 @@ public class Ingredient {
   }
 
   public Texture getTexture() {
-    return texture;
+    return textureManager.getTexture(getType(), isCooked, isChopped);
   }
 
-  public void setTexture(Texture texture) {
-    this.texture = texture;
-  }
-
-  public void setCooked(boolean value){
+  public void setIsCooked(boolean value) {
     isCooked = value;
   }
 
-  public boolean getCooked(){
+  public boolean getIsCooked() {
     return isCooked;
   }
 
-  public void setChopped(boolean value){
+  public void setIsChopped(boolean value) {
     isChopped = value;
   }
 
-  public boolean getChopped(){
+  public boolean getIsChopped() {
     return isChopped;
+  }
+
+  public IngredientTextureManager getTextureManager() {
+    return textureManager;
   }
 }
