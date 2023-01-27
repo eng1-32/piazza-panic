@@ -2,7 +2,6 @@ package cs.eng1.piazzapanic.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import com.badlogic.gdx.utils.Disposable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +18,15 @@ public class Ingredient {
     this.type = type;
     this.texture = texture;
     possibleActions = new LinkedList<>();
+  }
+
+  @Override
+  public String toString() {
+    String output = getType() + "_";
+    if (isChopped) output += "chopped";
+    else if (isCooked) output += "cooked";
+    else output += "raw";
+    return output;
   }
 
   /**

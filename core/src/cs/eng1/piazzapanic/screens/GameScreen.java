@@ -152,6 +152,7 @@ public class GameScreen implements Screen {
 
     // Render stage
     stage.act(delta);
+    uiOverlay.updateChefUI(chefManager);
     uiStage.act(delta);
 
     stage.draw();
