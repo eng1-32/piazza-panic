@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +23,18 @@ public class ChefManager {
   private final ArrayList<Chef> chefs;
   private Chef currentChef = null;
   private final TiledMapTileLayer collisionLayer;
+  private final UIOverlay overlay;
 
   /**
    * @param chefScale      the amount to scale the texture by so that each chef is an accurate
    *                       size.
    * @param collisionLayer the tile map layer which the chefs can collide with.
+   * @param overlay        the user interface overlay to display information about the current chef
+   *                       and time, and to provide more controls.
    */
-  public ChefManager(float chefScale, TiledMapTileLayer collisionLayer) {
+  public ChefManager(float chefScale, TiledMapTileLayer collisionLayer, UIOverlay overlay) {
     this.collisionLayer = collisionLayer;
+    this.overlay = overlay;
 
     // Load chef sprites
     String[] chefSprites = new String[]{
@@ -105,9 +110,14 @@ public class ChefManager {
       currentChef = chef;
       currentChef.setInputEnabled(true);
     }
+    overlay.updateChefUI(this);
   }
 
   public Chef getCurrentChef() {
     return currentChef;
+  }
+
+  public void currentChefStackUpdated() {
+    overlay.updateChefUI(this);
   }
 }

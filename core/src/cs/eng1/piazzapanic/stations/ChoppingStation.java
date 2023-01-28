@@ -25,7 +25,6 @@ public class ChoppingStation extends Station {
 
   @Override
   public void act(float delta) {
-    //TODO: add time related things here!
     if (inUse) {
       timeChopped += delta;
       uiController.updateProgressValue(this, (timeChopped / totalTimeToChop) * 100f);

@@ -17,7 +17,6 @@ import cs.eng1.piazzapanic.stations.Station;
  */
 public class Chef extends Actor {
 
-
   /**
    * image, imageBounds and imageRotation are all used to display the chef to the user and show the
    * user where the chef is and what direction it is moving without changing any collision details.
@@ -38,7 +37,7 @@ public class Chef extends Actor {
    * @param image       the texture to display to the user
    * @param imageBounds the bounds of the texture independent of the chef's own bounds to use for
    *                    drawing the image to scale.
-   * @param chefManager the controller from which we can get information about all of the chefs and
+   * @param chefManager the controller from which we can get information about all the chefs and
    *                    their surrounding environment
    */
   public Chef(Texture image, Vector2 imageBounds, ChefManager chefManager) {
@@ -244,10 +243,13 @@ public class Chef extends Actor {
 
   public void grabIngredient(Ingredient ingredient) {
     ingredientStack.push(ingredient);
+    notifyAboutUpdatedStack();
   }
 
   public Ingredient placeIngredient() {
-    return ingredientStack.pop();
+    Ingredient ingredient = ingredientStack.pop();
+    notifyAboutUpdatedStack();
+    return ingredient;
   }
 
   public FixedStack<Ingredient> getStack() {
@@ -283,5 +285,15 @@ public class Chef extends Actor {
 
   public void setPaused(boolean pauseValue) {
     this.paused = pauseValue;
+  }
+
+  public Texture getTexture() {
+    return image;
+  }
+
+  public void notifyAboutUpdatedStack() {
+    if (chefManager.getCurrentChef() == this) {
+      chefManager.currentChefStackUpdated();
+    }
   }
 }

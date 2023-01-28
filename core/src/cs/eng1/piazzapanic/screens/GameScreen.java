@@ -25,7 +25,7 @@ import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
-import cs.eng1.piazzapanic.ui.UiOverlay;
+import cs.eng1.piazzapanic.ui.UIOverlay;
 
 import java.util.HashMap;
 
@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
   private final ChefManager chefManager;
   private final OrthogonalTiledMapRenderer tileMapRenderer;
   private final StationUIController stationUIController;
-  private final UiOverlay uiOverlay;
+  private final UIOverlay uiOverlay;
   private final FoodTextureManager foodTextureManager;
   private final CustomerManager customerManager;
 
@@ -68,12 +68,11 @@ public class GameScreen implements Screen {
     foodTextureManager = new FoodTextureManager();
     customerManager = new CustomerManager(5, foodTextureManager);
 
-    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer);
+    uiOverlay = new UIOverlay(uiStage, game);
+    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay);
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
-    this.uiOverlay = new UiOverlay(uiStage, game);
-    uiStage.setDebugAll(true);
   }
 
   /**
@@ -189,7 +188,6 @@ public class GameScreen implements Screen {
 
     // Render stage
     stage.act(delta);
-    uiOverlay.updateChefUI(chefManager);
     uiStage.act(delta);
 
     stage.draw();
