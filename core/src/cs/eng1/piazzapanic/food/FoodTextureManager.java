@@ -1,15 +1,15 @@
-package cs.eng1.piazzapanic.ingredients;
+package cs.eng1.piazzapanic.food;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import java.util.HashMap;
 
-public class IngredientTextureManager {
+public class FoodTextureManager {
 
   private final HashMap<String, Texture> ingredientTextures;
   private final Texture notFoundImage;
 
-  public IngredientTextureManager() {
+  public FoodTextureManager() {
     this.ingredientTextures = new HashMap<>();
     this.ingredientTextures.put("patty_cooked",
         new Texture(Gdx.files.internal("food/original/cooked_patty.png")));

@@ -19,8 +19,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.ChefManager;
-import cs.eng1.piazzapanic.ingredients.Ingredient;
-import cs.eng1.piazzapanic.ingredients.IngredientTextureManager;
+import cs.eng1.piazzapanic.food.CustomerManager;
+import cs.eng1.piazzapanic.food.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
@@ -39,7 +40,8 @@ public class GameScreen implements Screen {
   private final ChefManager chefManager;
   private final OrthogonalTiledMapRenderer tileMapRenderer;
   private final StationUIController stationUIController;
-  private final IngredientTextureManager ingredientTextureManager;
+  private final FoodTextureManager foodTextureManager;
+  private final CustomerManager customerManager;
 
   public GameScreen(final PiazzaPanicGame game) {
     TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
@@ -61,7 +63,8 @@ public class GameScreen implements Screen {
     MapLayer objectLayer = map.getLayers().get("Stations");
     TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get("Foreground");
 
-    ingredientTextureManager = new IngredientTextureManager();
+    foodTextureManager = new FoodTextureManager();
+    customerManager = new CustomerManager(5, foodTextureManager);
 
     chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer);
     // Add tile objects
@@ -109,19 +112,19 @@ public class GameScreen implements Screen {
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
           station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, ingredientTextureManager));
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
           break;
         case "ingredientStation":
           station = new IngredientStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.fromString(ingredients, ingredientTextureManager));
+              alignment, Ingredient.fromString(ingredients, foodTextureManager));
           break;
         case "choppingStation":
           station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, ingredientTextureManager));
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
           break;
         case "recipeStation":
           station = new RecipeStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, ingredientTextureManager);
+              alignment, foodTextureManager, customerManager);
           break;
         default:
           station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);

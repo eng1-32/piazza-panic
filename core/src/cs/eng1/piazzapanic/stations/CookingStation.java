@@ -2,8 +2,8 @@ package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import cs.eng1.piazzapanic.ingredients.Ingredient;
-import cs.eng1.piazzapanic.ingredients.Patty;
+import cs.eng1.piazzapanic.food.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.ingredients.Patty;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
@@ -64,7 +64,7 @@ public class CookingStation extends Station {
       return actionTypes;
     }
     if (currentIngredient == null) {
-      if (isCorrectIngredient(nearbyChef.getStack().peek())) {
+      if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
         actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
       }
     } else {
@@ -127,7 +127,7 @@ public class CookingStation extends Station {
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);
     if (currentIngredient != null) {
-      drawIngredientTexture(batch, currentIngredient.getTexture());
+      drawFoodTexture(batch, currentIngredient.getTexture());
     }
   }
 }

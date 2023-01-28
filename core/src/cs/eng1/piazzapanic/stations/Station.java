@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import cs.eng1.piazzapanic.chef.Chef;
-import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
 import cs.eng1.piazzapanic.ui.StationActionUI;
@@ -48,8 +47,8 @@ public class Station extends Actor implements Observer<Chef> {
         imageRotation);
   }
 
-  protected void drawIngredientTexture(Batch batch, Texture ingredientTexture) {
-    batch.draw(ingredientTexture, getX() + .2f, getY() + .2f, .6f, .6f);
+  protected void drawFoodTexture(Batch batch, Texture foodTexture) {
+    batch.draw(foodTexture, getX() + .2f, getY() + .2f, .6f, .6f);
   }
 
   /**

@@ -1,12 +1,13 @@
-package cs.eng1.piazzapanic.ingredients;
+package cs.eng1.piazzapanic.food.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
+import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Patty extends Ingredient {
 
   protected boolean halfCooked = false;
 
-  public Patty(IngredientTextureManager textureManager) {
+  public Patty(FoodTextureManager textureManager) {
     super("patty", textureManager);
   }
 

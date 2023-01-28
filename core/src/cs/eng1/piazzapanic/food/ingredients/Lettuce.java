@@ -1,10 +1,11 @@
-package cs.eng1.piazzapanic.ingredients;
+package cs.eng1.piazzapanic.food.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
+import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Lettuce extends Ingredient {
 
-  public Lettuce(IngredientTextureManager textureManager) {
+  public Lettuce(FoodTextureManager textureManager) {
     super("lettuce", textureManager);
   }
 

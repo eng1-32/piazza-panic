@@ -1,15 +1,16 @@
-package cs.eng1.piazzapanic.ingredients;
+package cs.eng1.piazzapanic.food.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
+import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Ingredient {
 
   private final String type;
-  protected IngredientTextureManager textureManager;
+  protected FoodTextureManager textureManager;
   protected boolean isCooked = false;
   protected  boolean isChopped = false;
 
-  public Ingredient(String type, IngredientTextureManager textureManager) {
+  public Ingredient(String type, FoodTextureManager textureManager) {
     this.type = type;
     this.textureManager = textureManager;
   }
@@ -21,7 +22,7 @@ public class Ingredient {
    * @return the Ingredient of the type defined by the input
    */
   public static Ingredient fromString(String ingredientName,
-      IngredientTextureManager textureManager) {
+      FoodTextureManager textureManager) {
     switch (ingredientName) {
       case "patty":
         return new Patty(textureManager);
@@ -44,7 +45,7 @@ public class Ingredient {
    * @return An array of Ingredient based on the input string
    */
   public static Ingredient[] arrayFromString(String csvIngredientNames,
-      IngredientTextureManager textureManager) {
+      FoodTextureManager textureManager) {
     String[] ingredientNames = csvIngredientNames.split(",");
     Ingredient[] ingredients = new Ingredient[ingredientNames.length];
     for (int i = 0; i < ingredientNames.length; i++) {
@@ -77,7 +78,7 @@ public class Ingredient {
     return isChopped;
   }
 
-  public IngredientTextureManager getTextureManager() {
+  public FoodTextureManager getTextureManager() {
     return textureManager;
   }
 }
