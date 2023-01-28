@@ -17,8 +17,12 @@ public class FoodTextureManager {
         new Texture(Gdx.files.internal("food/original/uncooked_patty.png")));
     this.ingredientTextures.put("lettuce_raw",
         new Texture(Gdx.files.internal("food/glitch/vegetable/lettuce.png")));
+    this.ingredientTextures.put("lettuce_chopped",
+        new Texture(Gdx.files.internal("food/original/lettuce_chopped.png")));
     this.ingredientTextures.put("tomato_raw",
         new Texture(Gdx.files.internal("food/glitch/fruit/tomato.png")));
+    this.ingredientTextures.put("tomato_chopped",
+        new Texture(Gdx.files.internal("food/original/tomato_chopped.png")));
     this.ingredientTextures.put("bun",
         new Texture(Gdx.files.internal("food/glitch/misc/bun.png")));
     this.ingredientTextures.put("burger",
