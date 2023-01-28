@@ -44,7 +44,7 @@ public class IngredientStation extends Station {
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);
     if (ingredientDispensed != null) {
-      batch.draw(ingredientDispensed.getTexture(), getX() + .2f, getY() + .2f, .6f, .6f);
+      drawIngredientTexture(batch, ingredientDispensed.getTexture());
     }
   }
 }

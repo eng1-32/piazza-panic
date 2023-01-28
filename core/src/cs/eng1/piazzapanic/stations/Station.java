@@ -1,12 +1,14 @@
 package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import cs.eng1.piazzapanic.chef.Chef;
+import cs.eng1.piazzapanic.ingredients.Ingredient;
 import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
 import cs.eng1.piazzapanic.ui.StationActionUI;
@@ -44,6 +46,10 @@ public class Station extends Actor implements Observer<Chef> {
   public void draw(Batch batch, float parentAlpha) {
     batch.draw(stationImage, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1f, 1f,
         imageRotation);
+  }
+
+  protected void drawIngredientTexture(Batch batch, Texture ingredientTexture) {
+    batch.draw(ingredientTexture, getX() + .2f, getY() + .2f, .6f, .6f);
   }
 
   /**

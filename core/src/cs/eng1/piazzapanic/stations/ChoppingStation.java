@@ -38,7 +38,7 @@ public class ChoppingStation extends Station {
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);
     if (currentIngredient != null) {
-      batch.draw(currentIngredient.getTexture(), getX() + .2f, getY() + .2f, .6f, .6f);
+      drawIngredientTexture(batch, currentIngredient.getTexture());
     }
   }
 

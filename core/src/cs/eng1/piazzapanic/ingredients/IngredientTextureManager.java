@@ -19,19 +19,13 @@ public class IngredientTextureManager {
         new Texture(Gdx.files.internal("food/glitch/vegetable/lettuce.png")));
     this.ingredientTextures.put("tomato_raw",
         new Texture(Gdx.files.internal("food/glitch/fruit/tomato.png")));
+    this.ingredientTextures.put("bun_raw",
+        new Texture(Gdx.files.internal("food/glitch/fruit/tomato.png")));
     notFoundImage = new Texture(Gdx.files.internal("badlogic.jpg"));
   }
 
-  public Texture getTexture(String ingredientType, boolean isCooked, boolean isChopped) {
-    String key = ingredientType + "_";
-    if (isCooked) {
-      key += "cooked";
-    } else if (isChopped) {
-      key += "chopped";
-    } else {
-      key += "raw";
-    }
-    Texture texture = ingredientTextures.get(key);
+  public Texture getTexture(String ingredientType) {
+    Texture texture = ingredientTextures.get(ingredientType);
     if (texture != null) {
       return texture;
     } else {

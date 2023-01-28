@@ -32,15 +32,15 @@ public class CookingStation extends Station {
       timeCooked += delta;
       uiController.updateProgressValue(this, (timeCooked / totalTimeToCook) * 100f);
       if (timeCooked >= totalTimeToCook && progressVisible) {
+        if (currentIngredient instanceof Patty && !((Patty) currentIngredient).getIsHalfCooked()) {
+          ((Patty) currentIngredient).setHalfCooked();
+        } else if (currentIngredient instanceof Patty
+            && ((Patty) currentIngredient).getIsHalfCooked() && !currentIngredient.getIsCooked()) {
+          currentIngredient.setIsCooked(true);
+        }
         uiController.hideProgressBar(this);
         uiController.showActions(this, getActionTypes());
         progressVisible = false;
-        if (currentIngredient instanceof Patty && !((Patty) currentIngredient).getHalfCooked()) {
-          ((Patty) currentIngredient).setHalfCooked();
-        } else if (currentIngredient instanceof Patty
-            && ((Patty) currentIngredient).getHalfCooked() && !currentIngredient.getIsCooked()) {
-          currentIngredient.setIsCooked(true);
-        }
       }
     }
   }
@@ -67,11 +67,10 @@ public class CookingStation extends Station {
     } else {
       if (currentIngredient instanceof Patty) {
         //check to see if total number of seconds has passed to progress the state of the patty.
-        if (timeCooked >= totalTimeToCook && inUse
-            && !((Patty) currentIngredient).getHalfCooked()) {
+        if (timeCooked >= totalTimeToCook && inUse && ((Patty) currentIngredient).getIsHalfCooked()
+            && !currentIngredient.getIsCooked()) {
           actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-        } else if (timeCooked >= totalTimeToCook && inUse
-            && ((Patty) currentIngredient).getHalfCooked()) {
+        } else if (timeCooked >= totalTimeToCook && inUse && currentIngredient.getIsCooked()) {
           actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
         }
       }
@@ -127,7 +126,7 @@ public class CookingStation extends Station {
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);
     if (currentIngredient != null) {
-      batch.draw(currentIngredient.getTexture(), getX() + .2f, getY() + .2f, .6f, .6f);
+      drawIngredientTexture(batch, currentIngredient.getTexture());
     }
   }
 }

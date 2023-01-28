@@ -1,8 +1,10 @@
 package cs.eng1.piazzapanic.ingredients;
 
-public class Burger extends Ingredient{
+import com.badlogic.gdx.graphics.Texture;
 
-    public Burger() {
-        super("burger", null);
-    }
+public class Burger extends Ingredient {
+
+  public Burger(IngredientTextureManager textureManager) {
+    super("burger", textureManager);
+  }
 }

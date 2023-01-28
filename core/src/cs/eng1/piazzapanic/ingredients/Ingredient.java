@@ -58,7 +58,7 @@ public class Ingredient {
   }
 
   public Texture getTexture() {
-    return textureManager.getTexture(getType(), isCooked, isChopped);
+    return textureManager.getTexture(getType());
   }
 
   public void setIsCooked(boolean value) {

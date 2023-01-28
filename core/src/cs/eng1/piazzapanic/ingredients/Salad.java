@@ -1,8 +1,8 @@
 package cs.eng1.piazzapanic.ingredients;
 
-public class Salad extends Ingredient{
+public class Salad extends Ingredient {
 
-    public Salad() {
-        super("salad", null);
-    }
+  public Salad(IngredientTextureManager textureManager) {
+    super("salad", textureManager);
+  }
 }
