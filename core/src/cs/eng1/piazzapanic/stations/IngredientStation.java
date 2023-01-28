@@ -1,7 +1,8 @@
 package cs.eng1.piazzapanic.stations;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import cs.eng1.piazzapanic.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
@@ -24,7 +25,9 @@ public class IngredientStation extends Station {
     if (nearbyChef == null) {
       return actionTypes;
     }
-    actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+    if (nearbyChef.canGrabIngredient()) {
+      actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+    }
     return actionTypes;
   }
 
@@ -32,9 +35,17 @@ public class IngredientStation extends Station {
   public void doStationAction(StationAction.ActionType action) {
     if (action == StationAction.ActionType.GRAB_INGREDIENT) {
       if (this.nearbyChef != null && nearbyChef.canGrabIngredient()) {
-        nearbyChef.grabIngredient(Ingredient.fromString(ingredientDispensed.getType()));
-        System.out.println(nearbyChef.getStack());
+        nearbyChef.grabIngredient(Ingredient.fromString(ingredientDispensed.getType(),
+            ingredientDispensed.getTextureManager()));
       }
+    }
+  }
+
+  @Override
+  public void draw(Batch batch, float parentAlpha) {
+    super.draw(batch, parentAlpha);
+    if (ingredientDispensed != null) {
+      drawFoodTexture(batch, ingredientDispensed.getTexture());
     }
   }
 }

@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -24,8 +25,9 @@ public class Station extends Actor implements Observer<Chef> {
 
   protected boolean inUse = false;
 
-  protected Subject<Chef> chefSubject = null;
+  protected List<Subject<Chef>> chefSubjects = new LinkedList<>();
   protected Chef nearbyChef = null;
+  private float imageRotation = 0.0f;
 
   public Station(int id, TextureRegion image, StationUIController uiController,
       StationActionUI.ActionAlignment alignment) {
@@ -35,9 +37,18 @@ public class Station extends Actor implements Observer<Chef> {
     this.uiController = uiController;
   }
 
+  public void setImageRotation(float rotation) {
+    this.imageRotation = rotation;
+  }
+
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    batch.draw(stationImage, getX(), getY(), getWidth(), getHeight());
+    batch.draw(stationImage, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1f, 1f,
+        imageRotation);
+  }
+
+  protected void drawFoodTexture(Batch batch, Texture foodTexture) {
+    batch.draw(foodTexture, getX() + .2f, getY() + .2f, .6f, .6f);
   }
 
   /**
@@ -55,14 +66,22 @@ public class Station extends Actor implements Observer<Chef> {
     shapes.setColor(Color.RED);
     shapes.rect(getX(), getY(), getWidth(), getHeight());
 
-    // Draw line to linked station collider
-    if (chefSubject != null && chefSubject instanceof Actor) {
-      Actor collider = (Actor) chefSubject;
-      Vector2 start = new Vector2(getX() + getWidth() / 2f, getY() + getHeight() / 2f);
-      Vector2 end = new Vector2(collider.getX() + collider.getWidth() / 2f,
-          collider.getY() + collider.getHeight() / 2f);
-      shapes.setColor(Color.BLUE);
-      shapes.line(start, end);
+    // Check for any station colliders
+    if (chefSubjects.isEmpty()) {
+      shapes.setColor(oldColor);
+      return;
+    }
+
+    // Draw lines to linked station colliders
+    shapes.setColor(Color.BLUE);
+    for (Subject<Chef> chefSubject : chefSubjects) {
+      if (chefSubject instanceof Actor) {
+        Actor collider = (Actor) chefSubject;
+        Vector2 start = new Vector2(getX() + getWidth() / 2f, getY() + getHeight() / 2f);
+        Vector2 end = new Vector2(collider.getX() + collider.getWidth() / 2f,
+            collider.getY() + collider.getHeight() / 2f);
+        shapes.line(start, end);
+      }
     }
 
     // Reset colour
@@ -71,23 +90,50 @@ public class Station extends Actor implements Observer<Chef> {
 
   @Override
   public void update(Chef chef) {
-    if (chef != null && this.nearbyChef != chef) {
+    if (chef != null) {
       this.nearbyChef = chef;
       uiController.showActions(this, getActionTypes());
-    } else if (chef == null && this.nearbyChef != null) {
-      this.nearbyChef = null;
-      uiController.hideActions(this);
+    } else if (this.nearbyChef != null) {
+      Chef remainingChef = null;
+      for (Subject<Chef> chefSubject : chefSubjects) {
+        remainingChef = chefSubject.getLastNotification();
+        if (remainingChef != null) {
+          break;
+        }
+      }
+      if (remainingChef == null) {
+        this.nearbyChef = null;
+        uiController.hideActions(this);
+      } else if (remainingChef != nearbyChef) {
+        this.nearbyChef = remainingChef;
+        uiController.showActions(this, getActionTypes());
+      } else {
+        uiController.showActions(this, getActionTypes());
+      }
     }
   }
 
   @Override
-  public void setSubject(Subject<Chef> chefSubject) {
-    this.chefSubject = chefSubject;
+  public void addSubject(Subject<Chef> chefSubject) {
+    this.chefSubjects.add(chefSubject);
   }
 
   @Override
-  public Subject<Chef> getSubject() {
-    return this.chefSubject;
+  public void removeSubject(Subject<Chef> chefSubject) {
+    this.chefSubjects.remove(chefSubject);
+  }
+
+  @Override
+  public void deregisterFromAllSubjects() {
+    for (Subject<Chef> chefSubject : this.chefSubjects) {
+      chefSubject.deregister(this);
+    }
+    this.chefSubjects.clear();
+  }
+
+  @Override
+  public List<Subject<Chef>> getSubjects() {
+    return this.chefSubjects;
   }
 
   /**

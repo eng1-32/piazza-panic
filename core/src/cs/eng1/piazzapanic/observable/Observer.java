@@ -1,5 +1,7 @@
 package cs.eng1.piazzapanic.observable;
 
+import java.util.List;
+
 /**
  * An observer can be implemented in a way where it can be registered with a Subject of the same
  * type T which will contains a central value which notifies this observer every time that value
@@ -16,7 +18,11 @@ public interface Observer<T> {
    */
   void update(T update);
 
-  void setSubject(Subject<T> subject);
+  void addSubject(Subject<T> subject);
 
-  Subject<T> getSubject();
+  void removeSubject(Subject<T> subject);
+
+  List<Subject<T>> getSubjects();
+
+  void deregisterFromAllSubjects();
 }

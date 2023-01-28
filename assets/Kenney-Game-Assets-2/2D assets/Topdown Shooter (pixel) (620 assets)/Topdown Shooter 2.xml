@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.9" tiledversion="1.9.2" name="Topdown Shooter 2" tilewidth="16" tileheight="16" spacing="1" tilecount="680" columns="34">
- <image source="Tilesheet/tilesheet_transparent.png" width="577" height="339"/>
-</tileset>

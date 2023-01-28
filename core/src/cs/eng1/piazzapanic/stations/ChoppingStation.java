@@ -1,8 +1,8 @@
 package cs.eng1.piazzapanic.stations;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.TimeUtils;
-import cs.eng1.piazzapanic.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
@@ -13,8 +13,9 @@ public class ChoppingStation extends Station {
 
   protected Ingredient[] validIngredients;
   protected Ingredient currentIngredient = null;
-  protected long chopTime;
-  protected float waitTime = 5;
+  protected float timeChopped;
+  protected float totalTimeToChop = 5f;
+  private boolean progressVisible = false;
 
   public ChoppingStation(int id, TextureRegion image, StationUIController uiController,
       StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
@@ -22,8 +23,25 @@ public class ChoppingStation extends Station {
     validIngredients = ingredients; //A list of the ingredients that can be used by this station.
   }
 
+  @Override
+  public void act(float delta) {
+    //TODO: add time related things here!
+    if (inUse) {
+      timeChopped += delta;
+      uiController.updateProgressValue(this, (timeChopped / totalTimeToChop) * 100f);
+      if (timeChopped >= totalTimeToChop && progressVisible) {
+        currentIngredient.setIsChopped(true);
+        uiController.hideProgressBar(this);
+        uiController.showActions(this, getActionTypes());
+        progressVisible = false;
+        nearbyChef.setPaused(false);
+      }
+    }
+    super.act(delta);
+  }
+
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if (!ingredientToCheck.getCooked()) {
+    if (!ingredientToCheck.getIsChopped()) {
       for (Ingredient item : this.validIngredients) {
         if (ingredientToCheck.getType() == item.getType()) {
           return true;
@@ -40,48 +58,41 @@ public class ChoppingStation extends Station {
       return actionTypes;
     }
     if (currentIngredient == null) {
-      actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+      if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
+        actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+      }
     } else {
+      if (currentIngredient.getIsChopped()) {
+        actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+      }
       if (!inUse) {
         actionTypes.add(StationAction.ActionType.CHOP_ACTION);
       }
-      actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
-
     }
     return actionTypes;
-  }
-
-  @Override
-  public void act(float delta) {
-    //TODO: add time related things here!
-    if (inUse) {
-      waitTime -= delta;
-      if (waitTime <= 0) {
-        currentIngredient.setChopped(true);
-        nearbyChef.setPaused(false);
-        waitTime = 5;
-      }
-    }
-    super.act(delta);
   }
 
   @Override
   public void doStationAction(StationAction.ActionType action) {
     switch (action) {
       case CHOP_ACTION:
-        // TODO: implement
-        chopTime = TimeUtils.millis();
+        timeChopped = 0;
         inUse = true;
-        uiController.showActions(this, getActionTypes());
+        uiController.hideActions(this);
+        uiController.showProgressBar(this);
         nearbyChef.setPaused(true);
+        progressVisible = true;
         break;
+
       case PLACE_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
           if ((this.isCorrectIngredient(nearbyChef.getStack().peek()))) {
             currentIngredient = nearbyChef.placeIngredient();
           }
         }
+        uiController.showActions(this, getActionTypes());
         break;
+
       case GRAB_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.canGrabIngredient()
             && currentIngredient != null) {
@@ -89,8 +100,17 @@ public class ChoppingStation extends Station {
           currentIngredient = null;
           inUse = false;
         }
+        uiController.showActions(this, getActionTypes());
         break;
     }
-    uiController.showActions(this, getActionTypes());
   }
+
+  @Override
+  public void draw(Batch batch, float parentAlpha) {
+    super.draw(batch, parentAlpha);
+    if (currentIngredient != null) {
+      drawFoodTexture(batch, currentIngredient.getTexture());
+    }
+  }
+
 }

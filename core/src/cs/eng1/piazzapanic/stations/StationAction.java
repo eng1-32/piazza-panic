@@ -8,6 +8,9 @@ public class StationAction {
     FLIP_ACTION,
     PLACE_INGREDIENT,
     GRAB_INGREDIENT,
+    MAKE_BURGER,
+    MAKE_SALAD,
+    SUBMIT_ORDER,
   }
 
   public static String getActionDescription(ActionType actionType) {
@@ -22,6 +25,12 @@ public class StationAction {
         return "Grab Item";
       case PLACE_INGREDIENT:
         return "Place Item";
+      case MAKE_BURGER:
+        return "Make Burger";
+      case MAKE_SALAD:
+        return "Make Salad";
+      case SUBMIT_ORDER:
+        return "Submit Order";
       default:
         return "Unknown Action";
     }

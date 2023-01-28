@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import cs.eng1.piazzapanic.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
 /**
@@ -50,10 +50,15 @@ public class Chef extends Actor {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-//    batch.draw(image, getX(), getY(), getWidth(), getHeight());
-    batch.draw(image, getX(), getY(), getWidth() / 2f, getHeight() / 2f, imageBounds.x,
-        imageBounds.y,
-        1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false, false);
+    batch.draw(image, getX() + (1 - imageBounds.x) / 2f, getY() + (1 - imageBounds.y) / 2f,
+        imageBounds.x / 2f, imageBounds.y / 2f, imageBounds.x,
+        imageBounds.y, 1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false,
+        false);
+    for (Ingredient ingredient : ingredientStack) {
+      Texture texture = ingredient.getTexture();
+      batch.draw(texture, getX() + 0.5f, getY() + 0.2f, 0f, 0.3f, 0.6f, 0.6f, 1f, 1f,
+          imageRotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+    }
   }
 
   @Override
@@ -72,7 +77,7 @@ public class Chef extends Actor {
   private void getInput() {
     inputVector.x = 0;
     inputVector.y = 0;
-    if (!isInputEnabled() || isPaused() ) {
+    if (!isInputEnabled() || isPaused()) {
       return;
     }
     float x = 0f;
@@ -122,13 +127,13 @@ public class Chef extends Actor {
    */
   private Rectangle getCollisionObjectBoundaries(float x, float y) {
     Actor actorHit = getStage().hit(x, y, false);
-    Cell tileHit = chefManager.getCellAtPosition(x, getY());
+    Cell tileHit = chefManager.getCellAtPosition((int) Math.floor(x), (int) Math.floor(y));
 
     if (tileHit != null) {
       return new Rectangle((float) Math.floor(x), (float) Math.floor(y), 1, 1);
     } else if (actorHit instanceof Station || actorHit instanceof Chef) {
-      return new Rectangle(actorHit.getX(), actorHit.getY(),
-          actorHit.getWidth(), actorHit.getHeight());
+      return new Rectangle(actorHit.getX(), actorHit.getY(), actorHit.getWidth(),
+          actorHit.getHeight());
     } else {
       return null;
     }
@@ -198,7 +203,7 @@ public class Chef extends Actor {
       // Calculate new change in y relative to the collision object boundaries
       float adjustment = -getHeight() - collisionSkin - getY();
       if (hitBoundsLeft != null) {
-        yMovement = hitBoundsLeft.y + adjustment;
+        yMovement = Math.min(yMovement, hitBoundsLeft.y + adjustment);
       }
       if (hitBoundsMiddle != null) {
         yMovement = Math.min(yMovement, hitBoundsMiddle.y + adjustment);
@@ -217,7 +222,7 @@ public class Chef extends Actor {
       // Calculate new change in y relative to the collision object boundaries
       float adjustment = collisionSkin - getY();
       if (hitBoundsLeft != null) {
-        yMovement = hitBoundsLeft.y + hitBoundsLeft.height + adjustment;
+        yMovement = Math.max(yMovement, hitBoundsLeft.y + hitBoundsLeft.height + adjustment);
       }
       if (hitBoundsMiddle != null) {
         yMovement = Math.max(yMovement, hitBoundsMiddle.y + hitBoundsMiddle.height + adjustment);
@@ -245,7 +250,9 @@ public class Chef extends Actor {
     return ingredientStack.pop();
   }
 
-  public FixedStack<Ingredient> getStack(){return ingredientStack;}
+  public FixedStack<Ingredient> getStack() {
+    return ingredientStack;
+  }
 
   /**
    * Sets the input vector based on x and y, but ensuring that the vector is never greater than a
@@ -270,11 +277,11 @@ public class Chef extends Actor {
     this.inputEnabled = inputEnabled;
   }
 
-  public boolean isPaused(){
+  public boolean isPaused() {
     return paused;
   }
 
-  public void setPaused(boolean pauseValue){
+  public void setPaused(boolean pauseValue) {
     this.paused = pauseValue;
   }
 }
