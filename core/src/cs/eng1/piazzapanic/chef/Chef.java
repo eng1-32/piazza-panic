@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import cs.eng1.piazzapanic.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
 /**
@@ -50,10 +50,15 @@ public class Chef extends Actor {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-//    batch.draw(image, getX(), getY(), getWidth(), getHeight());
-    batch.draw(image, getX(), getY(), getWidth() / 2f, getHeight() / 2f, imageBounds.x,
-        imageBounds.y,
-        1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false, false);
+    batch.draw(image, getX() + (1 - imageBounds.x) / 2f, getY() + (1 - imageBounds.y) / 2f,
+        imageBounds.x / 2f, imageBounds.y / 2f, imageBounds.x,
+        imageBounds.y, 1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false,
+        false);
+    for (Ingredient ingredient : ingredientStack) {
+      Texture texture = ingredient.getTexture();
+      batch.draw(texture, getX() + 0.5f, getY() + 0.2f, 0f, 0.3f, 0.6f, 0.6f, 1f, 1f,
+          imageRotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+    }
   }
 
   @Override
@@ -127,8 +132,8 @@ public class Chef extends Actor {
     if (tileHit != null) {
       return new Rectangle((float) Math.floor(x), (float) Math.floor(y), 1, 1);
     } else if (actorHit instanceof Station || actorHit instanceof Chef) {
-      return new Rectangle(actorHit.getX(), actorHit.getY(),
-          actorHit.getWidth(), actorHit.getHeight());
+      return new Rectangle(actorHit.getX(), actorHit.getY(), actorHit.getWidth(),
+          actorHit.getHeight());
     } else {
       return null;
     }

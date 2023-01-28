@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -44,6 +45,10 @@ public class Station extends Actor implements Observer<Chef> {
   public void draw(Batch batch, float parentAlpha) {
     batch.draw(stationImage, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1f, 1f,
         imageRotation);
+  }
+
+  protected void drawFoodTexture(Batch batch, Texture foodTexture) {
+    batch.draw(foodTexture, getX() + .2f, getY() + .2f, .6f, .6f);
   }
 
   /**
