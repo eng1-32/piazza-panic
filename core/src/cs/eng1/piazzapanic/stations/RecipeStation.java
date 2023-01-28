@@ -43,13 +43,14 @@ public class RecipeStation extends Station {
           actionTypes.add(ActionType.PLACE_INGREDIENT);
         }
       }
-      if (pattyCount >= 1 && bunCount >= 1 && nearbyChef.getStack().hasSpace()) {
-        actionTypes.add(ActionType.MAKE_BURGER);
-      }
-      if (tomatoCount >= 1 && lettuceCount >= 1 && nearbyChef.getStack().hasSpace()) {
-        actionTypes.add(ActionType.MAKE_SALAD);
-      }
-      if (completedRecipe != null && customerManager.checkRecipe(completedRecipe)) {
+      if (completedRecipe == null) {
+        if (pattyCount >= 1 && bunCount >= 1 && nearbyChef.getStack().hasSpace()) {
+          actionTypes.add(ActionType.MAKE_BURGER);
+        }
+        if (tomatoCount >= 1 && lettuceCount >= 1 && nearbyChef.getStack().hasSpace()) {
+          actionTypes.add(ActionType.MAKE_SALAD);
+        }
+      } else if (customerManager.checkRecipe(completedRecipe)) {
         actionTypes.add(ActionType.SUBMIT_ORDER);
       }
     }
@@ -123,5 +124,9 @@ public class RecipeStation extends Station {
     if (completedRecipe != null) {
       drawFoodTexture(batch, completedRecipe.getTexture());
     }
+  }
+
+  public void updateOrderActions() {
+    uiController.showActions(this, getActionTypes());
   }
 }

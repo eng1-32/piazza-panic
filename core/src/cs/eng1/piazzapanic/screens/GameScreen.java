@@ -125,6 +125,7 @@ public class GameScreen implements Screen {
         case "recipeStation":
           station = new RecipeStation(id, tileObject.getTextureRegion(), stationUIController,
               alignment, foodTextureManager, customerManager);
+          customerManager.addRecipeStation((RecipeStation) station);
           break;
         default:
           station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);
