@@ -24,7 +24,7 @@ public class ChoppingStation extends Station {
   }
 
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if (!ingredientToCheck.getIsCooked()) {
+    if (!ingredientToCheck.getIsChopped()) {
       for (Ingredient item : this.validIngredients) {
         if (ingredientToCheck.getType() == item.getType()) {
           return true;
