@@ -19,8 +19,12 @@ public class IngredientTextureManager {
         new Texture(Gdx.files.internal("food/glitch/vegetable/lettuce.png")));
     this.ingredientTextures.put("tomato_raw",
         new Texture(Gdx.files.internal("food/glitch/fruit/tomato.png")));
-    this.ingredientTextures.put("bun_raw",
-        new Texture(Gdx.files.internal("food/glitch/fruit/tomato.png")));
+    this.ingredientTextures.put("bun",
+        new Texture(Gdx.files.internal("food/glitch/misc/bun.png")));
+    this.ingredientTextures.put("burger",
+        new Texture(Gdx.files.internal("food/glitch/misc/sandwich_burger_04.png")));
+    this.ingredientTextures.put("salad",
+        new Texture(Gdx.files.internal("food/glitch/misc/salad.png")));
     notFoundImage = new Texture(Gdx.files.internal("badlogic.jpg"));
   }
 

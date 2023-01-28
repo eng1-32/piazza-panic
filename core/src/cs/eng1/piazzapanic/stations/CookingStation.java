@@ -43,6 +43,7 @@ public class CookingStation extends Station {
         progressVisible = false;
       }
     }
+    super.act(delta);
   }
 
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
@@ -63,16 +64,16 @@ public class CookingStation extends Station {
       return actionTypes;
     }
     if (currentIngredient == null) {
-      actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+      if (isCorrectIngredient(nearbyChef.getStack().peek())) {
+        actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+      }
     } else {
-      if (currentIngredient instanceof Patty) {
-        //check to see if total number of seconds has passed to progress the state of the patty.
-        if (timeCooked >= totalTimeToCook && inUse && ((Patty) currentIngredient).getIsHalfCooked()
-            && !currentIngredient.getIsCooked()) {
-          actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-        } else if (timeCooked >= totalTimeToCook && inUse && currentIngredient.getIsCooked()) {
-          actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
-        }
+      //check to see if total number of seconds has passed to progress the state of the patty.
+      if (currentIngredient instanceof Patty && ((Patty) currentIngredient).getIsHalfCooked()
+          && !currentIngredient.getIsCooked()) {
+        actionTypes.add(StationAction.ActionType.FLIP_ACTION);
+      } else if (currentIngredient.getIsCooked()) {
+        actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
       }
       if (!inUse) {
         actionTypes.add(StationAction.ActionType.COOK_ACTION);
