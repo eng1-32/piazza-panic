@@ -48,6 +48,9 @@ public class CustomerManager {
     }
     notifyRecipeStations();
     overlay.updateRecipeUI(currentOrder);
+    if (currentOrder == null) {
+      overlay.finishGameUI();
+    }
   }
 
   private void notifyRecipeStations() {

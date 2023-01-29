@@ -29,6 +29,15 @@ public class Timer extends Label {
     isRunning = false;
   }
 
+  public void setTime(float time) {
+    totalTime = time;
+    updateTimer();
+  }
+
+  public float getTime() {
+    return totalTime;
+  }
+
   @Override
   public void act(float delta) {
     if (isRunning) {
