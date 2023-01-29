@@ -15,6 +15,11 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The RecipeStation class is a station representing the place in the kitchen
+ * where you combine ingredients to create food. The food can then be served to
+ * the customer via the station.
+ */
 public class RecipeStation extends Station {
 
   private final FoodTextureManager textureManager;
@@ -33,6 +38,12 @@ public class RecipeStation extends Station {
     this.customerManager = customerManager;
   }
 
+  /**
+   * Obtains the actions that can be currently performed depending on
+   * the states of the station itself and the selected chef
+   *
+   * @return actionTypes - the list of actions the station can currently perform.
+   */
   @Override
   public List<ActionType> getActionTypes() {
     LinkedList<ActionType> actionTypes = new LinkedList<>();

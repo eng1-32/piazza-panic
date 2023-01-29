@@ -9,6 +9,7 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class CookingStation extends Station {
@@ -49,7 +50,7 @@ public class CookingStation extends Station {
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
     if (!ingredientToCheck.getIsCooked()) {
       for (Ingredient item : this.validIngredients) {
-        if (ingredientToCheck.getType() == item.getType()) {
+        if (Objects.equals(ingredientToCheck.getType(), item.getType())) {
           return true;
         }
       }
