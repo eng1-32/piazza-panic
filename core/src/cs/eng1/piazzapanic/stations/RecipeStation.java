@@ -14,6 +14,7 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The RecipeStation class is a station representing the place in the kitchen
@@ -21,7 +22,6 @@ import java.util.List;
  * the customer via the station.
  */
 public class RecipeStation extends Station {
-
   private final FoodTextureManager textureManager;
   private final CustomerManager customerManager;
   protected int bunCount = 0;
@@ -30,6 +30,19 @@ public class RecipeStation extends Station {
   protected int tomatoCount = 0;
   private Recipe completedRecipe = null;
 
+  /**
+   * The constructor method for the class
+   *
+   * @param id                    The unique identifier of the station
+   * @param textureRegion         The rectangular area of the texture
+   * @param stationUIController   The controller from which we can get show and hide the action
+   *                              buttons belonging to the station
+   * @param alignment             Dictates where the action buttons are shown
+   * @param textureManager        The controller from which we can get information on what texture
+   *                              each ingredient should have
+   * @param customerManager       The controller from which we can get information on what food
+   *                              needs to be served
+   */
   public RecipeStation(int id, TextureRegion textureRegion, StationUIController stationUIController,
       ActionAlignment alignment, FoodTextureManager textureManager,
       CustomerManager customerManager) {
@@ -50,7 +63,9 @@ public class RecipeStation extends Station {
     if (nearbyChef != null) {
       if (!nearbyChef.getStack().isEmpty()) {
         Ingredient checkItem = nearbyChef.getStack().peek();
-        if (checkItem.getIsChopped() || checkItem.getIsCooked() || checkItem.getType() == "bun") {
+        if (checkItem.getIsChopped() || checkItem.getIsCooked() || Objects.equals(checkItem.getType(), "bun")) {
+          //If a chef is nearby and is carrying at least one ingredient
+          // and the top ingredient is cooked, chopped or a bun then display the action
           actionTypes.add(ActionType.PLACE_INGREDIENT);
         }
       }
@@ -68,6 +83,12 @@ public class RecipeStation extends Station {
     return actionTypes;
   }
 
+  /**
+   * Given an action, the station should attempt to do that action based on the chef that is nearby
+   * or what ingredient(s) are currently on the station.
+   *
+   * @param action the action that needs to be done by this station if it can.
+   */
   @Override
   public void doStationAction(ActionType action) {
     switch (action) {
@@ -117,6 +138,13 @@ public class RecipeStation extends Station {
     uiController.showActions(this, getActionTypes());
   }
 
+  /**
+   * Displays ingredients that have been placed on the station
+   *
+   * @param batch       Used to display a 2D texture
+   * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
+   *           children.
+   */
   @Override
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);
@@ -137,6 +165,9 @@ public class RecipeStation extends Station {
     }
   }
 
+  /**
+   * Updates the current available actions based on the new customer's order
+   */
   public void updateOrderActions() {
     uiController.showActions(this, getActionTypes());
   }
