@@ -64,19 +64,19 @@ public class RecipeStation extends Station {
         Ingredient topItem = nearbyChef.getStack().peek();
         switch (topItem.getType()) {
           case "patty":
-            nearbyChef.getStack().pop();
+            nearbyChef.placeIngredient();
             pattyCount += 1;
             break;
           case "tomato":
-            nearbyChef.getStack().pop();
+            nearbyChef.placeIngredient();
             tomatoCount += 1;
             break;
           case "lettuce":
-            nearbyChef.getStack().pop();
+            nearbyChef.placeIngredient();
             lettuceCount += 1;
             break;
           case "bun":
-            nearbyChef.getStack().pop();
+            nearbyChef.placeIngredient();
             bunCount += 1;
             break;
         }

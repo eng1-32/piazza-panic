@@ -25,6 +25,7 @@ import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
+import cs.eng1.piazzapanic.ui.UIOverlay;
 
 import java.util.HashMap;
 
@@ -40,8 +41,10 @@ public class GameScreen implements Screen {
   private final ChefManager chefManager;
   private final OrthogonalTiledMapRenderer tileMapRenderer;
   private final StationUIController stationUIController;
+  private final UIOverlay uiOverlay;
   private final FoodTextureManager foodTextureManager;
   private final CustomerManager customerManager;
+  private boolean isFirstFrame = true;
 
   public GameScreen(final PiazzaPanicGame game) {
     TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
@@ -57,6 +60,7 @@ public class GameScreen implements Screen {
     ScreenViewport uiViewport = new ScreenViewport();
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage, game);
+    uiOverlay = new UIOverlay(uiStage, game);
 
     // Initialize tilemap
     this.tileMapRenderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
@@ -64,9 +68,9 @@ public class GameScreen implements Screen {
     TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get("Foreground");
 
     foodTextureManager = new FoodTextureManager();
-    customerManager = new CustomerManager(5, foodTextureManager);
+    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay);
+    customerManager = new CustomerManager(5, uiOverlay);
 
-    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer);
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
@@ -170,6 +174,8 @@ public class GameScreen implements Screen {
     multiplexer.addProcessor(uiStage);
     multiplexer.addProcessor(stage);
     Gdx.input.setInputProcessor(multiplexer);
+    uiOverlay.init();
+    customerManager.init(foodTextureManager);
   }
 
   @Override
@@ -189,6 +195,11 @@ public class GameScreen implements Screen {
 
     stage.draw();
     uiStage.draw();
+
+    if (isFirstFrame) {
+      customerManager.nextRecipe();
+      isFirstFrame = false;
+    }
   }
 
   @Override

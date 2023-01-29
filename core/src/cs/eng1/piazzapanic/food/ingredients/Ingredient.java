@@ -1,6 +1,9 @@
 package cs.eng1.piazzapanic.food.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
+
+import java.util.LinkedList;
+import java.util.List;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Ingredient {
@@ -13,6 +16,15 @@ public class Ingredient {
   public Ingredient(String type, FoodTextureManager textureManager) {
     this.type = type;
     this.textureManager = textureManager;
+  }
+
+  @Override
+  public String toString() {
+    String output = getType() + "_";
+    if (isChopped) output += "chopped";
+    else if (isCooked) output += "cooked";
+    else output += "raw";
+    return output;
   }
 
   /**

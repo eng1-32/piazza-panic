@@ -32,7 +32,7 @@ public class TutorialOverlay {
     bgPixmap.setColor(Color.LIGHT_GRAY);
     bgPixmap.fill();
     TextureRegionDrawable textureRegionDrawableBg = new TextureRegionDrawable(
-        new TextureRegion(new Texture(bgPixmap)));
+        new Texture(bgPixmap));
     table.setBackground(textureRegionDrawableBg);
 
     int labelWidth = Math.max((int) (0.9f * Gdx.graphics.getWidth()), 1000);

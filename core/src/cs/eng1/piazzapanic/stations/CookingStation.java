@@ -70,7 +70,7 @@ public class CookingStation extends Station {
     } else {
       //check to see if total number of seconds has passed to progress the state of the patty.
       if (currentIngredient instanceof Patty && ((Patty) currentIngredient).getIsHalfCooked()
-          && !currentIngredient.getIsCooked()) {
+          && !currentIngredient.getIsCooked() && !progressVisible) {
         actionTypes.add(StationAction.ActionType.FLIP_ACTION);
       } else if (currentIngredient.getIsCooked()) {
         actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
