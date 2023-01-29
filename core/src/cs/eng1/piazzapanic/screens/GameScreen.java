@@ -44,6 +44,7 @@ public class GameScreen implements Screen {
   private final UIOverlay uiOverlay;
   private final FoodTextureManager foodTextureManager;
   private final CustomerManager customerManager;
+  private boolean isFirstFrame = true;
 
   public GameScreen(final PiazzaPanicGame game) {
     TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
@@ -59,6 +60,7 @@ public class GameScreen implements Screen {
     ScreenViewport uiViewport = new ScreenViewport();
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage, game);
+    uiOverlay = new UIOverlay(uiStage, game);
 
     // Initialize tilemap
     this.tileMapRenderer = new OrthogonalTiledMapRenderer(map, tileUnitSize);
@@ -66,10 +68,9 @@ public class GameScreen implements Screen {
     TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get("Foreground");
 
     foodTextureManager = new FoodTextureManager();
-    customerManager = new CustomerManager(5, foodTextureManager);
-
-    uiOverlay = new UIOverlay(uiStage, game);
     chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay);
+    customerManager = new CustomerManager(5, uiOverlay);
+
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
@@ -173,6 +174,8 @@ public class GameScreen implements Screen {
     multiplexer.addProcessor(uiStage);
     multiplexer.addProcessor(stage);
     Gdx.input.setInputProcessor(multiplexer);
+    uiOverlay.init();
+    customerManager.init(foodTextureManager);
   }
 
   @Override
@@ -192,6 +195,11 @@ public class GameScreen implements Screen {
 
     stage.draw();
     uiStage.draw();
+
+    if (isFirstFrame) {
+      customerManager.nextRecipe();
+      isFirstFrame = false;
+    }
   }
 
   @Override

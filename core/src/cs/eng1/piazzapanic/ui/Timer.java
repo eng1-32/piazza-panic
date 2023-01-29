@@ -9,15 +9,32 @@ import java.text.DecimalFormat;
 public class Timer extends Label {
 
   private float totalTime = 0;
+  private boolean isRunning = false;
 
   public Timer(Label.LabelStyle labelStyle) {
     super("0:00", labelStyle);
   }
 
+  public void reset() {
+    stop();
+    totalTime = 0;
+    setText("0:00");
+  }
+
+  public void start() {
+    isRunning = true;
+  }
+
+  public void stop() {
+    isRunning = false;
+  }
+
   @Override
   public void act(float delta) {
-    totalTime += delta;
-    updateTimer();
+    if (isRunning) {
+      totalTime += delta;
+      updateTimer();
+    }
   }
 
   public void updateTimer() {

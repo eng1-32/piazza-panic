@@ -110,7 +110,7 @@ public class ChefManager {
       currentChef = chef;
       currentChef.setInputEnabled(true);
     }
-    overlay.updateChefUI(this);
+    overlay.updateChefUI(currentChef);
   }
 
   public Chef getCurrentChef() {
@@ -118,6 +118,6 @@ public class ChefManager {
   }
 
   public void currentChefStackUpdated() {
-    overlay.updateChefUI(this);
+    overlay.updateChefUI(currentChef);
   }
 }

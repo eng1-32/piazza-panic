@@ -5,6 +5,7 @@ import cs.eng1.piazzapanic.food.recipes.Burger;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.food.recipes.Salad;
 import cs.eng1.piazzapanic.stations.RecipeStation;
+import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -12,18 +13,24 @@ import java.util.Random;
 public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
+  private final int numCustomers;
   private Recipe currentOrder;
   private final List<RecipeStation> recipeStations;
+  private final UIOverlay overlay;
 
-  public CustomerManager(int numCustomers, FoodTextureManager textureManager) {
+  public CustomerManager(int numCustomers, UIOverlay overlay) {
+    this.overlay = overlay;
     this.recipeStations = new LinkedList<>();
-    Recipe[] possibleRecipes = new Recipe[]{new Burger(textureManager), new Salad(textureManager)};
+    this.numCustomers = numCustomers;
     customerOrders = new Queue<>(numCustomers);
+  }
+
+  public void init(FoodTextureManager textureManager) {
+    Recipe[] possibleRecipes = new Recipe[]{new Burger(textureManager), new Salad(textureManager)};
     for (int i = 0; i < numCustomers; i++) {
       Random rnd = new Random();
       customerOrders.addLast(possibleRecipes[rnd.nextInt(possibleRecipes.length)]);
     }
-    currentOrder = customerOrders.removeFirst();
   }
 
   public boolean checkRecipe(Recipe recipe) {
@@ -40,6 +47,7 @@ public class CustomerManager {
       currentOrder = customerOrders.removeFirst();
     }
     notifyRecipeStations();
+    overlay.updateRecipeUI(currentOrder);
   }
 
   private void notifyRecipeStations() {
