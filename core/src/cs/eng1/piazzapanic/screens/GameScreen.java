@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -69,7 +70,7 @@ public class GameScreen implements Screen {
 
     foodTextureManager = new FoodTextureManager();
     chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay);
-    customerManager = new CustomerManager(5, uiOverlay);
+    customerManager = new CustomerManager(uiOverlay);
 
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
@@ -175,7 +176,14 @@ public class GameScreen implements Screen {
     multiplexer.addProcessor(stage);
     Gdx.input.setInputProcessor(multiplexer);
     uiOverlay.init();
+    chefManager.init();
     customerManager.init(foodTextureManager);
+
+    for (Actor actor : stage.getActors().items) {
+      if (actor instanceof Station) {
+        ((Station) actor).reset();
+      }
+    }
   }
 
   @Override
@@ -228,5 +236,7 @@ public class GameScreen implements Screen {
     stage.dispose();
     uiStage.dispose();
     tileMapRenderer.dispose();
+    foodTextureManager.dispose();
+    chefManager.dispose();
   }
 }

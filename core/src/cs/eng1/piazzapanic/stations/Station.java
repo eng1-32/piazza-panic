@@ -37,6 +37,11 @@ public class Station extends Actor implements Observer<Chef> {
     this.uiController = uiController;
   }
 
+  public void reset() {
+    uiController.hideActions(this);
+    uiController.hideProgressBar(this);
+  }
+
   public void setImageRotation(float rotation) {
     this.imageRotation = rotation;
   }

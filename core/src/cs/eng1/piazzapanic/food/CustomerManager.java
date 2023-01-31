@@ -13,23 +13,24 @@ import java.util.Random;
 public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
-  private final int numCustomers;
   private Recipe currentOrder;
   private final List<RecipeStation> recipeStations;
   private final UIOverlay overlay;
 
-  public CustomerManager(int numCustomers, UIOverlay overlay) {
+  public CustomerManager(UIOverlay overlay) {
     this.overlay = overlay;
     this.recipeStations = new LinkedList<>();
-    this.numCustomers = numCustomers;
-    customerOrders = new Queue<>(numCustomers);
+    customerOrders = new Queue<>();
   }
 
   public void init(FoodTextureManager textureManager) {
     Recipe[] possibleRecipes = new Recipe[]{new Burger(textureManager), new Salad(textureManager)};
-    for (int i = 0; i < numCustomers; i++) {
-      Random rnd = new Random();
-      customerOrders.addLast(possibleRecipes[rnd.nextInt(possibleRecipes.length)]);
+
+    // Salad, Burger, Burger, Salad, Burger. This can be replaced by randomly selecting from
+    // possibleRecipes or by using another scenario
+    int[] recipeIndices = new int[]{1, 0, 0, 1, 0};
+    for (int recipeIndex : recipeIndices) {
+      customerOrders.addLast(possibleRecipes[recipeIndex]);
     }
   }
 

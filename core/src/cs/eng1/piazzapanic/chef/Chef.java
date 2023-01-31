@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
@@ -15,7 +16,7 @@ import cs.eng1.piazzapanic.stations.Station;
  * The Chef class is an actor representing a chef in the kitchen. It can pick up and put down
  * ingredients and interact with stations.
  */
-public class Chef extends Actor {
+public class Chef extends Actor implements Disposable {
 
   /**
    * image, imageBounds and imageRotation are all used to display the chef to the user and show the
@@ -45,6 +46,13 @@ public class Chef extends Actor {
     this.imageBounds = imageBounds;
     this.chefManager = chefManager;
     inputVector = new Vector2();
+  }
+
+  public void init(float x, float y) {
+    setX(x);
+    setY(y);
+    getStack().clear();
+    imageRotation = 0;
   }
 
   @Override
@@ -295,5 +303,10 @@ public class Chef extends Actor {
     if (chefManager.getCurrentChef() == this) {
       chefManager.currentChefStackUpdated();
     }
+  }
+
+  @Override
+  public void dispose() {
+    image.dispose();
   }
 }

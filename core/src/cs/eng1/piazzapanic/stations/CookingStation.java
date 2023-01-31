@@ -27,6 +27,15 @@ public class CookingStation extends Station {
   }
 
   @Override
+  public void reset() {
+    currentIngredient = null;
+    timeCooked = 0;
+    progressVisible = false;
+    super.reset();
+  }
+
+
+  @Override
   public void act(float delta) {
     if (inUse) {
       timeCooked += delta;
@@ -39,8 +48,8 @@ public class CookingStation extends Station {
           currentIngredient.setIsCooked(true);
         }
         uiController.hideProgressBar(this);
-        uiController.showActions(this, getActionTypes());
         progressVisible = false;
+        uiController.showActions(this, getActionTypes());
       }
     }
     super.act(delta);

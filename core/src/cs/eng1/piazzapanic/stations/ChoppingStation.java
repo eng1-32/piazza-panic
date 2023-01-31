@@ -105,6 +105,14 @@ public class ChoppingStation extends Station {
   }
 
   @Override
+  public void reset() {
+    currentIngredient = null;
+    timeChopped = 0;
+    progressVisible = false;
+    super.reset();
+  }
+
+  @Override
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);
     if (currentIngredient != null) {

@@ -34,6 +34,16 @@ public class RecipeStation extends Station {
   }
 
   @Override
+  public void reset() {
+    bunCount = 0;
+    pattyCount = 0;
+    lettuceCount = 0;
+    tomatoCount = 0;
+    completedRecipe = null;
+    super.reset();
+  }
+
+  @Override
   public List<ActionType> getActionTypes() {
     LinkedList<ActionType> actionTypes = new LinkedList<>();
     if (nearbyChef != null) {
