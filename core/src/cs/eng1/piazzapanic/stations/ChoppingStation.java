@@ -17,10 +17,10 @@ import java.util.Objects;
  */
 public class ChoppingStation extends Station {
 
-  protected Ingredient[] validIngredients;
+  protected final Ingredient[] validIngredients;
   protected Ingredient currentIngredient = null;
   protected float timeChopped;
-  protected float totalTimeToChop = 5f;
+  protected final float totalTimeToChop = 5f;
   private boolean progressVisible = false;
 
   /**
@@ -149,13 +149,6 @@ public class ChoppingStation extends Station {
     }
   }
 
-  /**
-   * Displays ingredients that have been placed on the station
-   *
-   * @param batch       Used to display a 2D texture
-   * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
-   *           children.
-   */
   @Override
   public void reset() {
     currentIngredient = null;
@@ -164,6 +157,14 @@ public class ChoppingStation extends Station {
     super.reset();
   }
 
+
+  /**
+   * Displays ingredients that have been placed on the station
+   *
+   * @param batch       Used to display a 2D texture
+   * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the
+   *                    parent's alpha to affect all children.
+   */
   @Override
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);

@@ -25,14 +25,14 @@ public class ChefManager implements Disposable {
   private Chef currentChef = null;
   private final TiledMapTileLayer collisionLayer;
   private final UIOverlay overlay;
-  String[] chefSprites = new String[]{
+  final String[] chefSprites = new String[]{
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png"
   };
-  float[] chefX = new float[]{
+  final float[] chefX = new float[]{
       5f, 10f
   };
-  float[] chefY = new float[]{
+  final float[] chefY = new float[]{
       3f, 3f
   };
 

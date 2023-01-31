@@ -8,7 +8,6 @@ import cs.eng1.piazzapanic.stations.RecipeStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class CustomerManager {
 
@@ -38,7 +37,7 @@ public class CustomerManager {
     if (currentOrder == null) {
       return false;
     }
-    return recipe.getType() == currentOrder.getType();
+    return recipe.getType().equals(currentOrder.getType());
   }
 
   public void nextRecipe() {

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class IngredientStation extends Station {
 
-  protected Ingredient ingredientDispensed;
+  protected final Ingredient ingredientDispensed;
 
   public IngredientStation(int id, TextureRegion image, StationUIController uiController,
       StationActionUI.ActionAlignment alignment, Ingredient ingredient) {

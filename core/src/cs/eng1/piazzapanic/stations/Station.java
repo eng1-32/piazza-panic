@@ -21,11 +21,11 @@ public class Station extends Actor implements Observer<Chef> {
   protected final int id;
   protected final StationUIController uiController;
   protected final StationActionUI.ActionAlignment actionAlignment;
-  protected TextureRegion stationImage;
+  protected final TextureRegion stationImage;
 
   protected boolean inUse = false;
 
-  protected List<Subject<Chef>> chefSubjects = new LinkedList<>();
+  protected final List<Subject<Chef>> chefSubjects = new LinkedList<>();
   protected Chef nearbyChef = null;
   private float imageRotation = 0.0f;
 

@@ -1,7 +1,6 @@
 package cs.eng1.piazzapanic.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import cs.eng1.piazzapanic.PiazzaPanicGame;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

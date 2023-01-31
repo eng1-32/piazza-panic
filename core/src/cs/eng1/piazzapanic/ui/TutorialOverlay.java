@@ -1,10 +1,8 @@
 package cs.eng1.piazzapanic.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -13,18 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
-import cs.eng1.piazzapanic.ui.ButtonManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 public class TutorialOverlay {
 
   private final Table table;
 
-  PiazzaPanicGame game;
-
-
   public TutorialOverlay(final PiazzaPanicGame game) {
-    this.game = game;
     this.table = new Table();
     table.setFillParent(true);
     table.setVisible(false);
@@ -34,8 +27,6 @@ public class TutorialOverlay {
     TextureRegionDrawable textureRegionDrawableBg = new TextureRegionDrawable(
         new Texture(bgPixmap));
     table.setBackground(textureRegionDrawableBg);
-
-    int labelWidth = Math.max((int) (0.9f * Gdx.graphics.getWidth()), 1000);
 
     LabelStyle labelStyle = new LabelStyle(game.getFontManager().getHeaderFont(), Color.BLACK);
     Label chefMovement = new Label(

@@ -17,7 +17,7 @@ public class StationCollider extends Actor implements Subject<Chef> {
 
   private Chef recentChef;
   private final ChefManager chefManager;
-  protected List<Observer<Chef>> observers;
+  protected final List<Observer<Chef>> observers;
 
   public StationCollider(ChefManager manager) {
     chefManager = manager;

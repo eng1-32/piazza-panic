@@ -9,9 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
-import cs.eng1.piazzapanic.PiazzaPanicGame;
 
-import java.awt.Font;
 import java.util.HashMap;
 
 /**
@@ -24,8 +22,8 @@ public class ButtonManager implements Disposable {
     BLUE, GREEN, GREY, RED, YELLOW
   }
 
-  HashMap<ButtonColour, TextButton.TextButtonStyle> textButtonStyles;
-  HashMap<ButtonColour, Button.ButtonStyle> imageButtonBaseStyles;
+  final HashMap<ButtonColour, TextButton.TextButtonStyle> textButtonStyles;
+  final HashMap<ButtonColour, Button.ButtonStyle> imageButtonBaseStyles;
 
   /**
    * @param fontManager the fontManager from which this class can get the right fonts required.
