@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -33,6 +34,7 @@ public class UIOverlay {
   private final Image recipeImagesBG;
   private final VerticalGroup recipeImages;
   private final Timer timer;
+  private final Label recipeCountLabel;
   private final Label resultLabel;
   private final Timer resultTimer;
   private final PiazzaPanicGame game;
@@ -40,15 +42,18 @@ public class UIOverlay {
   public UIOverlay(Stage uiStage, final PiazzaPanicGame game) {
     this.game = game;
 
+    // Initialize table
     Table table = new Table();
     table.setFillParent(true);
     table.center().top().pad(15f);
     uiStage.addActor(table);
 
+    // Initialise pointer image
     pointer = new Image(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_sliderDown.png"));
     pointer.setScaling(Scaling.none);
 
+    // Initialize UI for showing current chef
     chefDisplay = new Stack();
     chefDisplay.add(new Image(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png")));
@@ -56,6 +61,7 @@ public class UIOverlay {
     chefImage.setScaling(Scaling.fit);
     chefDisplay.add(chefImage);
 
+    // Initialize UI for showing current chef's ingredient stack
     Stack ingredientStackDisplay = new Stack();
     ingredientImagesBG = new Image(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
@@ -65,12 +71,14 @@ public class UIOverlay {
     ingredientImages.padBottom(10f);
     ingredientStackDisplay.add(ingredientImages);
 
+    // Initialize the timer
     LabelStyle timerStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
     timerStyle.background = new TextureRegionDrawable(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
     timer = new Timer(timerStyle);
     timer.setAlignment(Align.center);
 
+    // Initialize the home button
     ImageButton homeButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
             new Texture(
                 Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
@@ -84,6 +92,7 @@ public class UIOverlay {
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 
+    // Initialize the UI to display the currently requested recipe
     Stack recipeDisplay = new Stack();
     recipeImagesBG = new Image(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
@@ -91,6 +100,9 @@ public class UIOverlay {
     recipeDisplay.add(recipeImagesBG);
     recipeImages = new VerticalGroup();
     recipeDisplay.add(recipeImages);
+
+    LabelStyle counterStyle = new LabelStyle(game.getFontManager().getHeaderFont(), Color.BLACK);
+    recipeCountLabel = new Label("0", counterStyle);
 
     LabelStyle labelStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
     resultLabel = new Label("Congratulations! Your final time was:", labelStyle);
@@ -167,6 +179,7 @@ public class UIOverlay {
       return;
     }
     recipeImages.clearChildren();
+    recipeImages.addActor(recipeCountLabel);
     for (String recipeIngredient : recipe.getRecipeIngredients()) {
       Image image = new Image(recipe.getTextureManager().getTexture(recipeIngredient));
       image.getDrawable().setMinHeight(chefDisplay.getHeight());
@@ -179,5 +192,9 @@ public class UIOverlay {
     recipeImage.getDrawable().setMinWidth(chefDisplay.getWidth());
     recipeImages.addActor(recipeImage);
     recipeImagesBG.setVisible(true);
+  }
+
+  public void updateRecipeCounter(int remainingRecipes) {
+    recipeCountLabel.setText(remainingRecipes);
   }
 }

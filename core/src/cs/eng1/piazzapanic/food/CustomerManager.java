@@ -43,7 +43,9 @@ public class CustomerManager {
   public void nextRecipe() {
     if (customerOrders.isEmpty()) {
       currentOrder = null;
+      overlay.updateRecipeCounter(0);
     } else {
+      overlay.updateRecipeCounter(customerOrders.size);
       currentOrder = customerOrders.removeFirst();
     }
     notifyRecipeStations();
