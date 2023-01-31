@@ -37,6 +37,9 @@ public class Station extends Actor implements Observer<Chef> {
     this.uiController = uiController;
   }
 
+  /**
+   * Reset the station values to be the default.
+   */
   public void reset() {
     uiController.hideActions(this);
     uiController.hideProgressBar(this);
@@ -52,6 +55,12 @@ public class Station extends Actor implements Observer<Chef> {
         imageRotation);
   }
 
+  /**
+   * Take a food texture and render it on top of the station at a smaller size than the station.
+   *
+   * @param batch       the sprite batch to draw rectangles to the screen.
+   * @param foodTexture the texture to be drawn onto the screen.
+   */
   protected void drawFoodTexture(Batch batch, Texture foodTexture) {
     batch.draw(foodTexture, getX() + .2f, getY() + .2f, .6f, .6f);
   }
@@ -93,6 +102,12 @@ public class Station extends Actor implements Observer<Chef> {
     shapes.setColor(oldColor);
   }
 
+  /**
+   * Take the chef sent from the Subject and decide what interactions are possible.
+   *
+   * @param chef The chef that the station should interact with which is given from the Subject to
+   *             this Observer.
+   */
   @Override
   public void update(Chef chef) {
     if (chef != null) {

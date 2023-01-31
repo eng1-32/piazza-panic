@@ -72,6 +72,13 @@ public class ChefManager implements Disposable {
     }
   }
 
+  /**
+   * Get the tile in the foreground collision layer at the specified point
+   *
+   * @param x the x coordinate of the tile
+   * @param y the y coordinate of the tile
+   * @return the cell/tile at the coordinates
+   */
   public Cell getCellAtPosition(int x, int y) {
     return collisionLayer.getCell(x, y);
   }

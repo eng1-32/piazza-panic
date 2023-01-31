@@ -46,7 +46,6 @@ public class HomeScreen implements Screen {
         game.loadGameScreen();
       }
     });
-
     TextButton tutorialButton = game.getButtonManager()
         .createTextButton("Tutorial", ButtonManager.ButtonColour.BLUE);
     tutorialButton.sizeBy(3f);
@@ -56,7 +55,6 @@ public class HomeScreen implements Screen {
         tutorialOverlay.show();
       }
     });
-
     TextButton settingsButton = game.getButtonManager()
         .createTextButton("Settings", ButtonManager.ButtonColour.BLUE);
     settingsButton.sizeBy(3f);
@@ -66,7 +64,6 @@ public class HomeScreen implements Screen {
         settingsOverlay.show();
       }
     });
-
     TextButton quitButton = game.getButtonManager()
         .createTextButton("Exit to Desktop", ButtonManager.ButtonColour.RED);
     quitButton.sizeBy(3f);

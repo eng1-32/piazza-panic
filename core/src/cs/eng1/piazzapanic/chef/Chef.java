@@ -25,11 +25,17 @@ public class Chef extends Actor implements Disposable {
   private final Texture image;
   private final Vector2 imageBounds;
   private float imageRotation = 0f;
+
   private final ChefManager chefManager;
   private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
 
   private final Vector2 inputVector;
   private final float speed = 3f;
+
+  /**
+   * a parameter which adds a small amount of distance between the chef's boundaries and any other
+   * objects it can collide with. This helps avoid boundary errors in collision calculations
+   */
   private final float collisionSkin = 0.01f;
   private boolean inputEnabled = true;
   private boolean paused = false;
@@ -137,8 +143,10 @@ public class Chef extends Actor implements Disposable {
     Cell tileHit = chefManager.getCellAtPosition((int) Math.floor(x), (int) Math.floor(y));
 
     if (tileHit != null) {
+      // Return the bounds of the foreground tile that the selected point overlaps
       return new Rectangle((float) Math.floor(x), (float) Math.floor(y), 1, 1);
     } else if (actorHit instanceof Station || actorHit instanceof Chef) {
+      // Return the bounds of the station or chef that the point lies within.
       return new Rectangle(actorHit.getX(), actorHit.getY(), actorHit.getWidth(),
           actorHit.getHeight());
     } else {
@@ -254,6 +262,11 @@ public class Chef extends Actor implements Disposable {
     notifyAboutUpdatedStack();
   }
 
+  /**
+   * Pops the top ingredient from the stack to place on the station
+   *
+   * @return the ingredient that was popped from the stack.
+   */
   public Ingredient placeIngredient() {
     Ingredient ingredient = ingredientStack.pop();
     notifyAboutUpdatedStack();
