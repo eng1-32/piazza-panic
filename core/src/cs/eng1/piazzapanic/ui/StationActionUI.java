@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
@@ -50,6 +49,9 @@ public class StationActionUI extends Table {
     progress = new ProgressBar(0, 100, 0.1f, false, progressBarStyle);
   }
 
+  /**
+   * Initialise and show the progress bar with 0 progress.
+   */
   public void showProgressBar() {
     progress.setValue(0);
     add(progress).pad(10f);
@@ -92,6 +94,9 @@ public class StationActionUI extends Table {
     setVisible(true);
   }
 
+  /**
+   * Hide all the possible actions, while keeping the progress visible if it is there.
+   */
   public void hideActions() {
     setVisible(false);
 

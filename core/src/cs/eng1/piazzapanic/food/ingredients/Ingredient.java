@@ -2,14 +2,12 @@ package cs.eng1.piazzapanic.food.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import java.util.LinkedList;
-import java.util.List;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Ingredient {
 
   private final String type;
-  protected FoodTextureManager textureManager;
+  protected final FoodTextureManager textureManager;
   protected boolean isCooked = false;
   protected  boolean isChopped = false;
 

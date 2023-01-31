@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
@@ -15,7 +16,7 @@ import cs.eng1.piazzapanic.stations.Station;
  * The Chef class is an actor representing a chef in the kitchen. It can pick up and put down
  * ingredients and interact with stations.
  */
-public class Chef extends Actor {
+public class Chef extends Actor implements Disposable {
 
   /**
    * image, imageBounds and imageRotation are all used to display the chef to the user and show the
@@ -24,11 +25,17 @@ public class Chef extends Actor {
   private final Texture image;
   private final Vector2 imageBounds;
   private float imageRotation = 0f;
+
   private final ChefManager chefManager;
   private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
 
   private final Vector2 inputVector;
   private final float speed = 3f;
+
+  /**
+   * a parameter which adds a small amount of distance between the chef's boundaries and any other
+   * objects it can collide with. This helps avoid boundary errors in collision calculations
+   */
   private final float collisionSkin = 0.01f;
   private boolean inputEnabled = true;
   private boolean paused = false;
@@ -45,6 +52,13 @@ public class Chef extends Actor {
     this.imageBounds = imageBounds;
     this.chefManager = chefManager;
     inputVector = new Vector2();
+  }
+
+  public void init(float x, float y) {
+    setX(x);
+    setY(y);
+    getStack().clear();
+    imageRotation = 0;
   }
 
   @Override
@@ -129,8 +143,10 @@ public class Chef extends Actor {
     Cell tileHit = chefManager.getCellAtPosition((int) Math.floor(x), (int) Math.floor(y));
 
     if (tileHit != null) {
+      // Return the bounds of the foreground tile that the selected point overlaps
       return new Rectangle((float) Math.floor(x), (float) Math.floor(y), 1, 1);
     } else if (actorHit instanceof Station || actorHit instanceof Chef) {
+      // Return the bounds of the station or chef that the point lies within.
       return new Rectangle(actorHit.getX(), actorHit.getY(), actorHit.getWidth(),
           actorHit.getHeight());
     } else {
@@ -246,6 +262,11 @@ public class Chef extends Actor {
     notifyAboutUpdatedStack();
   }
 
+  /**
+   * Pops the top ingredient from the stack to place on the station
+   *
+   * @return the ingredient that was popped from the stack.
+   */
   public Ingredient placeIngredient() {
     Ingredient ingredient = ingredientStack.pop();
     notifyAboutUpdatedStack();
@@ -291,9 +312,18 @@ public class Chef extends Actor {
     return image;
   }
 
+  /**
+   * Whenever the stack has items added or removed from it, notify the chef manager about the new
+   * stack.
+   */
   public void notifyAboutUpdatedStack() {
     if (chefManager.getCurrentChef() == this) {
       chefManager.currentChefStackUpdated();
     }
+  }
+
+  @Override
+  public void dispose() {
+    image.dispose();
   }
 }

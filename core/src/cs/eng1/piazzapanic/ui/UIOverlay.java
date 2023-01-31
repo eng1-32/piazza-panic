@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,9 +19,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.Chef;
-import cs.eng1.piazzapanic.chef.ChefManager;
-import cs.eng1.piazzapanic.chef.FixedStack;
-import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
@@ -36,6 +34,7 @@ public class UIOverlay {
   private final Image recipeImagesBG;
   private final VerticalGroup recipeImages;
   private final Timer timer;
+  private final Label recipeCountLabel;
   private final Label resultLabel;
   private final Timer resultTimer;
   private final PiazzaPanicGame game;
@@ -43,15 +42,18 @@ public class UIOverlay {
   public UIOverlay(Stage uiStage, final PiazzaPanicGame game) {
     this.game = game;
 
+    // Initialize table
     Table table = new Table();
     table.setFillParent(true);
     table.center().top().pad(15f);
     uiStage.addActor(table);
 
+    // Initialise pointer image
     pointer = new Image(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_sliderDown.png"));
     pointer.setScaling(Scaling.none);
 
+    // Initialize UI for showing current chef
     chefDisplay = new Stack();
     chefDisplay.add(new Image(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png")));
@@ -59,6 +61,7 @@ public class UIOverlay {
     chefImage.setScaling(Scaling.fit);
     chefDisplay.add(chefImage);
 
+    // Initialize UI for showing current chef's ingredient stack
     Stack ingredientStackDisplay = new Stack();
     ingredientImagesBG = new Image(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
@@ -68,12 +71,14 @@ public class UIOverlay {
     ingredientImages.padBottom(10f);
     ingredientStackDisplay.add(ingredientImages);
 
+    // Initialize the timer
     LabelStyle timerStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
     timerStyle.background = new TextureRegionDrawable(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
     timer = new Timer(timerStyle);
     timer.setAlignment(Align.center);
 
+    // Initialize the home button
     ImageButton homeButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
             new Texture(
                 Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
@@ -87,6 +92,7 @@ public class UIOverlay {
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 
+    // Initialize the UI to display the currently requested recipe
     Stack recipeDisplay = new Stack();
     recipeImagesBG = new Image(new Texture(
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
@@ -95,12 +101,18 @@ public class UIOverlay {
     recipeImages = new VerticalGroup();
     recipeDisplay.add(recipeImages);
 
+    // Initialize counter for showing remaining recipes
+    LabelStyle counterStyle = new LabelStyle(game.getFontManager().getHeaderFont(), Color.BLACK);
+    recipeCountLabel = new Label("0", counterStyle);
+
+    // Initialize winning label
     LabelStyle labelStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
     resultLabel = new Label("Congratulations! Your final time was:", labelStyle);
     resultLabel.setVisible(false);
     resultTimer = new Timer(labelStyle);
     resultTimer.setVisible(false);
 
+    // Add everything
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
     table.add(chefDisplay).left().width(scale).height(scale);
@@ -116,13 +128,23 @@ public class UIOverlay {
     table.add(resultTimer).colspan(3);
   }
 
+  /**
+   * Reset values and UI to be in their default state.
+   */
   public void init() {
     timer.reset();
     timer.start();
     resultLabel.setVisible(false);
     resultTimer.setVisible(false);
+    updateChefUI(null);
   }
 
+  /**
+   * Show the image of the currently selected chef as well as have the stack of ingredients
+   * currently held by the chef.
+   *
+   * @param chef The chef that is currently selected for which to show the UI.
+   */
   public void updateChefUI(final Chef chef) {
     if (chef == null) {
       chefImage.setDrawable(null);
@@ -155,6 +177,9 @@ public class UIOverlay {
 
   }
 
+  /**
+   * Show the label displaying that the game has finished along with the time it took to complete.
+   */
   public void finishGameUI() {
     resultLabel.setVisible(true);
     resultTimer.setTime(timer.getTime());
@@ -162,6 +187,12 @@ public class UIOverlay {
     timer.stop();
   }
 
+  /**
+   * Show the current requested recipe that the player needs to make, the ingredients for that, and
+   * the number of remaining recipes.
+   *
+   * @param recipe The recipe to display the ingredients for.
+   */
   public void updateRecipeUI(Recipe recipe) {
     // recipe will be null when we reach the end of the scenario
     if (recipe == null) {
@@ -170,6 +201,7 @@ public class UIOverlay {
       return;
     }
     recipeImages.clearChildren();
+    recipeImages.addActor(recipeCountLabel);
     for (String recipeIngredient : recipe.getRecipeIngredients()) {
       Image image = new Image(recipe.getTextureManager().getTexture(recipeIngredient));
       image.getDrawable().setMinHeight(chefDisplay.getHeight());
@@ -182,5 +214,14 @@ public class UIOverlay {
     recipeImage.getDrawable().setMinWidth(chefDisplay.getWidth());
     recipeImages.addActor(recipeImage);
     recipeImagesBG.setVisible(true);
+  }
+
+  /**
+   * Update the number of remaining recipes to be displayed.
+   *
+   * @param remainingRecipes The number of remaining recipes.
+   */
+  public void updateRecipeCounter(int remainingRecipes) {
+    recipeCountLabel.setText(remainingRecipes);
   }
 }

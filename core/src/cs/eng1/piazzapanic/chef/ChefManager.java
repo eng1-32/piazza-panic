@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,22 @@ import java.util.List;
  * The controller that handles switching control between chefs and tells them about the surrounding
  * environment.
  */
-public class ChefManager {
+public class ChefManager implements Disposable {
 
   private final ArrayList<Chef> chefs;
   private Chef currentChef = null;
   private final TiledMapTileLayer collisionLayer;
   private final UIOverlay overlay;
+  final String[] chefSprites = new String[]{
+      "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
+      "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png"
+  };
+  final float[] chefX = new float[]{
+      5f, 10f
+  };
+  final float[] chefY = new float[]{
+      3f, 3f
+  };
 
   /**
    * @param chefScale      the amount to scale the texture by so that each chef is an accurate
@@ -37,16 +48,6 @@ public class ChefManager {
     this.overlay = overlay;
 
     // Load chef sprites
-    String[] chefSprites = new String[]{
-        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
-        "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png"
-    };
-    float[] chefX = new float[]{
-        5f, 10f
-    };
-    float[] chefY = new float[]{
-        3f, 3f
-    };
     chefs = new ArrayList<>(chefSprites.length);
 
     // Initialize chefs
@@ -62,6 +63,22 @@ public class ChefManager {
     }
   }
 
+  /**
+   * Reset each chef to their original position when you load
+   */
+  public void init() {
+    for (int i = 0; i < chefs.size(); i++) {
+      chefs.get(i).init(chefX[i], chefY[i]);
+    }
+  }
+
+  /**
+   * Get the tile in the foreground collision layer at the specified point
+   *
+   * @param x the x coordinate of the tile
+   * @param y the y coordinate of the tile
+   * @return the cell/tile at the coordinates
+   */
   public Cell getCellAtPosition(int x, int y) {
     return collisionLayer.getCell(x, y);
   }
@@ -117,7 +134,17 @@ public class ChefManager {
     return currentChef;
   }
 
+  /**
+   * Update the UI when the current chef's stack has been updated
+   */
   public void currentChefStackUpdated() {
     overlay.updateChefUI(currentChef);
+  }
+
+  @Override
+  public void dispose() {
+    for (Chef chef : chefs) {
+      chef.dispose();
+    }
   }
 }

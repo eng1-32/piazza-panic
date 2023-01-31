@@ -1,5 +1,5 @@
 {
-    "activeFile": "big-map.tmx",
+    "activeFile": "main-game-map.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -16,11 +16,11 @@
             }
         },
         "main-game-map.tmx": {
-            "scale": 0.084423828125,
-            "selectedLayer": 0,
+            "scale": 0.2078,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 2724.34933487565,
-                "y": 580.4048582995947
+                "x": 1152.5505293551494,
+                "y": 486.0442733397497
             }
         }
     },
@@ -30,7 +30,7 @@
     ],
     "project": "piazza-panic.tiled-project",
     "recentFiles": [
-        "main-game-map.tmx",
-        "big-map.tmx"
+        "big-map.tmx",
+        "main-game-map.tmx"
     ]
 }

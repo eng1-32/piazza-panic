@@ -30,5 +30,8 @@ public interface Subject<T> {
    */
   void notifyObservers(T update);
 
+  /**
+   * @return the most recent value that was sent to the observers.
+   */
   T getLastNotification();
 }

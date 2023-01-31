@@ -19,6 +19,11 @@ public class Patty extends Ingredient {
     return halfCooked;
   }
 
+  /**
+   * Get the texture based on whether the patty has been cooked.
+   *
+   * @return the texture to display.
+   */
   @Override
   public Texture getTexture() {
     String name = getType() + "_";

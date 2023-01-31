@@ -9,6 +9,11 @@ public class Lettuce extends Ingredient {
     super("lettuce", textureManager);
   }
 
+  /**
+   * Get the texture based on whether the lettuce has been chopped.
+   *
+   * @return the texture to display.
+   */
   @Override
   public Texture getTexture() {
     String name = getType() + "_";

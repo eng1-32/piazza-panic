@@ -8,42 +8,59 @@ import cs.eng1.piazzapanic.stations.RecipeStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
-  private final int numCustomers;
   private Recipe currentOrder;
   private final List<RecipeStation> recipeStations;
   private final UIOverlay overlay;
 
-  public CustomerManager(int numCustomers, UIOverlay overlay) {
+  public CustomerManager(UIOverlay overlay) {
     this.overlay = overlay;
     this.recipeStations = new LinkedList<>();
-    this.numCustomers = numCustomers;
-    customerOrders = new Queue<>(numCustomers);
+    customerOrders = new Queue<>();
   }
 
+  /**
+   * Reset the scenario to the default scenario.
+   *
+   * @param textureManager The manager of food textures that can be passed to the recipes
+   */
   public void init(FoodTextureManager textureManager) {
     Recipe[] possibleRecipes = new Recipe[]{new Burger(textureManager), new Salad(textureManager)};
-    for (int i = 0; i < numCustomers; i++) {
-      Random rnd = new Random();
-      customerOrders.addLast(possibleRecipes[rnd.nextInt(possibleRecipes.length)]);
+
+    // Salad, Burger, Burger, Salad, Burger. This can be replaced by randomly selecting from
+    // possibleRecipes or by using another scenario
+    int[] recipeIndices = new int[]{1, 0, 0, 1, 0};
+    for (int recipeIndex : recipeIndices) {
+      customerOrders.addLast(possibleRecipes[recipeIndex]);
     }
   }
 
+  /**
+   * Check to see if the recipe matches the currently requested order.
+   *
+   * @param recipe The recipe to check against the current order.
+   * @return a boolean signifying if the recipe is correct.
+   */
   public boolean checkRecipe(Recipe recipe) {
     if (currentOrder == null) {
       return false;
     }
-    return recipe.getType() == currentOrder.getType();
+    return recipe.getType().equals(currentOrder.getType());
   }
 
+  /**
+   * Complete the current order nad move on to the next one. Then update the UI. If all the recipes
+   * are completed, then show the winning UI.
+   */
   public void nextRecipe() {
     if (customerOrders.isEmpty()) {
       currentOrder = null;
+      overlay.updateRecipeCounter(0);
     } else {
+      overlay.updateRecipeCounter(customerOrders.size);
       currentOrder = customerOrders.removeFirst();
     }
     notifyRecipeStations();
@@ -53,6 +70,10 @@ public class CustomerManager {
     }
   }
 
+  /**
+   * If one recipe station has been updated, let all the other ones know that there is a new recipe
+   * to be built.
+   */
   private void notifyRecipeStations() {
     for (RecipeStation recipeStation : recipeStations) {
       recipeStation.updateOrderActions();

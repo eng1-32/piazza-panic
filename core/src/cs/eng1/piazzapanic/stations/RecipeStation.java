@@ -51,9 +51,19 @@ public class RecipeStation extends Station {
     this.customerManager = customerManager;
   }
 
+  @Override
+  public void reset() {
+    bunCount = 0;
+    pattyCount = 0;
+    lettuceCount = 0;
+    tomatoCount = 0;
+    completedRecipe = null;
+    super.reset();
+  }
+
   /**
-   * Obtains the actions that can be currently performed depending on
-   * the states of the station itself and the selected chef
+   * Obtains the actions that can be currently performed depending on the states of the station
+   * itself and the selected chef
    *
    * @return actionTypes - the list of actions the station can currently perform.
    */
@@ -63,7 +73,8 @@ public class RecipeStation extends Station {
     if (nearbyChef != null) {
       if (!nearbyChef.getStack().isEmpty()) {
         Ingredient checkItem = nearbyChef.getStack().peek();
-        if (checkItem.getIsChopped() || checkItem.getIsCooked() || Objects.equals(checkItem.getType(), "bun")) {
+        if (checkItem.getIsChopped() || checkItem.getIsCooked() || Objects.equals(
+            checkItem.getType(), "bun")) {
           //If a chef is nearby and is carrying at least one ingredient
           // and the top ingredient is cooked, chopped or a bun then display the action
           actionTypes.add(ActionType.PLACE_INGREDIENT);
