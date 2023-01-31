@@ -49,6 +49,9 @@ public class StationActionUI extends Table {
     progress = new ProgressBar(0, 100, 0.1f, false, progressBarStyle);
   }
 
+  /**
+   * Initialise and show the progress bar with 0 progress.
+   */
   public void showProgressBar() {
     progress.setValue(0);
     add(progress).pad(10f);
@@ -91,6 +94,9 @@ public class StationActionUI extends Table {
     setVisible(true);
   }
 
+  /**
+   * Hide all the possible actions, while keeping the progress visible if it is there.
+   */
   public void hideActions() {
     setVisible(false);
 

@@ -18,6 +18,7 @@ public class TutorialOverlay {
   private final Table table;
 
   public TutorialOverlay(final PiazzaPanicGame game) {
+    // Initialize table
     this.table = new Table();
     table.setFillParent(true);
     table.setVisible(false);
@@ -28,12 +29,14 @@ public class TutorialOverlay {
         new Texture(bgPixmap));
     table.setBackground(textureRegionDrawableBg);
 
+    // Initialize movement instructions label
     LabelStyle labelStyle = new LabelStyle(game.getFontManager().getHeaderFont(), Color.BLACK);
     Label chefMovement = new Label(
         "Left click on a chef to select them. Then use WASD or the arrow keys to move around.",
         labelStyle);
     chefMovement.setWrap(true);
 
+    // Initialize station usage label
     Label stationUsage = new Label(
         "Move towards a station to get possible actions to appear as buttons including placing ingredients, picking up ingredients, and dealing with the ingredients.",
         labelStyle);
@@ -48,6 +51,7 @@ public class TutorialOverlay {
       }
     });
 
+    // Add items to table
     table.pad(100f);
     table.add(chefMovement).fillX().expandX().pad(20f).padTop(0f);
     table.row();
