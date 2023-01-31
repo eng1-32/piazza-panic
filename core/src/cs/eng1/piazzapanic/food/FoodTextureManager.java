@@ -33,8 +33,13 @@ public class FoodTextureManager implements Disposable {
     notFoundImage = new Texture(Gdx.files.internal("badlogic.jpg"));
   }
 
-  public Texture getTexture(String ingredientType) {
-    Texture texture = foodTextures.get(ingredientType);
+  /**
+   * @param foodType The food string to get the corresponding texture from the hashmap.
+   * @return the texture for the specified food or an image to signify that the texture does not
+   * exist.
+   */
+  public Texture getTexture(String foodType) {
+    Texture texture = foodTextures.get(foodType);
     if (texture != null) {
       return texture;
     } else {

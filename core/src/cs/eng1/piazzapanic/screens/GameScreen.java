@@ -184,6 +184,7 @@ public class GameScreen implements Screen {
         ((Station) actor).reset();
       }
     }
+    isFirstFrame = true;
   }
 
   @Override

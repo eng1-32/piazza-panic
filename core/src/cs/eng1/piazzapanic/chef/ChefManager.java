@@ -63,6 +63,9 @@ public class ChefManager implements Disposable {
     }
   }
 
+  /**
+   * Reset each chef to their original position when you load
+   */
   public void init() {
     for (int i = 0; i < chefs.size(); i++) {
       chefs.get(i).init(chefX[i], chefY[i]);
@@ -124,6 +127,9 @@ public class ChefManager implements Disposable {
     return currentChef;
   }
 
+  /**
+   * Update the UI when the current chef's stack has been updated
+   */
   public void currentChefStackUpdated() {
     overlay.updateChefUI(currentChef);
   }

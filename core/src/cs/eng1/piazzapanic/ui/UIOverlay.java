@@ -101,15 +101,18 @@ public class UIOverlay {
     recipeImages = new VerticalGroup();
     recipeDisplay.add(recipeImages);
 
+    // Initialize counter for showing remaining recipes
     LabelStyle counterStyle = new LabelStyle(game.getFontManager().getHeaderFont(), Color.BLACK);
     recipeCountLabel = new Label("0", counterStyle);
 
+    // Initialize winning label
     LabelStyle labelStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
     resultLabel = new Label("Congratulations! Your final time was:", labelStyle);
     resultLabel.setVisible(false);
     resultTimer = new Timer(labelStyle);
     resultTimer.setVisible(false);
 
+    // Add everything
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
     table.add(chefDisplay).left().width(scale).height(scale);
@@ -125,13 +128,23 @@ public class UIOverlay {
     table.add(resultTimer).colspan(3);
   }
 
+  /**
+   * Reset values and UI to be in their default state.
+   */
   public void init() {
     timer.reset();
     timer.start();
     resultLabel.setVisible(false);
     resultTimer.setVisible(false);
+    updateChefUI(null);
   }
 
+  /**
+   * Show the image of the currently selected chef as well as have the stack of ingredients
+   * currently held by the chef.
+   *
+   * @param chef The chef that is currently selected for which to show the UI.
+   */
   public void updateChefUI(final Chef chef) {
     if (chef == null) {
       chefImage.setDrawable(null);
@@ -164,6 +177,9 @@ public class UIOverlay {
 
   }
 
+  /**
+   * Show the label displaying that the game has finished along with the time it took to complete.
+   */
   public void finishGameUI() {
     resultLabel.setVisible(true);
     resultTimer.setTime(timer.getTime());
@@ -171,6 +187,12 @@ public class UIOverlay {
     timer.stop();
   }
 
+  /**
+   * Show the current requested recipe that the player needs to make, the ingredients for that, and
+   * the number of remaining recipes.
+   *
+   * @param recipe The recipe to display the ingredients for.
+   */
   public void updateRecipeUI(Recipe recipe) {
     // recipe will be null when we reach the end of the scenario
     if (recipe == null) {
@@ -194,6 +216,11 @@ public class UIOverlay {
     recipeImagesBG.setVisible(true);
   }
 
+  /**
+   * Update the number of remaining recipes to be displayed.
+   *
+   * @param remainingRecipes The number of remaining recipes.
+   */
   public void updateRecipeCounter(int remainingRecipes) {
     recipeCountLabel.setText(remainingRecipes);
   }

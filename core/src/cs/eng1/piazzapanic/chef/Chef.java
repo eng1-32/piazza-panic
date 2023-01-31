@@ -299,6 +299,10 @@ public class Chef extends Actor implements Disposable {
     return image;
   }
 
+  /**
+   * Whenever the stack has items added or removed from it, notify the chef manager about the new
+   * stack.
+   */
   public void notifyAboutUpdatedStack() {
     if (chefManager.getCurrentChef() == this) {
       chefManager.currentChefStackUpdated();
