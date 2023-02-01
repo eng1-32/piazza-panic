@@ -42,6 +42,12 @@ public class TutorialOverlay {
         labelStyle);
     stationUsage.setWrap(true);
 
+    // Initialize recipe creation label
+    Label recipeLabel = new Label(
+        "Take the ingredients and process them as required for the recipe shown on the right. Then take them to the counter (table with the orange tablecloth) to build the recipe and complete the order.",
+        labelStyle);
+    recipeLabel.setWrap(true);
+
     TextButton backButton = game.getButtonManager()
         .createTextButton("Done", ButtonManager.ButtonColour.GREY);
     backButton.addListener(new ClickListener() {
@@ -56,6 +62,8 @@ public class TutorialOverlay {
     table.add(chefMovement).fillX().expandX().pad(20f).padTop(0f);
     table.row();
     table.add(stationUsage).fillX().expandX().pad(20f).padTop(0f);
+    table.row();
+    table.add(recipeLabel).fillX().expandX().pad(20f).padTop(0f);
     table.row();
     table.add(backButton).padTop(20f);
   }
