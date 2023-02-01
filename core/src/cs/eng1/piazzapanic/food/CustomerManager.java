@@ -32,6 +32,7 @@ public class CustomerManager {
 
     // Salad, Burger, Burger, Salad, Burger. This can be replaced by randomly selecting from
     // possibleRecipes or by using another scenario
+    customerOrders.clear();
     int[] recipeIndices = new int[]{1, 0, 0, 1, 0};
     for (int recipeIndex : recipeIndices) {
       customerOrders.addLast(possibleRecipes[recipeIndex]);
