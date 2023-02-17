@@ -34,6 +34,8 @@ public class UIOverlay {
   private final Image recipeImagesBG;
   private final VerticalGroup recipeImages;
   private final Timer timer;
+  public static Money money;
+
   private final Label recipeCountLabel;
   private final Label resultLabel;
   private final Timer resultTimer;
@@ -41,6 +43,12 @@ public class UIOverlay {
 
   public UIOverlay(Stage uiStage, final PiazzaPanicGame game) {
     this.game = game;
+    // Initialize the money button
+    LabelStyle moneyStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
+    moneyStyle.background = new TextureRegionDrawable(new Texture(
+        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
+    money = new Money(moneyStyle);
+    money.setAlignment(Align.bottom);
 
     // Initialize table
     Table table = new Table();
@@ -80,8 +88,8 @@ public class UIOverlay {
 
     // Initialize the home button
     ImageButton homeButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-            new Texture(
-                Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
         ButtonManager.ButtonColour.BLUE, -1.5f);
     homeButton.addListener(new ClickListener() {
       @Override
@@ -115,12 +123,16 @@ public class UIOverlay {
     // Add everything
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
+
     table.add(chefDisplay).left().width(scale).height(scale);
-    table.add(timer).expandX().width(timerWidth).height(scale);
+    table.add(money).left().width(scale).height(scale);
+
+    table.add(timer).center().width(timerWidth).height(scale);
     table.add(homeButton).right().width(scale).height(scale);
     table.row().padTop(10f);
     table.add(ingredientStackDisplay).left().top().width(scale);
     table.add().expandX().width(timerWidth);
+
     table.add(recipeDisplay).right().top().width(scale);
     table.row();
     table.add(resultLabel).colspan(3);
@@ -134,13 +146,16 @@ public class UIOverlay {
   public void init() {
     timer.reset();
     timer.start();
+    money.reset();
+
     resultLabel.setVisible(false);
     resultTimer.setVisible(false);
     updateChefUI(null);
   }
 
   /**
-   * Show the image of the currently selected chef as well as have the stack of ingredients
+   * Show the image of the currently selected chef as well as have the stack of
+   * ingredients
    * currently held by the chef.
    *
    * @param chef The chef that is currently selected for which to show the UI.
@@ -178,7 +193,8 @@ public class UIOverlay {
   }
 
   /**
-   * Show the label displaying that the game has finished along with the time it took to complete.
+   * Show the label displaying that the game has finished along with the time it
+   * took to complete.
    */
   public void finishGameUI() {
     resultLabel.setVisible(true);
@@ -188,7 +204,8 @@ public class UIOverlay {
   }
 
   /**
-   * Show the current requested recipe that the player needs to make, the ingredients for that, and
+   * Show the current requested recipe that the player needs to make, the
+   * ingredients for that, and
    * the number of remaining recipes.
    *
    * @param recipe The recipe to display the ingredients for.

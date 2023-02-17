@@ -15,6 +15,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -31,8 +33,10 @@ import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.HashMap;
 
 /**
- * The screen which can be used to load the tilemap and keep track of everything happening in the
- * game. It does all the initialization and then lets each actor do its actions based on the current
+ * The screen which can be used to load the tilemap and keep track of everything
+ * happening in the
+ * game. It does all the initialization and then lets each actor do its actions
+ * based on the current
  * frame.
  */
 public class GameScreen implements Screen {
@@ -46,6 +50,7 @@ public class GameScreen implements Screen {
   private final FoodTextureManager foodTextureManager;
   private final CustomerManager customerManager;
   private boolean isFirstFrame = true;
+  private Skin skin;
 
   public GameScreen(final PiazzaPanicGame game) {
     TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
@@ -57,7 +62,6 @@ public class GameScreen implements Screen {
     OrthographicCamera camera = new OrthographicCamera();
     ExtendViewport viewport = new ExtendViewport(sizeX, sizeY, camera); // Number of tiles
     this.stage = new Stage(viewport);
-
     ScreenViewport uiViewport = new ScreenViewport();
     this.uiStage = new Stage(uiViewport);
     this.stationUIController = new StationUIController(uiStage, game);
@@ -75,12 +79,16 @@ public class GameScreen implements Screen {
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
+
   }
 
   /**
-   * @param tileUnitSize The ratio of world units over the pixel width of a single tile/station
-   * @param objectLayer  The layer on the TMX tilemap which contains all the information about the
-   *                     stations and station colliders including position, bounds and station
+   * @param tileUnitSize The ratio of world units over the pixel width of a single
+   *                     tile/station
+   * @param objectLayer  The layer on the TMX tilemap which contains all the
+   *                     information about the
+   *                     stations and station colliders including position, bounds
+   *                     and station
    *                     capabilities.
    */
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
@@ -119,6 +127,10 @@ public class GameScreen implements Screen {
           station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
               alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
           break;
+        case "bakingStation":
+          station = new BakingStation(id, tileObject.getTextureRegion(), stationUIController,
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
+          break;
         case "ingredientStation":
           station = new IngredientStation(id, tileObject.getTextureRegion(), stationUIController,
               alignment, Ingredient.fromString(ingredients, foodTextureManager));
@@ -139,7 +151,8 @@ public class GameScreen implements Screen {
       float tileY = tileObject.getY() * tileUnitSize;
       float rotation = tileObject.getRotation();
 
-      // Adjust x and y positions based on Tiled quirks with rotation changing the position of the tile
+      // Adjust x and y positions based on Tiled quirks with rotation changing the
+      // position of the tile
       if (rotation == 90) {
         tileY -= 1;
       } else if (rotation == 180) {
@@ -152,6 +165,8 @@ public class GameScreen implements Screen {
       station.setBounds(tileX, tileY, 1, 1);
       station.setImageRotation(-tileObject.getRotation());
       stage.addActor(station);
+
+      // independent buy menu
 
       String colliderIDs = tileObject.getProperties().get("collisionObjectIDs", String.class);
       for (String idString : colliderIDs.split(",")) {
@@ -239,5 +254,6 @@ public class GameScreen implements Screen {
     tileMapRenderer.dispose();
     foodTextureManager.dispose();
     chefManager.dispose();
+    skin.dispose();
   }
 }

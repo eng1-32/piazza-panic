@@ -17,9 +17,10 @@ public class Recipe {
   /**
    * The constructor method for the class
    *
-   * @param type            The food object that inherits the class
-   * @param textureManager  The controller from which we can get information on what texture
-   *                        each food object should have
+   * @param type           The food object that inherits the class
+   * @param textureManager The controller from which we can get information on
+   *                       what texture
+   *                       each food object should have
    */
   public Recipe(String type, FoodTextureManager textureManager) {
     this.type = type;
@@ -50,6 +51,15 @@ public class Recipe {
         ingredientTypes.add("tomato_chopped");
         ingredientTypes.add("lettuce_chopped");
         break;
+      case "bakedPotato":
+        ingredientTypes.add("potato_cooked");
+        break;
+      case "pizza":
+        ingredientTypes.add("tomato_chopped");
+        ingredientTypes.add("dough_cooked");
+        ingredientTypes.add("cheese");
+        break;
+
     }
     return ingredientTypes;
   }

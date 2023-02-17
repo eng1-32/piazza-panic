@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The controller that handles switching control between chefs and tells them about the surrounding
+ * The controller that handles switching control between chefs and tells them
+ * about the surrounding
  * environment.
  */
 public class ChefManager implements Disposable {
@@ -25,22 +26,25 @@ public class ChefManager implements Disposable {
   private Chef currentChef = null;
   private final TiledMapTileLayer collisionLayer;
   private final UIOverlay overlay;
-  final String[] chefSprites = new String[]{
+  final String[] chefSprites = new String[] {
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
-      "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png"
+      "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png",
+      "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Blue/manBlue_hold.png"
   };
-  final float[] chefX = new float[]{
-      5f, 10f
+  final float[] chefX = new float[] {
+      3f, 10f, 12f
   };
-  final float[] chefY = new float[]{
-      3f, 3f
+  final float[] chefY = new float[] {
+      3f, 3f, 6f
   };
 
   /**
-   * @param chefScale      the amount to scale the texture by so that each chef is an accurate
+   * @param chefScale      the amount to scale the texture by so that each chef is
+   *                       an accurate
    *                       size.
    * @param collisionLayer the tile map layer which the chefs can collide with.
-   * @param overlay        the user interface overlay to display information about the current chef
+   * @param overlay        the user interface overlay to display information about
+   *                       the current chef
    *                       and time, and to provide more controls.
    */
   public ChefManager(float chefScale, TiledMapTileLayer collisionLayer, UIOverlay overlay) {
@@ -111,7 +115,8 @@ public class ChefManager implements Disposable {
   }
 
   /**
-   * Given a chef, update the state of the chefs to make sure that only one has input enabled.
+   * Given a chef, update the state of the chefs to make sure that only one has
+   * input enabled.
    *
    * @param chef the chef to be controlled by the user
    */

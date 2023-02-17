@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml"/>
+ <object name="Cooker" class="Station" gid="324" width="128" height="128">
+  <properties>
+   <property name="actionAlignment" value="RIGHT"/>
+   <property name="collisionObjectIDs" value="17"/>
+   <property name="ingredients" value="patty,bun"/>
+   <property name="stationType" value="cookingStation"/>
+  </properties>
+ </object>
+</template>
