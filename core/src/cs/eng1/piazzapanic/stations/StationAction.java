@@ -11,6 +11,8 @@ public class StationAction {
     MAKE_BURGER,
     MAKE_SALAD,
     SUBMIT_ORDER,
+    MAKE_POTATO,
+    MAKE_PIZZA,
   }
 
   public static String getActionDescription(ActionType actionType) {
@@ -29,6 +31,10 @@ public class StationAction {
         return "Make Burger";
       case MAKE_SALAD:
         return "Make Salad";
+      case MAKE_POTATO:
+        return "Make Potato";
+      case MAKE_PIZZA:
+        return "Make Pizza";
       case SUBMIT_ORDER:
         return "Submit Order";
       default:
