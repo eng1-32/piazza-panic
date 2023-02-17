@@ -6,6 +6,7 @@ import cs.eng1.piazzapanic.food.FoodTextureManager;
 public class Patty extends Ingredient {
 
   protected boolean halfCooked = false;
+  protected boolean burn = false;
 
   public Patty(FoodTextureManager textureManager) {
     super("patty", textureManager);
@@ -19,6 +20,10 @@ public class Patty extends Ingredient {
     return halfCooked;
   }
 
+  public void burn() {
+    burn = true;
+  }
+
   /**
    * Get the texture based on whether the patty has been cooked.
    *
@@ -29,9 +34,12 @@ public class Patty extends Ingredient {
     String name = getType() + "_";
     if (isCooked) {
       name += "cooked";
+    } else if (isBurned) {
+      name += "burned";
     } else {
       name += "raw";
     }
+
     return textureManager.getTexture(name);
   }
 }

@@ -1,5 +1,6 @@
 package cs.eng1.piazzapanic.food;
 
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer.Random;
 import com.badlogic.gdx.utils.Queue;
 
 import cs.eng1.piazzapanic.food.recipes.BakedPotato;
@@ -7,8 +8,11 @@ import cs.eng1.piazzapanic.food.recipes.Burger;
 import cs.eng1.piazzapanic.food.recipes.Pizza;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.food.recipes.Salad;
+import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.stations.RecipeStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,9 +43,23 @@ public class CustomerManager {
     // selecting from
     // possibleRecipes or by using another scenario
     customerOrders.clear();
-    int[] recipeIndices = new int[] { 3, 2, 0, 1, 0 };
-    for (int recipeIndex : recipeIndices) {
-      customerOrders.addLast(possibleRecipes[recipeIndex]);
+    if (HomeScreen.mode == 0) {
+      ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
+      for (int i = 0; i < 5; i++) {
+        recipeIndices.add((int) (Math.random() * ((4))));
+      }
+      for (int recipeIndex : recipeIndices) {
+        customerOrders.addLast(possibleRecipes[recipeIndex]);
+      }
+    }
+    if (HomeScreen.mode == 1) {
+      ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
+      for (int i = 0; i < 999; i++) {
+        recipeIndices.add((int) (Math.random() * ((4))));
+      }
+      for (int recipeIndex : recipeIndices) {
+        customerOrders.addLast(possibleRecipes[recipeIndex]);
+      }
     }
   }
 
@@ -65,6 +83,7 @@ public class CustomerManager {
    */
   public void nextRecipe() {
     if (customerOrders.isEmpty()) {
+
       currentOrder = null;
       overlay.updateRecipeCounter(0);
     } else {

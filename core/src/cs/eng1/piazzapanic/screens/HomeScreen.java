@@ -16,7 +16,7 @@ import cs.eng1.piazzapanic.ui.SettingsOverlay;
 import cs.eng1.piazzapanic.ui.TutorialOverlay;
 
 public class HomeScreen implements Screen {
-
+  public static int mode = 0;
   private final Stage uiStage;
 
   public HomeScreen(final PiazzaPanicGame game) {
@@ -43,9 +43,21 @@ public class HomeScreen implements Screen {
     startButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
+        mode = 0;
         game.loadGameScreen();
       }
     });
+    TextButton endlessButton = game.getButtonManager()
+        .createTextButton("Endless", ButtonManager.ButtonColour.BLUE);
+    endlessButton.sizeBy(3f);
+    endlessButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        mode = 1;
+        game.loadGameScreen();
+      }
+    });
+
     TextButton tutorialButton = game.getButtonManager()
         .createTextButton("Tutorial", ButtonManager.ButtonColour.BLUE);
     tutorialButton.sizeBy(3f);
@@ -78,6 +90,8 @@ public class HomeScreen implements Screen {
     table.add(welcomeLabel).padBottom(100f);
     table.row();
     table.add(startButton).padBottom(20f);
+    table.row();
+    table.add(endlessButton).padBottom(20f);
     table.row();
     table.add(tutorialButton).padBottom(20f);
     table.row();
