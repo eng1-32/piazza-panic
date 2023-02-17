@@ -1,0 +1,13 @@
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+eclipse.project.name = appName + "-tests"
+
+test {
+    File runningDir = new File('../assets/')
+    runningDir.mkdirs()
+    workingDir = runningDir
+    jvmArgs += "--add-opens=java.base/java.lang=ALL-UNNAMED"
+}
