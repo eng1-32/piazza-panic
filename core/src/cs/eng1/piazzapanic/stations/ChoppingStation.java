@@ -150,9 +150,6 @@ public class ChoppingStation extends Station {
         }
         uiController.showActions(this, getActionTypes());
         break;
-      case ASSEMBLE_PIZZA:
-        // implement checking for dough, tomato and cheese, then return UncookedPizza
-        break;
     }
   }
 

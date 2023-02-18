@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import cs.eng1.piazzapanic.food.recipes.Burger;
 import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.ingredients.UncookedPizza;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.food.recipes.Salad;
@@ -28,20 +29,26 @@ public class RecipeStation extends Station {
   protected int pattyCount = 0;
   protected int lettuceCount = 0;
   protected int tomatoCount = 0;
+  protected int doughCount = 0;
+  protected int cheeseCount = 0;
   private Recipe completedRecipe = null;
+  private Ingredient assembledPizza = null;
 
   /**
    * The constructor method for the class
    *
-   * @param id                    The unique identifier of the station
-   * @param textureRegion         The rectangular area of the texture
-   * @param stationUIController   The controller from which we can get show and hide the action
-   *                              buttons belonging to the station
-   * @param alignment             Dictates where the action buttons are shown
-   * @param textureManager        The controller from which we can get information on what texture
-   *                              each ingredient should have
-   * @param customerManager       The controller from which we can get information on what food
-   *                              needs to be served
+   * @param id                  The unique identifier of the station
+   * @param textureRegion       The rectangular area of the texture
+   * @param stationUIController The controller from which we can get show and hide
+   *                            the action
+   *                            buttons belonging to the station
+   * @param alignment           Dictates where the action buttons are shown
+   * @param textureManager      The controller from which we can get information
+   *                            on what texture
+   *                            each ingredient should have
+   * @param customerManager     The controller from which we can get information
+   *                            on what food
+   *                            needs to be served
    */
   public RecipeStation(int id, TextureRegion textureRegion, StationUIController stationUIController,
       ActionAlignment alignment, FoodTextureManager textureManager,
@@ -57,12 +64,16 @@ public class RecipeStation extends Station {
     pattyCount = 0;
     lettuceCount = 0;
     tomatoCount = 0;
+    doughCount = 0;
+    cheeseCount = 0;
     completedRecipe = null;
+    assembledPizza = null;
     super.reset();
   }
 
   /**
-   * Obtains the actions that can be currently performed depending on the states of the station
+   * Obtains the actions that can be currently performed depending on the states
+   * of the station
    * itself and the selected chef
    *
    * @return actionTypes - the list of actions the station can currently perform.
@@ -75,27 +86,34 @@ public class RecipeStation extends Station {
         Ingredient checkItem = nearbyChef.getStack().peek();
         if (checkItem.getIsChopped() || checkItem.getIsCooked() || Objects.equals(
             checkItem.getType(), "bun")) {
-          //If a chef is nearby and is carrying at least one ingredient
+          // If a chef is nearby and is carrying at least one ingredient
           // and the top ingredient is cooked, chopped or a bun then display the action
           actionTypes.add(ActionType.PLACE_INGREDIENT);
         }
       }
-      if (completedRecipe == null) {
+      if (completedRecipe == null && assembledPizza == null) {
         if (pattyCount >= 1 && bunCount >= 1 && nearbyChef.getStack().hasSpace()) {
           actionTypes.add(ActionType.MAKE_BURGER);
         }
         if (tomatoCount >= 1 && lettuceCount >= 1 && nearbyChef.getStack().hasSpace()) {
           actionTypes.add(ActionType.MAKE_SALAD);
         }
-      } else if (customerManager.checkRecipe(completedRecipe)) {
-        actionTypes.add(ActionType.SUBMIT_ORDER);
+
+        if (doughCount >= 1 && cheeseCount >= 1 && tomatoCount >= 1 && nearbyChef.getStack().hasSpace()) {
+          actionTypes.add(ActionType.ASSEMBLE_PIZZA);
+        }
+      } else if (assembledPizza != null) {
+        actionTypes.add(ActionType.GRAB_INGREDIENT);
       }
+    } else if (customerManager.checkRecipe(completedRecipe)) {
+      actionTypes.add(ActionType.SUBMIT_ORDER);
     }
     return actionTypes;
   }
 
   /**
-   * Given an action, the station should attempt to do that action based on the chef that is nearby
+   * Given an action, the station should attempt to do that action based on the
+   * chef that is nearby
    * or what ingredient(s) are currently on the station.
    *
    * @param action the action that needs to be done by this station if it can.
@@ -145,6 +163,18 @@ public class RecipeStation extends Station {
           }
         }
         break;
+      case ASSEMBLE_PIZZA:
+        assembledPizza = new UncookedPizza(textureManager);
+        doughCount -= 1;
+        cheeseCount -= 1;
+        tomatoCount -= 1;
+        break;
+      case GRAB_INGREDIENT:
+        if (nearbyChef.canGrabIngredient()) {
+          nearbyChef.grabIngredient(assembledPizza);
+          assembledPizza = null;
+        }
+        break;
     }
     uiController.showActions(this, getActionTypes());
   }
@@ -153,8 +183,9 @@ public class RecipeStation extends Station {
    * Displays ingredients that have been placed on the station
    *
    * @param batch       Used to display a 2D texture
-   * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
-   *           children.
+   * @param parentAlpha The parent alpha, to be multiplied with this actor's
+   *                    alpha, allowing the parent's alpha to affect all
+   *                    children.
    */
   @Override
   public void draw(Batch batch, float parentAlpha) {
