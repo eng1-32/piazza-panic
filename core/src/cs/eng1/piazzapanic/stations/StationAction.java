@@ -8,8 +8,11 @@ public class StationAction {
     FLIP_ACTION,
     PLACE_INGREDIENT,
     GRAB_INGREDIENT,
+    ASSEMBLE_PIZZA,
     MAKE_BURGER,
     MAKE_SALAD,
+    MAKE_PIZZA,
+    MAKE_JACKET,
     SUBMIT_ORDER,
   }
 
@@ -29,6 +32,10 @@ public class StationAction {
         return "Make Burger";
       case MAKE_SALAD:
         return "Make Salad";
+      case MAKE_JACKET:
+        return "Make Jacket Potato";
+      case MAKE_PIZZA:
+        return "Make Pizza";
       case SUBMIT_ORDER:
         return "Submit Order";
       default:

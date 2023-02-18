@@ -5,7 +5,7 @@ import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Patty extends Ingredient {
 
-  protected boolean halfCooked = false;
+  private boolean halfCooked = false;
 
   public Patty(FoodTextureManager textureManager) {
     super("patty", textureManager);

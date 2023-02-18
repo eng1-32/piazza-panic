@@ -26,17 +26,30 @@ public class FoodTextureManager implements Disposable {
         new Texture(Gdx.files.internal("food/original/tomato_chopped.png")));
     this.foodTextures.put("bun",
         new Texture(Gdx.files.internal("food/glitch/misc/bun.png")));
+    this.foodTextures.put("cheese",
+        new Texture(Gdx.files.internal("food/glitch/dairy/cheese_01.png")));
+    this.foodTextures.put("dough",
+        new Texture(Gdx.files.internal("food/glitch/grain/corn.png")));
+    this.foodTextures.put("potato",
+        new Texture(Gdx.files.internal("food/glitch/vegetable/potato.png")));
     this.foodTextures.put("burger",
         new Texture(Gdx.files.internal("food/glitch/misc/sandwich_burger_04.png")));
     this.foodTextures.put("salad",
         new Texture(Gdx.files.internal("food/glitch/misc/salad.png")));
+    this.foodTextures.put("pizza",
+        new Texture(Gdx.files.internal("food/glitch/misc/pizza_01.png")));
+    this.foodTextures.put("jacket potato",
+        new Texture(Gdx.files.internal("food/glitch/misc/ice_cube.png")));
+
     notFoundImage = new Texture(Gdx.files.internal("badlogic.jpg"));
   }
 
   /**
-   * @param foodType The food string to get the corresponding texture from the hashmap.
-   * @return the texture for the specified food or an image to signify that the texture does not
-   * exist.
+   * @param foodType The food string to get the corresponding texture from the
+   *                 hashmap.
+   * @return the texture for the specified food or an image to signify that the
+   *         texture does not
+   *         exist.
    */
   public Texture getTexture(String foodType) {
     Texture texture = foodTextures.get(foodType);

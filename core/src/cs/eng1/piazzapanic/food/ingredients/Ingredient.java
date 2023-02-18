@@ -9,7 +9,7 @@ public class Ingredient {
   private final String type;
   protected final FoodTextureManager textureManager;
   protected boolean isCooked = false;
-  protected  boolean isChopped = false;
+  protected boolean isChopped = false;
 
   public Ingredient(String type, FoodTextureManager textureManager) {
     this.type = type;
@@ -19,16 +19,20 @@ public class Ingredient {
   @Override
   public String toString() {
     String output = getType() + "_";
-    if (isChopped) output += "chopped";
-    else if (isCooked) output += "cooked";
-    else output += "raw";
+    if (isChopped)
+      output += "chopped";
+    else if (isCooked)
+      output += "cooked";
+    else
+      output += "raw";
     return output;
   }
 
   /**
    * Initialize an Ingredient based on a string name
    *
-   * @param ingredientName the name of the ingredient which can be defined from Tiled
+   * @param ingredientName the name of the ingredient which can be defined from
+   *                       Tiled
    * @return the Ingredient of the type defined by the input
    */
   public static Ingredient fromString(String ingredientName,
@@ -42,6 +46,12 @@ public class Ingredient {
         return new Lettuce(textureManager);
       case "bun":
         return new Bun(textureManager);
+      case "cheese":
+        return new Cheese(textureManager);
+      case "potato":
+        return new Potato(textureManager);
+      case "dough":
+        return new Dough(textureManager);
       default:
         return null;
     }
@@ -50,7 +60,8 @@ public class Ingredient {
   /**
    * Initialize an array of ingredients based on the input string.
    *
-   * @param csvIngredientNames A string containing a list of ingredient names seperated by commas
+   * @param csvIngredientNames A string containing a list of ingredient names
+   *                           seperated by commas
    *                           with no whitespace as defined in Tiled
    * @return An array of Ingredient based on the input string
    */
