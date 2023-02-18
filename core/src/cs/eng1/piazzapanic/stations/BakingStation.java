@@ -26,6 +26,7 @@ public class BakingStation extends Station {
     protected float timeCooked;
     protected final float totalTimeToCook = 10f;
     private boolean progressVisible = false;
+    protected float timeCookedBurn;
 
     /**
      * The constructor method for the class
@@ -49,6 +50,8 @@ public class BakingStation extends Station {
     public void reset() {
         currentIngredient = null;
         timeCooked = 0;
+        timeCookedBurn = 0;
+
         progressVisible = false;
         super.reset();
     }
@@ -63,6 +66,8 @@ public class BakingStation extends Station {
     @Override
     public void act(float delta) {
         if (inUse) {
+            timeCookedBurn += delta;
+
             timeCooked += delta;
             uiController.updateProgressValue(this, (timeCooked / totalTimeToCook) * 100f);
             if (timeCooked >= totalTimeToCook && progressVisible) {
@@ -79,6 +84,16 @@ public class BakingStation extends Station {
             }
         }
         super.act(delta);
+        if (timeCookedBurn >= 15f) {
+            if (currentIngredient instanceof Dough || currentIngredient instanceof Potato)
+
+            {
+                currentIngredient.setIsCooked(false);
+                currentIngredient.setIsBurned(true);
+                timeCookedBurn = 0;
+
+            }
+        }
     }
 
     /**

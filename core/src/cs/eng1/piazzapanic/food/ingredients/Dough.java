@@ -30,6 +30,8 @@ public class Dough extends Ingredient {
         String name = getType() + "_";
         if (isCooked) {
             name += "cooked";
+        } else if (isBurned) {
+            name += "burned";
         } else {
             name += "raw";
         }
