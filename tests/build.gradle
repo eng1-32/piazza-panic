@@ -10,4 +10,5 @@ test {
     runningDir.mkdirs()
     workingDir = runningDir
     jvmArgs += "--add-opens=java.base/java.lang=ALL-UNNAMED"
+    finalizedBy jacocoTestReport // report is always generated after tests run
 }

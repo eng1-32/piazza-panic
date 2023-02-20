@@ -9,13 +9,12 @@ buildscript {
         google()
     }
     dependencies {
-
-
     }
 }
 
 allprojects {
     apply plugin: "eclipse"
+    apply plugin: 'checkstyle'
 
     version = '1.0'
     ext {
@@ -26,6 +25,7 @@ allprojects {
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
+        checkstyleVersion = '10.4'
     }
 
     repositories {
@@ -36,6 +36,29 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://jitpack.io" }
+    }
+
+    configurations {
+        checkstyleRules
+    }
+
+    dependencies {
+            checkstyleRules(
+                "com.puppycrawl.tools:checkstyle:${checkstyleVersion}") {
+                transitive = false
+            }
+    }
+
+    checkstyle {
+        toolVersion "${checkstyleVersion}"
+        config = resources.text.fromArchiveEntry(configurations.checkstyleRules, 'google_checks.xml')
+    }
+
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.required = true
+            html.required = true
+        }
     }
 }
 
@@ -53,18 +76,18 @@ project(":desktop") {
 }
 
 project(":core") {
-    apply plugin: "java-library"
-
+    apply plugin: 'java-library'
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-
     }
 }
 
 project(":tests") {
-    apply plugin: "java-library"
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'java-library'
 
     sourceSets.test.java.srcDirs = ["src/"]
 
@@ -82,6 +105,26 @@ project(":tests") {
         testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+
+    gradle.projectsEvaluated {
+        // include src from all dependent projects (compile dependency) in JaCoCo test report
+        jacocoTestReport {
+            // get all projects we have a (compile) dependency on
+            def projs = configurations.implementation.getAllDependencies().withType(ProjectDependency).collect{it.getDependencyProject()}
+            projs.each {
+                additionalSourceDirs files(it.sourceSets.main.java.srcDirs)
+                additionalClassDirs files(it.sourceSets.main.output)
+            }
+
+            reports {
+                // Generate HTML for local preview, xml for CI
+                xml.required = true
+                html.enabled = true
+                xml.outputLocation = layout.buildDirectory.file("jacoco.xml")
+                csv.enabled = false
+            }
+        }
     }
 }
 
