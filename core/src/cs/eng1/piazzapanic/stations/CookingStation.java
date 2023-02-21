@@ -2,9 +2,14 @@ package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.ingredients.Patty;
 import cs.eng1.piazzapanic.food.ingredients.Potato;
+import cs.eng1.piazzapanic.food.ingredients.UncookedPizza;
+import cs.eng1.piazzapanic.food.interfaces.Cookable;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
+import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
@@ -20,10 +25,10 @@ import java.util.Objects;
 public class CookingStation extends Station {
 
   protected final Ingredient[] validIngredients;
-  protected Ingredient currentIngredient;
-  protected float timeCooked;
+  protected Cookable currentIngredient;
   protected final float totalTimeToCook = 10f;
   private boolean progressVisible = false;
+  protected Recipe finishedPizza = null;
 
   /**
    * The constructor method for the class
@@ -46,7 +51,6 @@ public class CookingStation extends Station {
   @Override
   public void reset() {
     currentIngredient = null;
-    timeCooked = 0;
     progressVisible = false;
     super.reset();
   }
@@ -61,20 +65,11 @@ public class CookingStation extends Station {
   @Override
   public void act(float delta) {
     if (inUse) {
-      timeCooked += delta;
-      uiController.updateProgressValue(this, (timeCooked / totalTimeToCook) * 100f);
-      if (timeCooked >= totalTimeToCook && progressVisible) {
-        if (currentIngredient instanceof Patty && !((Patty) currentIngredient).getIsHalfCooked()) {
-          ((Patty) currentIngredient).setHalfCooked();
-        } else if (currentIngredient instanceof Potato && !((Potato) currentIngredient).getIsHalfCooked()) {
-          ((Potato) currentIngredient).setHalfCooked();
-        } else if (currentIngredient instanceof Patty
-            && ((Patty) currentIngredient).getIsHalfCooked() && !currentIngredient.getIsCooked()) {
-          currentIngredient.setIsCooked(true);
-        } else if (currentIngredient instanceof Potato
-            && ((Potato) currentIngredient).getIsHalfCooked() && !currentIngredient.getIsCooked()) {
-          currentIngredient.setIsCooked(true);
-        }
+      currentIngredient.cookingTick(delta);
+
+      uiController.updateProgressValue(this, currentIngredient.getCookingProgress());
+
+      if (currentIngredient.cookingStepComplete() && progressVisible) {
         uiController.hideProgressBar(this);
         progressVisible = false;
         uiController.showActions(this, getActionTypes());
@@ -93,12 +88,10 @@ public class CookingStation extends Station {
    * @return true if the ingredient is in the validIngredients array; false
    *         otherwise
    */
-  private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if (!ingredientToCheck.getIsCooked()) {
-      for (Ingredient item : this.validIngredients) {
-        if (Objects.equals(ingredientToCheck.getType(), item.getType())) {
-          return true;
-        }
+  private boolean isCorrectIngredient(Holdable itemToCheck) {
+    if (itemToCheck instanceof Ingredient) {
+      if (itemToCheck instanceof Cookable) {
+        return true;
       }
     }
     return false;
@@ -118,19 +111,18 @@ public class CookingStation extends Station {
       return actionTypes;
     }
     if (currentIngredient == null) {
+
       if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
         actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
       }
     } else {
       // check to see if total number of seconds has passed to progress the state of
       // the patty.
-      if (currentIngredient instanceof Patty && (((Patty) currentIngredient).getIsHalfCooked()
-          && !currentIngredient.getIsCooked() && !progressVisible)) {
+      if (currentIngredient.cookingStepComplete() && !currentIngredient.getCooked()) {
         actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-      } else if (currentIngredient instanceof Potato && ((Potato) currentIngredient).getIsHalfCooked()
-          && !currentIngredient.getIsCooked() && !progressVisible) {
-        actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-      } else if (currentIngredient.getIsCooked()) {
+      }
+
+      if (currentIngredient.getCooked()) {
         actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
       }
 
@@ -155,7 +147,6 @@ public class CookingStation extends Station {
       case COOK_ACTION:
         // timeCooked is used to track how long the
         // ingredient has been cooking for.
-        timeCooked = 0;
         inUse = true;
         uiController.hideActions(this);
         uiController.showProgressBar(this);
@@ -163,7 +154,7 @@ public class CookingStation extends Station {
         break;
 
       case FLIP_ACTION:
-        timeCooked = 0;
+        currentIngredient.flip();
         uiController.hideActions(this);
         uiController.showProgressBar(this);
         progressVisible = true;
@@ -172,7 +163,7 @@ public class CookingStation extends Station {
       case PLACE_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
           if (this.isCorrectIngredient(nearbyChef.getStack().peek())) {
-            currentIngredient = nearbyChef.placeIngredient();
+            currentIngredient = (Cookable) nearbyChef.placeIngredient();
           }
         }
         uiController.showActions(this, getActionTypes());
@@ -180,7 +171,7 @@ public class CookingStation extends Station {
 
       case GRAB_INGREDIENT:
         if (nearbyChef.canGrabIngredient()) {
-          nearbyChef.grabIngredient(currentIngredient);
+          nearbyChef.grabItem(currentIngredient.getCookingResult());
           currentIngredient = null;
           inUse = false;
         }

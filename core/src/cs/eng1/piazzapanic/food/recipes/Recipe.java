@@ -2,6 +2,8 @@ package cs.eng1.piazzapanic.food.recipes;
 
 import com.badlogic.gdx.graphics.Texture;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * The Recipe class is the parent class of the food classes that
  * dictates what ingredients are needed to make them
  */
-public class Recipe {
+public class Recipe implements Holdable {
 
   private final FoodTextureManager textureManager;
   private final String type;

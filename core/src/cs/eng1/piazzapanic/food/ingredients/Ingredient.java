@@ -3,8 +3,9 @@ package cs.eng1.piazzapanic.food.ingredients;
 import com.badlogic.gdx.graphics.Texture;
 
 import cs.eng1.piazzapanic.food.FoodTextureManager;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
 
-public class Ingredient {
+public class Ingredient implements Holdable {
 
   private final String type;
   protected final FoodTextureManager textureManager;
@@ -52,6 +53,8 @@ public class Ingredient {
         return new Potato(textureManager);
       case "dough":
         return new Dough(textureManager);
+      case "uncooked_pizza":
+        return new UncookedPizza(textureManager);
       default:
         return null;
     }

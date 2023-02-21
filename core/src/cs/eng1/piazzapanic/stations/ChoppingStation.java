@@ -2,7 +2,9 @@ package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
@@ -69,17 +71,20 @@ public class ChoppingStation extends Station {
    * Checks the presented ingredient with the list of
    * valid ingredients to see if it can be chopped
    *
-   * @param ingredientToCheck The ingredient presented by the
-   *                          chef to be checked if it can be used
-   *                          by the station
+   * @param itemToCheck The item presented by the
+   *                    chef to be checked if it can be used
+   *                    by the station
    * @return true if the ingredient is in the validIngredients array; false
    *         otherwise
    */
-  private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
-    if (!ingredientToCheck.getIsChopped()) {
-      for (Ingredient item : this.validIngredients) {
-        if (Objects.equals(ingredientToCheck.getType(), item.getType())) {
-          return true;
+  private boolean isCorrectIngredient(Holdable itemToCheck) {
+    if (itemToCheck instanceof Ingredient) {
+      Ingredient ingredientToCheck = (Ingredient) itemToCheck;
+      if (!ingredientToCheck.getIsChopped()) {
+        for (Ingredient item : this.validIngredients) {
+          if (Objects.equals(ingredientToCheck.getType(), item.getType())) {
+            return true;
+          }
         }
       }
     }
@@ -144,7 +149,7 @@ public class ChoppingStation extends Station {
       case GRAB_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.canGrabIngredient()
             && currentIngredient != null) {
-          nearbyChef.grabIngredient(currentIngredient);
+          nearbyChef.grabItem(currentIngredient);
           currentIngredient = null;
           inUse = false;
         }
