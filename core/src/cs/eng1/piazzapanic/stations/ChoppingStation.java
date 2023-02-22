@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.interfaces.Choppable;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
@@ -19,10 +20,10 @@ import java.util.Objects;
  */
 public class ChoppingStation extends Station {
 
-  protected final Ingredient[] validIngredients;
-  protected Ingredient currentIngredient = null;
-  protected float timeChopped;
   protected final float totalTimeToChop = 5f;
+
+  protected Choppable currentIngredient = null;
+  protected float timeChopped;
   private boolean progressVisible = false;
 
   /**
@@ -39,9 +40,8 @@ public class ChoppingStation extends Station {
    *                     chopped
    */
   public ChoppingStation(int id, TextureRegion image, StationUIController uiController,
-      StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
+      StationActionUI.ActionAlignment alignment) {
     super(id, image, uiController, alignment);
-    validIngredients = ingredients; // A list of the ingredients that can be used by this station.
   }
 
   /**
@@ -54,13 +54,14 @@ public class ChoppingStation extends Station {
   @Override
   public void act(float delta) {
     if (inUse) {
-      timeChopped += delta;
-      uiController.updateProgressValue(this, (timeChopped / totalTimeToChop) * 100f);
-      if (timeChopped >= totalTimeToChop && progressVisible) {
-        currentIngredient.setIsChopped(true);
+      boolean complete = currentIngredient.choppingTick(delta);
+
+      uiController.updateProgressValue(this, currentIngredient.getChoppingProgress());
+      
+      if (complete && progressVisible) {
         uiController.hideProgressBar(this);
-        uiController.showActions(this, getActionTypes());
         progressVisible = false;
+        uiController.showActions(this, getActionTypes());
         nearbyChef.setPaused(false);
       }
     }
@@ -79,13 +80,8 @@ public class ChoppingStation extends Station {
    */
   private boolean isCorrectIngredient(Holdable itemToCheck) {
     if (itemToCheck instanceof Ingredient) {
-      Ingredient ingredientToCheck = (Ingredient) itemToCheck;
-      if (!ingredientToCheck.getIsChopped()) {
-        for (Ingredient item : this.validIngredients) {
-          if (Objects.equals(ingredientToCheck.getType(), item.getType())) {
-            return true;
-          }
-        }
+      if (itemToCheck instanceof Choppable) {
+        return !((Choppable) itemToCheck).getChopped();
       }
     }
     return false;
@@ -108,7 +104,7 @@ public class ChoppingStation extends Station {
         actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
       }
     } else {
-      if (currentIngredient.getIsChopped()) {
+      if (currentIngredient.getChopped()) {
         actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
       }
       if (!inUse) {
@@ -129,7 +125,6 @@ public class ChoppingStation extends Station {
   public void doStationAction(StationAction.ActionType action) {
     switch (action) {
       case CHOP_ACTION:
-        timeChopped = 0;
         inUse = true;
         uiController.hideActions(this);
         uiController.showProgressBar(this);
@@ -140,7 +135,7 @@ public class ChoppingStation extends Station {
       case PLACE_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
           if ((this.isCorrectIngredient(nearbyChef.getStack().peek()))) {
-            currentIngredient = nearbyChef.placeIngredient();
+            currentIngredient = (Choppable) nearbyChef.popIngredient();
           }
         }
         uiController.showActions(this, getActionTypes());
@@ -149,7 +144,7 @@ public class ChoppingStation extends Station {
       case GRAB_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.canGrabIngredient()
             && currentIngredient != null) {
-          nearbyChef.grabItem(currentIngredient);
+          nearbyChef.grabItem(currentIngredient.getChoppingResult());
           currentIngredient = null;
           inUse = false;
         }

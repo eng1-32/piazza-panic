@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.Chef;
-import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
@@ -170,7 +169,7 @@ public class UIOverlay {
       btn.addListener(new ClickListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
-          chef.placeIngredient();
+          chef.popIngredient();
         }
       });
       ingredientImages.addActor(btn);

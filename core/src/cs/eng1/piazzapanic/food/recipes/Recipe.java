@@ -3,7 +3,6 @@ package cs.eng1.piazzapanic.food.recipes;
 import com.badlogic.gdx.graphics.Texture;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,6 +54,22 @@ public class Recipe implements Holdable {
         break;
     }
     return ingredientTypes;
+  }
+
+  public static Recipe fromString(String recipe, FoodTextureManager textureManager) {
+    switch (recipe) {
+      case "MAKE_BURGER":
+        return new Burger(textureManager);
+      case "MAKE_SALAD":
+        return new Salad(textureManager);
+      case "MAKE_JACKET":
+        return new JacketPotato(textureManager);
+      case "MAKE_PIZZA":
+        return new Pizza(textureManager);
+    
+      default:
+        throw new IllegalArgumentException(recipe + "is not a valid recipe type");
+    }
   }
 
   public FoodTextureManager getTextureManager() {

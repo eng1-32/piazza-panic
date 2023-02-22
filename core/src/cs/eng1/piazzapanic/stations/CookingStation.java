@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
-import cs.eng1.piazzapanic.food.ingredients.Patty;
-import cs.eng1.piazzapanic.food.ingredients.Potato;
-import cs.eng1.piazzapanic.food.ingredients.UncookedPizza;
 import cs.eng1.piazzapanic.food.interfaces.Cookable;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
@@ -15,7 +12,7 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+
 
 /**
  * The CookingStation class is a station representing the place in the kitchen
@@ -24,9 +21,9 @@ import java.util.Objects;
  */
 public class CookingStation extends Station {
 
-  protected final Ingredient[] validIngredients;
-  protected Cookable currentIngredient;
   protected final float totalTimeToCook = 10f;
+
+  protected Cookable currentIngredient;
   private boolean progressVisible = false;
   protected Recipe finishedPizza = null;
 
@@ -43,10 +40,9 @@ public class CookingStation extends Station {
    *                     can be cooked
    */
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
-      StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
+      StationActionUI.ActionAlignment alignment) {
     super(id, image, uiController, alignment);
-    validIngredients = ingredients; // A list of the ingredients that can be used by this station.
-  }
+    }
 
   @Override
   public void reset() {
@@ -163,7 +159,7 @@ public class CookingStation extends Station {
       case PLACE_INGREDIENT:
         if (this.nearbyChef != null && nearbyChef.hasIngredient() && currentIngredient == null) {
           if (this.isCorrectIngredient(nearbyChef.getStack().peek())) {
-            currentIngredient = (Cookable) nearbyChef.placeIngredient();
+            currentIngredient = (Cookable) nearbyChef.popIngredient();
           }
         }
         uiController.showActions(this, getActionTypes());

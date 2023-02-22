@@ -284,7 +284,7 @@ public class Chef extends Actor implements Disposable {
    *
    * @return the ingredient that was popped from the stack.
    */
-  public Ingredient placeIngredient() {
+  public Ingredient popIngredient() {
     Holdable item = ingredientStack.peek();
     if (item instanceof Ingredient) {
       ingredientStack.pop();

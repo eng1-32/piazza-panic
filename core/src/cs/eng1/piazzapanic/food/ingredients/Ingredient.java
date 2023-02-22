@@ -9,8 +9,8 @@ public class Ingredient implements Holdable {
 
   private final String type;
   protected final FoodTextureManager textureManager;
-  protected boolean isCooked = false;
-  protected boolean isChopped = false;
+  protected boolean cooked = false;
+  protected boolean chopped = false;
 
   public Ingredient(String type, FoodTextureManager textureManager) {
     this.type = type;
@@ -20,9 +20,9 @@ public class Ingredient implements Holdable {
   @Override
   public String toString() {
     String output = getType() + "_";
-    if (isChopped)
+    if (chopped)
       output += "chopped";
-    else if (isCooked)
+    else if (cooked)
       output += "cooked";
     else
       output += "raw";
@@ -87,19 +87,19 @@ public class Ingredient implements Holdable {
   }
 
   public void setIsCooked(boolean value) {
-    isCooked = value;
+    cooked = value;
   }
 
-  public boolean getIsCooked() {
-    return isCooked;
+  public boolean getCooked() {
+    return cooked;
   }
 
   public void setIsChopped(boolean value) {
-    isChopped = value;
+    chopped = value;
   }
 
-  public boolean getIsChopped() {
-    return isChopped;
+  public boolean getChopped() {
+    return chopped;
   }
 
   public FoodTextureManager getTextureManager() {

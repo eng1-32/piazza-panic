@@ -1,21 +1,16 @@
 package cs.eng1.piazzapanic.food.ingredients;
 
 import cs.eng1.piazzapanic.food.FoodTextureManager;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
 
-public class Potato extends Ingredient {
-
-    private boolean halfCooked = false;
+public class Potato extends BasicCookable {
 
     public Potato(FoodTextureManager textureManager) {
         super("potato", textureManager);
     }
 
-    public void setHalfCooked() {
-        halfCooked = true;
-    }
 
-    public boolean getIsHalfCooked() {
-        return halfCooked;
+    public Holdable getCookingResult() {
+        return this;
     }
-
 }

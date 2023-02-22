@@ -2,22 +2,22 @@ package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import cs.eng1.piazzapanic.food.recipes.Burger;
-import cs.eng1.piazzapanic.food.recipes.Pizza;
+import cs.eng1.piazzapanic.chef.FixedStack;
 import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.ingredients.UncookedPizza;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
-import cs.eng1.piazzapanic.food.recipes.Salad;
 import cs.eng1.piazzapanic.stations.StationAction.ActionType;
 import cs.eng1.piazzapanic.ui.StationActionUI.ActionAlignment;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * The RecipeStation class is a station representing the place in the kitchen
@@ -27,15 +27,78 @@ import java.util.Objects;
 public class RecipeStation extends Station {
   private final FoodTextureManager textureManager;
   private final CustomerManager customerManager;
-  protected int bunCount = 0;
-  protected int pattyCount = 0;
-  protected int lettuceCount = 0;
-  protected int tomatoCount = 0;
-  protected int doughCount = 0;
-  protected int cheeseCount = 0;
-  protected int pizzaCount = 0;
-  private Recipe completedRecipe = null;
-  private Ingredient assembledPizza = null;
+
+  private static final int MAX_ITEMS_PER_GROUP = 3;
+
+  private Holdable completedRecipe = null;
+  
+  private Stack<Ingredient> displayIngredient = new Stack<>();
+
+  /**
+   * A hashmap of items grouped by type that does not allow empty lists to exist.
+   * Yes, I'm using hashmaps again.
+   */
+  private Map<String, FixedStack<Ingredient>> heldItems = new HashMap<String, FixedStack<Ingredient>>() {
+    /**
+     * <p>
+     * {@inheritDoc}
+     * <p>
+     * An empty list will always have no mapping, and will result in a {@code null}
+     * return.
+     */
+    @Override
+    public FixedStack<Ingredient> put(String key, FixedStack<Ingredient> value) {
+      if (value.size() != 0) {
+        return super.put(key, value);
+      }
+      return null;
+    };
+
+    /**
+     * <p>
+     * {@inheritDoc}
+     * <p>
+     * If replaced by an empty list, removes the mapping altogether.
+     */
+    public FixedStack<Ingredient> replace(String key, FixedStack<Ingredient> value) {
+      FixedStack<Ingredient> returnVal = this.get(key);
+      if (returnVal != null) {
+        if (this.put(key, value) == null) {
+          this.remove(key);
+        }
+        ;
+      }
+      return returnVal;
+    };
+  };
+
+  HashMap<ActionType, String[]> makeActions = new HashMap<ActionType, String[]>() {
+    {
+      put(ActionType.MAKE_BURGER, new String[] { "bun", "patty" });
+      put(ActionType.MAKE_SALAD, new String[] { "tomato", "lettuce" });
+      put(ActionType.ASSEMBLE_PIZZA, new String[] { "dough", "cheese", "tomato" });
+    }
+  };
+
+  private void placeIngredient(Ingredient input) {
+    if (heldItems.containsKey(input.getType())) {
+      FixedStack<Ingredient> ingredients = heldItems.get(input.getType());
+      ingredients.add(input);
+    }
+    else {
+      FixedStack<Ingredient> ingredients = new FixedStack<Ingredient>(MAX_ITEMS_PER_GROUP);
+      ingredients.add(input);
+      heldItems.put(input.getType(), ingredients);
+    }
+    displayIngredient.add(input);
+  }
+
+  private void removeIngredient(String type) {
+    FixedStack<Ingredient> ingredients = heldItems.get(type);
+    ingredients.pop();
+    heldItems.replace(type, ingredients);
+    displayIngredient.pop();
+  }
 
   /**
    * The constructor method for the class
@@ -63,15 +126,10 @@ public class RecipeStation extends Station {
 
   @Override
   public void reset() {
-    bunCount = 0;
-    pattyCount = 0;
-    lettuceCount = 0;
-    tomatoCount = 0;
-    doughCount = 0;
-    cheeseCount = 0;
-    pizzaCount = 0;
+    heldItems.clear();
+    displayIngredient.clear();
+
     completedRecipe = null;
-    assembledPizza = null;
     super.reset();
   }
 
@@ -90,34 +148,26 @@ public class RecipeStation extends Station {
         Holdable item = nearbyChef.getStack().peek();
         if (item instanceof Ingredient) {
           Ingredient checkItem = (Ingredient) item;
-          if (checkItem.getIsChopped() || checkItem.getIsCooked() || Objects.equals(
-              checkItem.getType(), "bun")) {
+          if (checkItem.getChopped() || checkItem.getCooked() || checkItem.getType() == "bun" || checkItem.getType() == "dough") {
             // If a chef is nearby and is carrying at least one ingredient
             // and the top ingredient is cooked, chopped or a bun then display the action
             actionTypes.add(ActionType.PLACE_INGREDIENT);
           }
         }
-
       }
       if (completedRecipe == null) {
-        if (pattyCount >= 1 && bunCount >= 1 && nearbyChef.getStack().hasSpace()) {
-          actionTypes.add(ActionType.MAKE_BURGER);
+        for (ActionType makeAction : makeActions.keySet()) {
+          boolean canMake = true;
+          for (String ingredientType : makeActions.get(makeAction)) {
+            canMake = canMake && heldItems.containsKey(ingredientType);
+          }
+          if (canMake) {
+            actionTypes.add(makeAction);
+          }
         }
-        if (tomatoCount >= 1 && lettuceCount >= 1 && nearbyChef.getStack().hasSpace()) {
-          actionTypes.add(ActionType.MAKE_SALAD);
-        }
-
-        if (pizzaCount >= 1 && nearbyChef.getStack().hasSpace()) {
-          actionTypes.add(ActionType.MAKE_PIZZA);
-        }
-      } else if (assembledPizza == null) {
-        if (doughCount >= 1 && cheeseCount >= 1 && tomatoCount >= 1 && nearbyChef.getStack().hasSpace()) {
-          actionTypes.add(ActionType.ASSEMBLE_PIZZA);
-        }
-      } else if (assembledPizza != null) {
+      }
+      else {
         actionTypes.add(ActionType.GRAB_INGREDIENT);
-      } else if (customerManager.checkRecipe(completedRecipe)) {
-        actionTypes.add(ActionType.SUBMIT_ORDER);
       }
     }
     return actionTypes;
@@ -137,66 +187,28 @@ public class RecipeStation extends Station {
         if (!(nearbyChef.getStack().peek() instanceof Ingredient)) {
           return;
         }
-        Ingredient topItem = (Ingredient) nearbyChef.getStack().peek();
-        switch (topItem.getType()) {
-          case "patty":
-            nearbyChef.placeIngredient();
-            pattyCount += 1;
-            break;
-          case "tomato":
-            nearbyChef.placeIngredient();
-            tomatoCount += 1;
-            break;
-          case "lettuce":
-            nearbyChef.placeIngredient();
-            lettuceCount += 1;
-            break;
-          case "bun":
-            nearbyChef.placeIngredient();
-            bunCount += 1;
-            break;
-          case "uncooked_pizza":
-            nearbyChef.placeIngredient();
-            pizzaCount += 1;
-            break;
-        }
+        this.placeIngredient(nearbyChef.popIngredient());
 
         break;
       case MAKE_BURGER:
-        completedRecipe = new Burger(textureManager);
-        pattyCount -= 1;
-        bunCount -= 1;
-        break;
-
       case MAKE_SALAD:
-        completedRecipe = new Salad(textureManager);
-        tomatoCount -= 1;
-        lettuceCount -= 1;
-        break;
-
-      case MAKE_PIZZA:
-        completedRecipe = new Pizza(textureManager);
-        pizzaCount -= 1;
-        break;
-
-      case SUBMIT_ORDER:
-        if (completedRecipe != null) {
-          if (customerManager.checkRecipe(completedRecipe)) {
-            customerManager.nextRecipe();
-            completedRecipe = null;
-          }
+      case MAKE_JACKET:
+        for (String foodType : makeActions.get(action)) {
+          this.removeIngredient(foodType);
         }
+        completedRecipe = Recipe.fromString(action.toString(), textureManager);
         break;
+
       case ASSEMBLE_PIZZA:
-        assembledPizza = new UncookedPizza(textureManager);
-        doughCount -= 1;
-        cheeseCount -= 1;
-        tomatoCount -= 1;
+        for (String foodType : makeActions.get(action)) {
+          this.removeIngredient(foodType);
+        }
+        completedRecipe = new UncookedPizza(textureManager);
         break;
       case GRAB_INGREDIENT:
         if (nearbyChef.canGrabIngredient()) {
-          nearbyChef.grabItem(assembledPizza);
-          assembledPizza = null;
+          nearbyChef.grabItem(completedRecipe);
+          completedRecipe = null;
         }
         break;
     }
@@ -214,26 +226,8 @@ public class RecipeStation extends Station {
   @Override
   public void draw(Batch batch, float parentAlpha) {
     super.draw(batch, parentAlpha);
-    if (bunCount > 0) {
-      drawFoodTexture(batch, textureManager.getTexture("bun"));
-    }
-    if (pattyCount > 0) {
-      drawFoodTexture(batch, textureManager.getTexture("patty_cooked"));
-    }
-    if (lettuceCount > 0) {
-      drawFoodTexture(batch, textureManager.getTexture("lettuce_chopped"));
-    }
-    if (tomatoCount > 0) {
-      drawFoodTexture(batch, textureManager.getTexture("tomato_chopped"));
-    }
-    if (doughCount > 0) {
-      drawFoodTexture(batch, textureManager.getTexture("dough"));
-    }
-    if (cheeseCount > 0) {
-      drawFoodTexture(batch, textureManager.getTexture("cheese"));
-    }
-    if (pizzaCount > 0) {
-      drawFoodTexture(batch, textureManager.getTexture("pizza"));
+    if (displayIngredient.size() != 0) {
+      drawFoodTexture(batch, displayIngredient.peek().getTexture());
     }
     if (completedRecipe != null) {
       drawFoodTexture(batch, completedRecipe.getTexture());
