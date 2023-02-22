@@ -91,7 +91,7 @@ public class CookingStation extends Station {
   private boolean isCorrectIngredient(Holdable itemToCheck) {
     if (itemToCheck instanceof Ingredient) {
       if (itemToCheck instanceof Cookable) {
-        return true;
+        return !((Cookable) itemToCheck).getCooked();
       }
     }
     return false;
