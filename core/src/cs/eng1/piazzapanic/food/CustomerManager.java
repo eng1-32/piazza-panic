@@ -2,9 +2,11 @@ package cs.eng1.piazzapanic.food;
 
 import com.badlogic.gdx.utils.Queue;
 import cs.eng1.piazzapanic.food.recipes.Burger;
+import cs.eng1.piazzapanic.food.recipes.Pizza;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.food.recipes.Salad;
 import cs.eng1.piazzapanic.stations.RecipeStation;
+import cs.eng1.piazzapanic.stations.SubmitStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +15,7 @@ public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
   private Recipe currentOrder;
-  private final List<RecipeStation> recipeStations;
+  private final List<SubmitStation> recipeStations;
   private final UIOverlay overlay;
 
   public CustomerManager(UIOverlay overlay) {
@@ -28,12 +30,12 @@ public class CustomerManager {
    * @param textureManager The manager of food textures that can be passed to the recipes
    */
   public void init(FoodTextureManager textureManager) {
-    Recipe[] possibleRecipes = new Recipe[]{new Burger(textureManager), new Salad(textureManager)};
+    Recipe[] possibleRecipes = new Recipe[]{new Burger(textureManager), new Salad(textureManager), new Pizza(textureManager)};
 
     // Salad, Burger, Burger, Salad, Burger. This can be replaced by randomly selecting from
     // possibleRecipes or by using another scenario
     customerOrders.clear();
-    int[] recipeIndices = new int[]{1, 0, 0, 1, 0};
+    int[] recipeIndices = new int[]{2, 0, 1, 0, 2};
     for (int recipeIndex : recipeIndices) {
       customerOrders.addLast(possibleRecipes[recipeIndex]);
     }
@@ -64,7 +66,7 @@ public class CustomerManager {
       overlay.updateRecipeCounter(customerOrders.size);
       currentOrder = customerOrders.removeFirst();
     }
-    notifyRecipeStations();
+    notifySubmitStations();
     overlay.updateRecipeUI(currentOrder);
     if (currentOrder == null) {
       overlay.finishGameUI();
@@ -75,13 +77,13 @@ public class CustomerManager {
    * If one recipe station has been updated, let all the other ones know that there is a new recipe
    * to be built.
    */
-  private void notifyRecipeStations() {
-    for (RecipeStation recipeStation : recipeStations) {
+  private void notifySubmitStations() {
+    for (SubmitStation recipeStation : recipeStations) {
       recipeStation.updateOrderActions();
     }
   }
 
-  public void addRecipeStation(RecipeStation station) {
+  public void addStation(SubmitStation station) {
     recipeStations.add(station);
   }
 }

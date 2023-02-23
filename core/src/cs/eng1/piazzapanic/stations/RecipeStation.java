@@ -26,7 +26,6 @@ import java.util.Stack;
  */
 public class RecipeStation extends Station {
   private final FoodTextureManager textureManager;
-  private final CustomerManager customerManager;
 
   private static final int MAX_ITEMS_PER_GROUP = 3;
 
@@ -117,11 +116,9 @@ public class RecipeStation extends Station {
    *                            needs to be served
    */
   public RecipeStation(int id, TextureRegion textureRegion, StationUIController stationUIController,
-      ActionAlignment alignment, FoodTextureManager textureManager,
-      CustomerManager customerManager) {
+      ActionAlignment alignment, FoodTextureManager textureManager) {
     super(id, textureRegion, stationUIController, alignment);
     this.textureManager = textureManager;
-    this.customerManager = customerManager;
   }
 
   @Override
@@ -234,10 +231,5 @@ public class RecipeStation extends Station {
     }
   }
 
-  /**
-   * Updates the current available actions based on the new customer's order
-   */
-  public void updateOrderActions() {
-    uiController.showActions(this, getActionTypes());
-  }
+
 }

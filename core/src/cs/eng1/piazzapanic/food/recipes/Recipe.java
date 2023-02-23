@@ -52,6 +52,10 @@ public class Recipe implements Holdable {
         ingredientTypes.add("tomato_chopped");
         ingredientTypes.add("lettuce_chopped");
         break;
+      case "pizza":
+        ingredientTypes.add("dough");
+        ingredientTypes.add("tomato_chopped");
+        ingredientTypes.add("cheese_sliced");
     }
     return ingredientTypes;
   }
