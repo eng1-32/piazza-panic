@@ -1,6 +1,7 @@
 buildscript {
-
-
+    plugins {
+        id 'jacoco'
+    }
     repositories {
         mavenLocal()
         mavenCentral()
