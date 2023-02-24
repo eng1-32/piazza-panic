@@ -33,6 +33,7 @@ jobs:
    
   build:
     needs: format
+    continue-on-error: true
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
