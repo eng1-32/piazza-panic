@@ -91,6 +91,10 @@ public class CustomerManager {
     } else {
       if (GameScreen.customerTime > 60f) {
         UIOverlay.lives.takeLives();
+        if (UIOverlay.lives.getLives() == 0) {
+          overlay.loseGameUI();
+
+        }
       }
       GameScreen.customerTime = 0;
       overlay.updateRecipeCounter(customerOrders.size);

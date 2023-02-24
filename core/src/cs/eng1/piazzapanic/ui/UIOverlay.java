@@ -39,6 +39,8 @@ public class UIOverlay {
 
   private final Label recipeCountLabel;
   private final Label resultLabel;
+  private final Label loseLabel;
+
   private final Timer resultTimer;
   private final PiazzaPanicGame game;
 
@@ -127,6 +129,8 @@ public class UIOverlay {
     resultLabel.setVisible(false);
     resultTimer = new Timer(labelStyle);
     resultTimer.setVisible(false);
+    loseLabel = new Label("Fail! You've Lost all your reputation!:", labelStyle);
+    loseLabel.setVisible(false);
 
     // Add everything
     Value scale = Value.percentWidth(0.04f, table);
@@ -147,6 +151,9 @@ public class UIOverlay {
     table.row();
     table.add(resultLabel).colspan(3);
     table.row();
+    table.add(loseLabel).colspan(3);
+    table.row();
+
     table.add(resultTimer).colspan(3);
   }
 
@@ -157,7 +164,7 @@ public class UIOverlay {
     timer.reset();
     timer.start();
     money.reset();
-
+    loseLabel.setVisible(false);
     resultLabel.setVisible(false);
     resultTimer.setVisible(false);
     updateChefUI(null);
@@ -208,6 +215,13 @@ public class UIOverlay {
    */
   public void finishGameUI() {
     resultLabel.setVisible(true);
+    resultTimer.setTime(timer.getTime());
+    resultTimer.setVisible(true);
+    timer.stop();
+  }
+
+  public void loseGameUI() {
+    loseLabel.setVisible(true);
     resultTimer.setTime(timer.getTime());
     resultTimer.setVisible(true);
     timer.stop();

@@ -133,6 +133,8 @@ public class BakingStation extends Station {
         if (currentIngredient == null) {
             if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
                 actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+                timeCookedBurn = 0;
+
             }
         } else {
             // check to see if total number of seconds has passed to progress the state of
