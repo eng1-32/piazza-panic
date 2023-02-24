@@ -31,8 +31,10 @@ import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.HashMap;
 
 /**
- * The screen which can be used to load the tilemap and keep track of everything happening in the
- * game. It does all the initialization and then lets each actor do its actions based on the current
+ * The screen which can be used to load the tilemap and keep track of everything
+ * happening in the
+ * game. It does all the initialization and then lets each actor do its actions
+ * based on the current
  * frame.
  */
 public class GameScreen implements Screen {
@@ -78,9 +80,12 @@ public class GameScreen implements Screen {
   }
 
   /**
-   * @param tileUnitSize The ratio of world units over the pixel width of a single tile/station
-   * @param objectLayer  The layer on the TMX tilemap which contains all the information about the
-   *                     stations and station colliders including position, bounds and station
+   * @param tileUnitSize The ratio of world units over the pixel width of a single
+   *                     tile/station
+   * @param objectLayer  The layer on the TMX tilemap which contains all the
+   *                     information about the
+   *                     stations and station colliders including position, bounds
+   *                     and station
    *                     capabilities.
    */
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
@@ -117,7 +122,7 @@ public class GameScreen implements Screen {
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
           station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
+              alignment);
           break;
         case "ingredientStation":
           station = new IngredientStation(id, tileObject.getTextureRegion(), stationUIController,
@@ -125,12 +130,19 @@ public class GameScreen implements Screen {
           break;
         case "choppingStation":
           station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
+              alignment);
           break;
         case "recipeStation":
           station = new RecipeStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, foodTextureManager, customerManager);
-          customerManager.addRecipeStation((RecipeStation) station);
+              alignment, foodTextureManager);
+          break;
+        case "grillingStation":
+          station = new GrillingStation(id, tileObject.getTextureRegion(), stationUIController, alignment);
+          break;
+        case "submitStation":
+          station = new SubmitStation(id, tileObject.getTextureRegion(), stationUIController, alignment,
+              customerManager);
+          customerManager.addStation((SubmitStation) station);
           break;
         default:
           station = new Station(id, tileObject.getTextureRegion(), stationUIController, alignment);
@@ -139,7 +151,8 @@ public class GameScreen implements Screen {
       float tileY = tileObject.getY() * tileUnitSize;
       float rotation = tileObject.getRotation();
 
-      // Adjust x and y positions based on Tiled quirks with rotation changing the position of the tile
+      // Adjust x and y positions based on Tiled quirks with rotation changing the
+      // position of the tile
       if (rotation == 90) {
         tileY -= 1;
       } else if (rotation == 180) {

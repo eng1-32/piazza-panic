@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.Chef;
-import cs.eng1.piazzapanic.food.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
 
@@ -80,8 +80,8 @@ public class UIOverlay {
 
     // Initialize the home button
     ImageButton homeButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-            new Texture(
-                Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
         ButtonManager.ButtonColour.BLUE, -1.5f);
     homeButton.addListener(new ClickListener() {
       @Override
@@ -140,7 +140,8 @@ public class UIOverlay {
   }
 
   /**
-   * Show the image of the currently selected chef as well as have the stack of ingredients
+   * Show the image of the currently selected chef as well as have the stack of
+   * ingredients
    * currently held by the chef.
    *
    * @param chef The chef that is currently selected for which to show the UI.
@@ -156,7 +157,7 @@ public class UIOverlay {
     chefImage.setDrawable(new TextureRegionDrawable(texture));
 
     ingredientImages.clearChildren();
-    for (Ingredient ingredient : chef.getStack()) {
+    for (Holdable ingredient : chef.getStack()) {
       Image image = new Image(ingredient.getTexture());
       image.getDrawable().setMinHeight(chefDisplay.getHeight());
       image.getDrawable().setMinWidth(chefDisplay.getWidth());
@@ -168,7 +169,7 @@ public class UIOverlay {
       btn.addListener(new ClickListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
-          chef.placeIngredient();
+          chef.popIngredient();
         }
       });
       ingredientImages.addActor(btn);
@@ -178,7 +179,8 @@ public class UIOverlay {
   }
 
   /**
-   * Show the label displaying that the game has finished along with the time it took to complete.
+   * Show the label displaying that the game has finished along with the time it
+   * took to complete.
    */
   public void finishGameUI() {
     resultLabel.setVisible(true);
@@ -188,7 +190,8 @@ public class UIOverlay {
   }
 
   /**
-   * Show the current requested recipe that the player needs to make, the ingredients for that, and
+   * Show the current requested recipe that the player needs to make, the
+   * ingredients for that, and
    * the number of remaining recipes.
    *
    * @param recipe The recipe to display the ingredients for.

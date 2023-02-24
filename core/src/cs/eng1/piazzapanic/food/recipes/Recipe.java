@@ -2,6 +2,7 @@ package cs.eng1.piazzapanic.food.recipes;
 
 import com.badlogic.gdx.graphics.Texture;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * The Recipe class is the parent class of the food classes that
  * dictates what ingredients are needed to make them
  */
-public class Recipe {
+public class Recipe implements Holdable {
 
   private final FoodTextureManager textureManager;
   private final String type;
@@ -17,9 +18,10 @@ public class Recipe {
   /**
    * The constructor method for the class
    *
-   * @param type            The food object that inherits the class
-   * @param textureManager  The controller from which we can get information on what texture
-   *                        each food object should have
+   * @param type           The food object that inherits the class
+   * @param textureManager The controller from which we can get information on
+   *                       what texture
+   *                       each food object should have
    */
   public Recipe(String type, FoodTextureManager textureManager) {
     this.type = type;
@@ -50,8 +52,33 @@ public class Recipe {
         ingredientTypes.add("tomato_chopped");
         ingredientTypes.add("lettuce_chopped");
         break;
+      case "pizza":
+        ingredientTypes.add("dough");
+        ingredientTypes.add("tomato_chopped");
+        ingredientTypes.add("cheese_sliced");
+        break;
+      case "jacket_potato":
+        ingredientTypes.add("potato_cooked");
+        ingredientTypes.add("cheese_sliced");
+        break;
     }
     return ingredientTypes;
+  }
+
+  public static Recipe fromString(String recipe, FoodTextureManager textureManager) {
+    switch (recipe) {
+      case "MAKE_BURGER":
+        return new Burger(textureManager);
+      case "MAKE_SALAD":
+        return new Salad(textureManager);
+      case "MAKE_JACKET":
+        return new JacketPotato(textureManager);
+      case "MAKE_PIZZA":
+        return new Pizza(textureManager);
+
+      default:
+        throw new IllegalArgumentException(recipe + "is not a valid recipe type");
+    }
   }
 
   public FoodTextureManager getTextureManager() {

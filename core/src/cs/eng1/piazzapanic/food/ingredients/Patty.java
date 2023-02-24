@@ -2,21 +2,12 @@ package cs.eng1.piazzapanic.food.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
 
-public class Patty extends Ingredient {
-
-  protected boolean halfCooked = false;
+public class Patty extends BasicGrillable {
 
   public Patty(FoodTextureManager textureManager) {
     super("patty", textureManager);
-  }
-
-  public void setHalfCooked() {
-    halfCooked = true;
-  }
-
-  public boolean getIsHalfCooked() {
-    return halfCooked;
   }
 
   /**
@@ -27,11 +18,16 @@ public class Patty extends Ingredient {
   @Override
   public Texture getTexture() {
     String name = getType() + "_";
-    if (isCooked) {
-      name += "cooked";
+    if (grilled) {
+      name += "grilled";
     } else {
       name += "raw";
     }
     return textureManager.getTexture(name);
+  }
+
+  @Override
+  public Holdable getGrillResult() {
+    return this;
   }
 }

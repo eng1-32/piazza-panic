@@ -16,7 +16,7 @@ public class IngredientStation extends Station {
   public IngredientStation(int id, TextureRegion image, StationUIController uiController,
       StationActionUI.ActionAlignment alignment, Ingredient ingredient) {
     super(id, image, uiController, alignment);
-    ingredientDispensed = ingredient; //What ingredient the station will give to the player.
+    ingredientDispensed = ingredient; // What ingredient the station will give to the player.
   }
 
   @Override
@@ -35,7 +35,7 @@ public class IngredientStation extends Station {
   public void doStationAction(StationAction.ActionType action) {
     if (action == StationAction.ActionType.GRAB_INGREDIENT) {
       if (this.nearbyChef != null && nearbyChef.canGrabIngredient()) {
-        nearbyChef.grabIngredient(Ingredient.fromString(ingredientDispensed.getType(),
+        nearbyChef.grabItem(Ingredient.fromString(ingredientDispensed.getType(),
             ingredientDispensed.getTextureManager()));
       }
     }

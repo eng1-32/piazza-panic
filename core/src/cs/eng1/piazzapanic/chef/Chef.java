@@ -9,32 +9,40 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
+
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
+import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.stations.Station;
 
 /**
- * The Chef class is an actor representing a chef in the kitchen. It can pick up and put down
+ * The Chef class is an actor representing a chef in the kitchen. It can pick up
+ * and put down
  * ingredients and interact with stations.
  */
 public class Chef extends Actor implements Disposable {
 
   /**
-   * image, imageBounds and imageRotation are all used to display the chef to the user and show the
-   * user where the chef is and what direction it is moving without changing any collision details.
+   * image, imageBounds and imageRotation are all used to display the chef to the
+   * user and show the
+   * user where the chef is and what direction it is moving without changing any
+   * collision details.
    */
   private final Texture image;
   private final Vector2 imageBounds;
   private float imageRotation = 0f;
 
   private final ChefManager chefManager;
-  private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
+  private final FixedStack<Holdable> ingredientStack = new FixedStack<>(5);
 
   private final Vector2 inputVector;
   private final float speed = 3f;
 
   /**
-   * a parameter which adds a small amount of distance between the chef's boundaries and any other
-   * objects it can collide with. This helps avoid boundary errors in collision calculations
+   * a parameter which adds a small amount of distance between the chef's
+   * boundaries and any other
+   * objects it can collide with. This helps avoid boundary errors in collision
+   * calculations
    */
   private final float collisionSkin = 0.01f;
   private boolean inputEnabled = true;
@@ -42,9 +50,11 @@ public class Chef extends Actor implements Disposable {
 
   /**
    * @param image       the texture to display to the user
-   * @param imageBounds the bounds of the texture independent of the chef's own bounds to use for
+   * @param imageBounds the bounds of the texture independent of the chef's own
+   *                    bounds to use for
    *                    drawing the image to scale.
-   * @param chefManager the controller from which we can get information about all the chefs and
+   * @param chefManager the controller from which we can get information about all
+   *                    the chefs and
    *                    their surrounding environment
    */
   public Chef(Texture image, Vector2 imageBounds, ChefManager chefManager) {
@@ -67,8 +77,8 @@ public class Chef extends Actor implements Disposable {
         imageBounds.x / 2f, imageBounds.y / 2f, imageBounds.x,
         imageBounds.y, 1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false,
         false);
-    for (Ingredient ingredient : ingredientStack) {
-      Texture texture = ingredient.getTexture();
+    for (Holdable item : ingredientStack) {
+      Texture texture = item.getTexture();
       batch.draw(texture, getX() + 0.5f, getY() + 0.2f, 0f, 0.3f, 0.6f, 0.6f, 1f, 1f,
           imageRotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
     }
@@ -114,7 +124,8 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Calculate how far the chef should move based on the input vector while avoiding collisions
+   * Calculate how far the chef should move based on the input vector while
+   * avoiding collisions
    *
    * @param delta the time that has passed since the last frame
    * @return the vector representing how far the chef should move
@@ -130,13 +141,15 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Check to see if a point lies within a tile in the collision layer, or if the point is in a chef
+   * Check to see if a point lies within a tile in the collision layer, or if the
+   * point is in a chef
    * or station
    *
    * @param x the x-coordinate to check for a collision
    * @param y the y-coordinate to check for a collision
-   * @return the bounding box of the object that the point lies within. It will be null if the point
-   * does not lie in any object
+   * @return the bounding box of the object that the point lies within. It will be
+   *         null if the point
+   *         does not lie in any object
    */
   private Rectangle getCollisionObjectBoundaries(float x, float y) {
     Actor actorHit = getStage().hit(x, y, false);
@@ -155,9 +168,11 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * @param xMovement the amount to move the chef along the x-axis before collision
-   * @return the new change in the x-axis that ensures that the chef does not collide with any
-   * objects
+   * @param xMovement the amount to move the chef along the x-axis before
+   *                  collision
+   * @return the new change in the x-axis that ensures that the chef does not
+   *         collide with any
+   *         objects
    */
   private float adjustHorizontalMovementForCollision(float xMovement) {
     if (xMovement > 0.0001f) {
@@ -203,9 +218,11 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * @param yMovement the amount to move the chef along the y-axis before collision
-   * @return the new change in the y-axis that ensures that the chef does not collide with any
-   * objects
+   * @param yMovement the amount to move the chef along the y-axis before
+   *                  collision
+   * @return the new change in the y-axis that ensures that the chef does not
+   *         collide with any
+   *         objects
    */
   private float adjustVerticalMovementForCollision(float yMovement) {
     if (yMovement > 0.0001f) {
@@ -257,7 +274,7 @@ public class Chef extends Actor implements Disposable {
     return ingredientStack.hasSpace();
   }
 
-  public void grabIngredient(Ingredient ingredient) {
+  public void grabItem(Holdable ingredient) {
     ingredientStack.push(ingredient);
     notifyAboutUpdatedStack();
   }
@@ -267,18 +284,33 @@ public class Chef extends Actor implements Disposable {
    *
    * @return the ingredient that was popped from the stack.
    */
-  public Ingredient placeIngredient() {
-    Ingredient ingredient = ingredientStack.pop();
-    notifyAboutUpdatedStack();
-    return ingredient;
+  public Ingredient popIngredient() {
+    Holdable item = ingredientStack.peek();
+    if (item instanceof Ingredient) {
+      ingredientStack.pop();
+      notifyAboutUpdatedStack();
+      return (Ingredient) item;
+    }
+    return null;
   }
 
-  public FixedStack<Ingredient> getStack() {
+  public Recipe placeRecipe() {
+    Holdable item = ingredientStack.peek();
+    if (item instanceof Recipe) {
+      ingredientStack.pop();
+      notifyAboutUpdatedStack();
+      return (Recipe) item;
+    }
+    return null;
+  }
+
+  public FixedStack<Holdable> getStack() {
     return ingredientStack;
   }
 
   /**
-   * Sets the input vector based on x and y, but ensuring that the vector is never greater than a
+   * Sets the input vector based on x and y, but ensuring that the vector is never
+   * greater than a
    * length of 1
    *
    * @param x the x input value
@@ -313,7 +345,8 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Whenever the stack has items added or removed from it, notify the chef manager about the new
+   * Whenever the stack has items added or removed from it, notify the chef
+   * manager about the new
    * stack.
    */
   public void notifyAboutUpdatedStack() {

@@ -3,13 +3,15 @@ package cs.eng1.piazzapanic.food.ingredients;
 import com.badlogic.gdx.graphics.Texture;
 
 import cs.eng1.piazzapanic.food.FoodTextureManager;
+import cs.eng1.piazzapanic.food.interfaces.Holdable;
 
-public class Ingredient {
+public class Ingredient implements Holdable {
 
   private final String type;
   protected final FoodTextureManager textureManager;
-  protected boolean isCooked = false;
-  protected  boolean isChopped = false;
+  protected boolean cooked = false;
+  protected boolean chopped = false;
+  protected boolean grilled = false;
 
   public Ingredient(String type, FoodTextureManager textureManager) {
     this.type = type;
@@ -19,16 +21,20 @@ public class Ingredient {
   @Override
   public String toString() {
     String output = getType() + "_";
-    if (isChopped) output += "chopped";
-    else if (isCooked) output += "cooked";
-    else output += "raw";
+    if (chopped)
+      output += "chopped";
+    else if (cooked)
+      output += "cooked";
+    else
+      output += "raw";
     return output;
   }
 
   /**
    * Initialize an Ingredient based on a string name
    *
-   * @param ingredientName the name of the ingredient which can be defined from Tiled
+   * @param ingredientName the name of the ingredient which can be defined from
+   *                       Tiled
    * @return the Ingredient of the type defined by the input
    */
   public static Ingredient fromString(String ingredientName,
@@ -42,6 +48,14 @@ public class Ingredient {
         return new Lettuce(textureManager);
       case "bun":
         return new Bun(textureManager);
+      case "cheese":
+        return new Cheese(textureManager);
+      case "potato":
+        return new Potato(textureManager);
+      case "dough":
+        return new Dough(textureManager);
+      case "uncooked_pizza":
+        return new UncookedPizza(textureManager);
       default:
         return null;
     }
@@ -50,7 +64,8 @@ public class Ingredient {
   /**
    * Initialize an array of ingredients based on the input string.
    *
-   * @param csvIngredientNames A string containing a list of ingredient names seperated by commas
+   * @param csvIngredientNames A string containing a list of ingredient names
+   *                           seperated by commas
    *                           with no whitespace as defined in Tiled
    * @return An array of Ingredient based on the input string
    */
@@ -73,19 +88,27 @@ public class Ingredient {
   }
 
   public void setIsCooked(boolean value) {
-    isCooked = value;
+    cooked = value;
   }
 
-  public boolean getIsCooked() {
-    return isCooked;
+  public boolean getCooked() {
+    return cooked;
+  }
+
+  public void setIsGrilled(boolean value) {
+    grilled = value;
+  }
+
+  public boolean getGrilled() {
+    return grilled;
   }
 
   public void setIsChopped(boolean value) {
-    isChopped = value;
+    chopped = value;
   }
 
-  public boolean getIsChopped() {
-    return isChopped;
+  public boolean getChopped() {
+    return chopped;
   }
 
   public FoodTextureManager getTextureManager() {

@@ -29,7 +29,9 @@
                 "lettuce",
                 "patty",
                 "bun",
-                "tomato"
+                "tomato",
+                "cheese",
+                "uncooked_pizza"
             ],
             "valuesAsFlags": true
         },
@@ -77,7 +79,9 @@
                 "choppingStation",
                 "cookingStation",
                 "ingredientStation",
-                "recipeStation"
+                "recipeStation",
+                "grillingStation",
+                "submitStation"
             ],
             "valuesAsFlags": false
         }
