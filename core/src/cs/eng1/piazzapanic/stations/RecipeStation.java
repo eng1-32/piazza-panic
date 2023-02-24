@@ -30,7 +30,7 @@ public class RecipeStation extends Station {
   private static final int MAX_ITEMS_PER_GROUP = 3;
 
   private Holdable completedRecipe = null;
-  
+
   private Stack<Ingredient> displayIngredient = new Stack<>();
 
   /**
@@ -76,6 +76,7 @@ public class RecipeStation extends Station {
       put(ActionType.MAKE_BURGER, new String[] { "bun", "patty" });
       put(ActionType.MAKE_SALAD, new String[] { "tomato", "lettuce" });
       put(ActionType.ASSEMBLE_PIZZA, new String[] { "dough", "cheese", "tomato" });
+      put(ActionType.MAKE_JACKET, new String[] { "potato", "cheese" });
     }
   };
 
@@ -83,8 +84,7 @@ public class RecipeStation extends Station {
     if (heldItems.containsKey(input.getType())) {
       FixedStack<Ingredient> ingredients = heldItems.get(input.getType());
       ingredients.add(input);
-    }
-    else {
+    } else {
       FixedStack<Ingredient> ingredients = new FixedStack<Ingredient>(MAX_ITEMS_PER_GROUP);
       ingredients.add(input);
       heldItems.put(input.getType(), ingredients);
@@ -112,8 +112,7 @@ public class RecipeStation extends Station {
    *                            on what texture
    *                            each ingredient should have
    * @param customerManager     The controller from which we can get information
-   *                            on what food
-   *                            needs to be served
+   *                            on what food needs to be served
    */
   public RecipeStation(int id, TextureRegion textureRegion, StationUIController stationUIController,
       ActionAlignment alignment, FoodTextureManager textureManager) {
@@ -145,7 +144,8 @@ public class RecipeStation extends Station {
         Holdable item = nearbyChef.getStack().peek();
         if (item instanceof Ingredient) {
           Ingredient checkItem = (Ingredient) item;
-          if (checkItem.getChopped() || checkItem.getCooked() || checkItem.getType() == "bun" || checkItem.getType() == "dough") {
+          if (checkItem.getChopped() || checkItem.getCooked() || checkItem.getType() == "bun"
+              || checkItem.getType() == "dough") {
             // If a chef is nearby and is carrying at least one ingredient
             // and the top ingredient is cooked, chopped or a bun then display the action
             actionTypes.add(ActionType.PLACE_INGREDIENT);
@@ -162,8 +162,7 @@ public class RecipeStation extends Station {
             actionTypes.add(makeAction);
           }
         }
-      }
-      else {
+      } else {
         actionTypes.add(ActionType.GRAB_INGREDIENT);
       }
     }
@@ -230,6 +229,5 @@ public class RecipeStation extends Station {
       drawFoodTexture(batch, completedRecipe.getTexture());
     }
   }
-
 
 }

@@ -19,8 +19,8 @@ public class SubmitStation extends Station {
 
     private CustomerManager customerManager;
 
-
-    public SubmitStation(int id, TextureRegion image, StationUIController uiController, ActionAlignment alignment, CustomerManager customerManager) {
+    public SubmitStation(int id, TextureRegion image, StationUIController uiController, ActionAlignment alignment,
+            CustomerManager customerManager) {
         super(id, image, uiController, alignment);
         this.customerManager = customerManager;
     }
@@ -55,10 +55,10 @@ public class SubmitStation extends Station {
                 if (!checkCorrectRecipe(topItem)) {
                     return;
                 }
-                
+
                 customerManager.nextRecipe();
                 break;
-        
+
             default:
                 break;
         }
@@ -66,12 +66,11 @@ public class SubmitStation extends Station {
         uiController.showActions(this, getActionTypes());
     }
 
+    /**
+     * Updates the current available actions based on the new customer's order
+     */
+    public void updateOrderActions() {
+        uiController.showActions(this, getActionTypes());
+    }
 
-  /**
-   * Updates the current available actions based on the new customer's order
-   */
-  public void updateOrderActions() {
-    uiController.showActions(this, getActionTypes());
-  }
-    
 }

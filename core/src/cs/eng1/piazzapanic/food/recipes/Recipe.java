@@ -56,6 +56,11 @@ public class Recipe implements Holdable {
         ingredientTypes.add("dough");
         ingredientTypes.add("tomato_chopped");
         ingredientTypes.add("cheese_sliced");
+        break;
+      case "jacket_potato":
+        ingredientTypes.add("potato_cooked");
+        ingredientTypes.add("cheese_sliced");
+        break;
     }
     return ingredientTypes;
   }
@@ -70,7 +75,7 @@ public class Recipe implements Holdable {
         return new JacketPotato(textureManager);
       case "MAKE_PIZZA":
         return new Pizza(textureManager);
-    
+
       default:
         throw new IllegalArgumentException(recipe + "is not a valid recipe type");
     }

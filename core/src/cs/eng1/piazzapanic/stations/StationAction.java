@@ -38,6 +38,8 @@ public class StationAction {
         return "Make Pizza";
       case SUBMIT_ORDER:
         return "Submit Order";
+      case ASSEMBLE_PIZZA:
+        return "Assemble Pizza";
       default:
         return "Unknown Action";
     }
