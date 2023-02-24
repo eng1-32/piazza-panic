@@ -40,6 +40,7 @@ import java.util.HashMap;
  * frame.
  */
 public class GameScreen implements Screen {
+  public static float customerTime = 0;
 
   private final Stage stage;
   private final Stage uiStage;
@@ -219,7 +220,7 @@ public class GameScreen implements Screen {
 
     stage.draw();
     uiStage.draw();
-
+    customerTime += delta;
     if (isFirstFrame) {
       customerManager.nextRecipe();
       isFirstFrame = false;

@@ -11,9 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
- * The CookingStation class is a station representing the place in the kitchen where you cook
+ * The CookingStation class is a station representing the place in the kitchen
+ * where you cook
  * patties to be used in making burgers.
  */
 public class CookingStation extends Station {
@@ -21,6 +21,10 @@ public class CookingStation extends Station {
   protected final Ingredient[] validIngredients;
   protected Ingredient currentIngredient;
   protected float timeCooked;
+  protected float timeCookedBurn1;
+  protected float timeCookedBurn2;
+  protected int on = 0;
+
   protected final float totalTimeToCook = 10f;
   private boolean progressVisible = false;
 
@@ -29,41 +33,50 @@ public class CookingStation extends Station {
    *
    * @param id           The unique identifier of the station
    * @param image        The rectangular area of the texture
-   * @param uiController The controller from which we can get show and hide the action buttons
+   * @param uiController The controller from which we can get show and hide the
+   *                     action buttons
    *                     belonging to the station
    * @param alignment    Dictates where the action buttons are shown
-   * @param ingredients  An array of ingredients used to define what ingredients can be cooked
+   * @param ingredients  An array of ingredients used to define what ingredients
+   *                     can be cooked
    */
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
       StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
     super(id, image, uiController, alignment);
-    validIngredients = ingredients; //A list of the ingredients that can be used by this station.
+    validIngredients = ingredients; // A list of the ingredients that can be used by this station.
   }
 
   @Override
   public void reset() {
     currentIngredient = null;
     timeCooked = 0;
+    timeCookedBurn1 = 0;
+    timeCookedBurn2 = 0;
     progressVisible = false;
     super.reset();
   }
 
   /**
-   * Called every frame. Used to update the progress bar and check if enough time has passed for the
+   * Called every frame. Used to update the progress bar and check if enough time
+   * has passed for the
    * ingredient to be changed to its half cooked or cooked variant
    *
    * @param delta Time in seconds since the last frame.
    */
   @Override
   public void act(float delta) {
+
     if (inUse) {
+      timeCookedBurn1 += delta;
       timeCooked += delta;
+
       uiController.updateProgressValue(this, (timeCooked / totalTimeToCook) * 100f);
       if (timeCooked >= totalTimeToCook && progressVisible) {
         if (currentIngredient instanceof Patty && !((Patty) currentIngredient).getIsHalfCooked()) {
           ((Patty) currentIngredient).setHalfCooked();
         } else if (currentIngredient instanceof Patty
-            && ((Patty) currentIngredient).getIsHalfCooked() && !currentIngredient.getIsCooked()) {
+            && ((Patty) currentIngredient).getIsHalfCooked() && !currentIngredient.getIsCooked()
+            && !currentIngredient.getIsBurned()) {
           currentIngredient.setIsCooked(true);
         }
         uiController.hideProgressBar(this);
@@ -71,15 +84,30 @@ public class CookingStation extends Station {
         uiController.showActions(this, getActionTypes());
       }
     }
+
+    if (timeCookedBurn1 >= 30f) {
+      if (currentIngredient instanceof Patty)
+
+      {
+        currentIngredient.setIsCooked(false);
+        currentIngredient.setIsBurned(true);
+        timeCookedBurn1 = 0;
+
+      }
+    }
+
     super.act(delta);
   }
 
   /**
-   * Checks the presented ingredient with the list of valid ingredients to see if it can be cooked
+   * Checks the presented ingredient with the list of valid ingredients to see if
+   * it can be cooked
    *
-   * @param ingredientToCheck The ingredient presented by the chef to be checked if it can be used
+   * @param ingredientToCheck The ingredient presented by the chef to be checked
+   *                          if it can be used
    *                          by the station
-   * @return true if the ingredient is in the validIngredients array; false otherwise
+   * @return true if the ingredient is in the validIngredients array; false
+   *         otherwise
    */
   private boolean isCorrectIngredient(Ingredient ingredientToCheck) {
     if (!ingredientToCheck.getIsCooked()) {
@@ -93,7 +121,8 @@ public class CookingStation extends Station {
   }
 
   /**
-   * Obtains the actions that can be currently performed depending on the states of the station
+   * Obtains the actions that can be currently performed depending on the states
+   * of the station
    * itself and the selected chef
    *
    * @return actionTypes - the list of actions the station can currently perform.
@@ -109,14 +138,15 @@ public class CookingStation extends Station {
         actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
       }
     } else {
-      //check to see if total number of seconds has passed to progress the state of the patty.
+      // check to see if total number of seconds has passed to progress the state of
+      // the patty.
       if (currentIngredient instanceof Patty && ((Patty) currentIngredient).getIsHalfCooked()
-          && !currentIngredient.getIsCooked() && !progressVisible) {
+          && !currentIngredient.getIsCooked() && !progressVisible && !currentIngredient.getIsBurned()) {
         actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-      } else if (currentIngredient.getIsCooked()) {
+      } else if (currentIngredient.getIsCooked() || currentIngredient.getIsBurned()) {
         actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
       }
-      if (!inUse) {
+      if (!inUse && !currentIngredient.getIsBurned()) {
         actionTypes.add(StationAction.ActionType.COOK_ACTION);
       }
     }
@@ -124,7 +154,8 @@ public class CookingStation extends Station {
   }
 
   /**
-   * Given an action, the station should attempt to do that action based on the chef that is nearby
+   * Given an action, the station should attempt to do that action based on the
+   * chef that is nearby
    * or the state of the ingredient currently on the station.
    *
    * @param action the action that needs to be done by this station if it can.
@@ -133,8 +164,8 @@ public class CookingStation extends Station {
   public void doStationAction(StationAction.ActionType action) {
     switch (action) {
       case COOK_ACTION:
-        //timeCooked is used to track how long the
-        //ingredient has been cooking for.
+        // timeCooked is used to track how long the
+        // ingredient has been cooking for.
         timeCooked = 0;
         inUse = true;
         uiController.hideActions(this);
@@ -173,7 +204,8 @@ public class CookingStation extends Station {
    * Displays ingredients that have been placed on the station
    *
    * @param batch       Used to display a 2D texture
-   * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the
+   * @param parentAlpha The parent alpha, to be multiplied with this actor's
+   *                    alpha, allowing the
    *                    parent's alpha to affect all children.
    */
   @Override

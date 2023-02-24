@@ -35,6 +35,7 @@ public class UIOverlay {
   private final VerticalGroup recipeImages;
   private final Timer timer;
   public static Money money;
+  public static Lives lives;
 
   private final Label recipeCountLabel;
   private final Label resultLabel;
@@ -49,6 +50,13 @@ public class UIOverlay {
         "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
     money = new Money(moneyStyle);
     money.setAlignment(Align.bottom);
+
+    // Initialize the money button
+    LabelStyle livesStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
+    livesStyle.background = new TextureRegionDrawable(new Texture(
+        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
+    lives = new Lives(livesStyle);
+    lives.setAlignment(Align.bottom);
 
     // Initialize table
     Table table = new Table();
@@ -125,6 +133,7 @@ public class UIOverlay {
     Value timerWidth = Value.percentWidth(0.2f, table);
 
     table.add(chefDisplay).left().width(scale).height(scale);
+
     table.add(money).left().width(scale).height(scale);
 
     table.add(timer).center().width(timerWidth).height(scale);
@@ -132,6 +141,7 @@ public class UIOverlay {
     table.row().padTop(10f);
     table.add(ingredientStackDisplay).left().top().width(scale);
     table.add().expandX().width(timerWidth);
+    table.add(lives).right().width(scale).height(scale);
 
     table.add(recipeDisplay).right().top().width(scale);
     table.row();
