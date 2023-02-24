@@ -8,6 +8,7 @@ import cs.eng1.piazzapanic.food.recipes.Burger;
 import cs.eng1.piazzapanic.food.recipes.Pizza;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.food.recipes.Salad;
+import cs.eng1.piazzapanic.screens.GameScreen;
 import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.stations.RecipeStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
@@ -82,13 +83,19 @@ public class CustomerManager {
    * are completed, then show the winning UI.
    */
   public void nextRecipe() {
+
     if (customerOrders.isEmpty()) {
 
       currentOrder = null;
       overlay.updateRecipeCounter(0);
     } else {
+      if (GameScreen.customerTime > 60f) {
+        UIOverlay.lives.takeLives();
+      }
+      GameScreen.customerTime = 0;
       overlay.updateRecipeCounter(customerOrders.size);
       currentOrder = customerOrders.removeFirst();
+
     }
     notifyRecipeStations();
     overlay.updateRecipeUI(currentOrder);

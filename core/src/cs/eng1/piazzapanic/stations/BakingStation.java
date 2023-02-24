@@ -138,12 +138,12 @@ public class BakingStation extends Station {
             // check to see if total number of seconds has passed to progress the state of
             // the patty.
             if (currentIngredient instanceof Potato && ((Potato) currentIngredient).getIsHalfCooked()
-                    && !currentIngredient.getIsCooked() && !progressVisible) {
+                    && !currentIngredient.getIsCooked() && !progressVisible && !currentIngredient.getIsBurned()) {
                 actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-            } else if (currentIngredient.getIsCooked()) {
+            } else if (currentIngredient.getIsCooked() || currentIngredient.getIsBurned()) {
                 actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
             }
-            if (!inUse) {
+            if (!inUse && !currentIngredient.getIsBurned()) {
                 actionTypes.add(StationAction.ActionType.COOK_ACTION);
             }
         }
