@@ -11,6 +11,7 @@ public class Ingredient implements Holdable {
   protected final FoodTextureManager textureManager;
   protected boolean cooked = false;
   protected boolean chopped = false;
+  protected boolean grilled = false;
 
   public Ingredient(String type, FoodTextureManager textureManager) {
     this.type = type;
@@ -92,6 +93,14 @@ public class Ingredient implements Holdable {
 
   public boolean getCooked() {
     return cooked;
+  }
+
+  public void setIsGrilled(boolean value) {
+    grilled = value;
+  }
+
+  public boolean getGrilled() {
+    return grilled;
   }
 
   public void setIsChopped(boolean value) {

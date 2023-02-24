@@ -13,7 +13,6 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * The CookingStation class is a station representing the place in the kitchen
  * where you cook
@@ -21,11 +20,8 @@ import java.util.List;
  */
 public class CookingStation extends Station {
 
-  protected final float totalTimeToCook = 10f;
-
   protected Cookable currentIngredient;
   private boolean progressVisible = false;
-  protected Recipe finishedPizza = null;
 
   /**
    * The constructor method for the class
@@ -42,7 +38,7 @@ public class CookingStation extends Station {
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
       StationActionUI.ActionAlignment alignment) {
     super(id, image, uiController, alignment);
-    }
+  }
 
   @Override
   public void reset() {

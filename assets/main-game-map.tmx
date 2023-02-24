@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="4" nextobjectid="64">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="4" nextobjectid="70">
  <tileset firstgid="1" source="Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml"/>
  <layer id="1" name="Background" width="16" height="9">
   <data encoding="csv">
@@ -100,7 +100,6 @@
    <properties>
     <property name="actionAlignment" value="BOTTOM"/>
     <property name="collisionObjectIDs" value="31"/>
-    <property name="ingredients" value="lettuce,tomato"/>
     <property name="stationType" value="choppingStation"/>
    </properties>
   </object>
@@ -166,5 +165,24 @@
    </properties>
   </object>
   <object id="63" x="512" y="128" width="128" height="128"/>
+  <object id="64" x="1664" y="256"/>
+  <object id="65" name="Grilling Station 1" class="Station" gid="1073742120" x="640" y="128" width="128" height="128">
+   <properties>
+    <property name="actionAlignment" propertytype="ActionAlignment" value="BOTTOM"/>
+    <property name="collisionObjectIDs" value="67"/>
+    <property name="ingredients" propertytype="Ingredient" value="patty"/>
+    <property name="stationType" propertytype="StationType" value="grillingStation"/>
+   </properties>
+  </object>
+  <object id="66" name="Grilling Station 2" class="Station" gid="3221225768" x="1280" y="128" width="128" height="128">
+   <properties>
+    <property name="actionAlignment" propertytype="ActionAlignment" value="BOTTOM"/>
+    <property name="collisionObjectIDs" value="68"/>
+    <property name="ingredients" propertytype="Ingredient" value="patty"/>
+    <property name="stationType" propertytype="StationType" value="grillingStation"/>
+   </properties>
+  </object>
+  <object id="67" x="640" y="128" width="128" height="128"/>
+  <object id="68" x="1280" y="128" width="128" height="128"/>
  </objectgroup>
 </map>

@@ -1,7 +1,7 @@
 package cs.eng1.piazzapanic.food.interfaces;
 
-public interface Grillable {
-    public boolean grillingTick(float delta);
+public interface Grillable extends Holdable {
+    public boolean grillTick(float delta);
 
     public boolean getHalfGrilled();
 

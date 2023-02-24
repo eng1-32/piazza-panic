@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
 
-public class Patty extends BasicCookable {
+public class Patty extends BasicGrillable {
 
   public Patty(FoodTextureManager textureManager) {
     super("patty", textureManager);
@@ -18,8 +18,8 @@ public class Patty extends BasicCookable {
   @Override
   public Texture getTexture() {
     String name = getType() + "_";
-    if (cooked) {
-      name += "cooked";
+    if (grilled) {
+      name += "grilled";
     } else {
       name += "raw";
     }
@@ -27,7 +27,7 @@ public class Patty extends BasicCookable {
   }
 
   @Override
-  public Holdable getCookingResult() {
+  public Holdable getGrillResult() {
     return this;
   }
 }
