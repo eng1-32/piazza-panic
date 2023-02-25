@@ -36,7 +36,8 @@ public class UIOverlay {
   private final Timer timer;
   public static Money money;
   public static Lives lives;
-
+  int gameResolutionX;
+  int gameResolutionY;
   private final Label recipeCountLabel;
   private final Label resultLabel;
   private final Label loseLabel;
@@ -107,6 +108,19 @@ public class UIOverlay {
         game.loadHomeScreen();
       }
     });
+
+    ImageButton buyButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/shoppingBasket.png"))),
+        ButtonManager.ButtonColour.BLUE, -1.5f);
+    buyButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        game.loadHomeScreen();
+      }
+    });
+    buyButton.setPosition(600, 490);
+    buyButton.setSize(40, 40);
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="4" nextobjectid="63">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="4" nextobjectid="65">
  <tileset firstgid="1" source="Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/Tilesheet/Topdown Shooter Full 2.xml"/>
  <layer id="1" name="Background" width="16" height="9">
   <data encoding="csv">
@@ -77,6 +77,7 @@
     <property name="actionAlignment" value="TOP"/>
     <property name="collisionObjectIDs" value="22"/>
     <property name="ingredients" value="patty"/>
+    <property name="locked" value="true"/>
     <property name="stationType" value="cookingStation"/>
    </properties>
   </object>
@@ -85,6 +86,7 @@
     <property name="actionAlignment" value="BOTTOM"/>
     <property name="collisionObjectIDs" value="24"/>
     <property name="ingredients" value="patty"/>
+    <property name="locked" value="false"/>
     <property name="stationType" value="cookingStation"/>
    </properties>
   </object>
@@ -93,6 +95,7 @@
     <property name="actionAlignment" value="TOP"/>
     <property name="collisionObjectIDs" value="32"/>
     <property name="ingredients" value="lettuce,tomato"/>
+    <property name="locked" value="true"/>
     <property name="stationType" value="choppingStation"/>
    </properties>
   </object>
@@ -101,6 +104,7 @@
     <property name="actionAlignment" value="BOTTOM"/>
     <property name="collisionObjectIDs" value="31"/>
     <property name="ingredients" value="lettuce,tomato"/>
+    <property name="locked" value="false"/>
     <property name="stationType" value="choppingStation"/>
    </properties>
   </object>
@@ -133,22 +137,6 @@
   </object>
   <object id="53" x="1026.91" y="648.121" width="128" height="128"/>
   <object id="54" x="899.636" y="772.364" width="128" height="128"/>
-  <object id="55" name="Oven" class="Station" gid="1073742148" x="1280.09" y="126.514" width="128" height="128" rotation="-0.148472">
-   <properties>
-    <property name="actionAlignment" value="RIGHT"/>
-    <property name="collisionObjectIDs" value="57"/>
-    <property name="ingredients" value="potato,dough"/>
-    <property name="stationType" value="bakingStation"/>
-   </properties>
-  </object>
-  <object id="56" name="Oven" class="Station" gid="1073742148" x="644" y="126.667" width="128" height="128" rotation="-0.148472">
-   <properties>
-    <property name="actionAlignment" value="RIGHT"/>
-    <property name="collisionObjectIDs" value="58"/>
-    <property name="ingredients" value="potato,dough"/>
-    <property name="stationType" value="bakingStation"/>
-   </properties>
-  </object>
   <object id="57" name="Cooker Collider 1" x="1278.67" y="129.333" width="128" height="128"/>
   <object id="58" name="Cooker Collider 1" x="641.333" y="126.667" width="128" height="128"/>
   <object id="59" class="Station" gid="129" x="642" y="768" width="128" height="128">
@@ -168,5 +156,23 @@
    </properties>
   </object>
   <object id="62" x="1412" y="646" width="128" height="128"/>
+  <object id="63" name="Oven" class="Station" gid="1073742147" x="640" y="128" width="128" height="128">
+   <properties>
+    <property name="actionAlignment" value="RIGHT"/>
+    <property name="collisionObjectIDs" value="58"/>
+    <property name="ingredients" value="potato,dough"/>
+    <property name="locked" value="false"/>
+    <property name="stationType" value="bakingStation"/>
+   </properties>
+  </object>
+  <object id="64" name="Oven" class="Station" gid="1073742147" x="1280" y="126" width="128" height="128">
+   <properties>
+    <property name="actionAlignment" value="RIGHT"/>
+    <property name="collisionObjectIDs" value="57"/>
+    <property name="ingredients" value="potato,dough"/>
+    <property name="locked" value="true"/>
+    <property name="stationType" value="bakingStation"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

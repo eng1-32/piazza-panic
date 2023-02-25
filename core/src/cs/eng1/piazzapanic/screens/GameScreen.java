@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Array;
@@ -41,7 +43,8 @@ import java.util.HashMap;
  */
 public class GameScreen implements Screen {
   public static float customerTime = 0;
-
+  Button buy;
+  Texture Buy;
   private final Stage stage;
   private final Stage uiStage;
   private final ChefManager chefManager;
@@ -52,6 +55,8 @@ public class GameScreen implements Screen {
   private final CustomerManager customerManager;
   private boolean isFirstFrame = true;
   private Skin skin;
+  String locked1;
+  boolean locked2;
 
   public GameScreen(final PiazzaPanicGame game) {
     TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
@@ -125,20 +130,27 @@ public class GameScreen implements Screen {
       // Initialize specific station types
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
+        locked1 = tileObject.getProperties().get("locked", String.class);
+          locked2 = Boolean.parseBoolean(locked1);
           station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager),locked2);
           break;
         case "bakingStation":
+          locked1 = tileObject.getProperties().get("locked", String.class);
+          locked2 = Boolean.parseBoolean(locked1);
           station = new BakingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager), locked2);
+
           break;
         case "ingredientStation":
           station = new IngredientStation(id, tileObject.getTextureRegion(), stationUIController,
               alignment, Ingredient.fromString(ingredients, foodTextureManager));
           break;
         case "choppingStation":
+        locked1 = tileObject.getProperties().get("locked", String.class);
+          locked2 = Boolean.parseBoolean(locked1);
           station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager));
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager),locked2);
           break;
         case "recipeStation":
           station = new RecipeStation(id, tileObject.getTextureRegion(), stationUIController,

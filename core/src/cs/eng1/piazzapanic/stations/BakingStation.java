@@ -7,8 +7,10 @@ import cs.eng1.piazzapanic.food.ingredients.Dough;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.ingredients.Patty;
 import cs.eng1.piazzapanic.food.ingredients.Potato;
+import cs.eng1.piazzapanic.screens.GameScreen;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
+import cs.eng1.piazzapanic.ui.UIOverlay;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class BakingStation extends Station {
     protected final Ingredient[] validIngredients;
     protected Ingredient currentIngredient;
     protected float timeCooked;
+    boolean isLocked;
     protected final float totalTimeToCook = 10f;
     private boolean progressVisible = false;
     protected float timeCookedBurn;
@@ -41,9 +44,10 @@ public class BakingStation extends Station {
      *                     can be cooked
      */
     public BakingStation(int id, TextureRegion image, StationUIController uiController,
-            StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
+            StationActionUI.ActionAlignment alignment, Ingredient[] ingredients, boolean locked) {
         super(id, image, uiController, alignment);
         validIngredients = ingredients; // A list of the ingredients that can be used by this station.
+        isLocked = locked;
     }
 
     @Override
@@ -130,25 +134,31 @@ public class BakingStation extends Station {
         if (nearbyChef == null) {
             return actionTypes;
         }
-        if (currentIngredient == null) {
-            if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
-                actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
-                timeCookedBurn = 0;
+        if (isLocked && UIOverlay.money.getMoney() > 0) {
+            actionTypes.add(StationAction.ActionType.UNLOCK);
+        }
+        if (!(isLocked)) {
+            if (currentIngredient == null) {
+                if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
+                    actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+                    timeCookedBurn = 0;
 
-            }
-        } else {
-            // check to see if total number of seconds has passed to progress the state of
-            // the patty.
-            if (currentIngredient instanceof Potato && ((Potato) currentIngredient).getIsHalfCooked()
-                    && !currentIngredient.getIsCooked() && !progressVisible && !currentIngredient.getIsBurned()) {
-                actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-            } else if (currentIngredient.getIsCooked() || currentIngredient.getIsBurned()) {
-                actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
-            }
-            if (!inUse && !currentIngredient.getIsBurned()) {
-                actionTypes.add(StationAction.ActionType.COOK_ACTION);
+                }
+            } else {
+                // check to see if total number of seconds has passed to progress the state of
+                // the patty.
+                if (currentIngredient instanceof Potato && ((Potato) currentIngredient).getIsHalfCooked()
+                        && !currentIngredient.getIsCooked() && !progressVisible && !currentIngredient.getIsBurned()) {
+                    actionTypes.add(StationAction.ActionType.FLIP_ACTION);
+                } else if (currentIngredient.getIsCooked() || currentIngredient.getIsBurned()) {
+                    actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+                }
+                if (!inUse && !currentIngredient.getIsBurned()) {
+                    actionTypes.add(StationAction.ActionType.COOK_ACTION);
+                }
             }
         }
+
         return actionTypes;
     }
 
@@ -162,6 +172,14 @@ public class BakingStation extends Station {
     @Override
     public void doStationAction(StationAction.ActionType action) {
         switch (action) {
+            case UNLOCK:
+
+                UIOverlay.money.takeMoney(1);
+                isLocked = false;
+                uiController.hideActions(this);
+
+                break;
+
             case COOK_ACTION:
                 // timeCooked is used to track how long the
                 // ingredient has been cooking for.
