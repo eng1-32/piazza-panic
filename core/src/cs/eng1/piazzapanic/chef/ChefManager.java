@@ -22,20 +22,21 @@ import java.util.List;
  */
 public class ChefManager implements Disposable {
 
-  private final ArrayList<Chef> chefs;
+  public static ArrayList<Chef> chefs;
   private Chef currentChef = null;
   private final TiledMapTileLayer collisionLayer;
   private final UIOverlay overlay;
   final String[] chefSprites = new String[] {
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png",
+      "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Blue/manBlue_hold.png",
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Blue/manBlue_hold.png"
   };
   final float[] chefX = new float[] {
-      3f, 10f, 12f
+      3f, 11f, 12f, 3f
   };
   final float[] chefY = new float[] {
-      3f, 3f, 6f
+      3f, 3f, 6f, 7f
   };
 
   /**
@@ -74,6 +75,7 @@ public class ChefManager implements Disposable {
     for (int i = 0; i < chefs.size(); i++) {
       chefs.get(i).init(chefX[i], chefY[i]);
     }
+    chefs.get(3).isLocked = true;
   }
 
   /**

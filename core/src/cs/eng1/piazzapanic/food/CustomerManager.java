@@ -21,6 +21,7 @@ public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
   private Recipe currentOrder;
+
   private final List<RecipeStation> recipeStations;
   private final UIOverlay overlay;
 
@@ -74,7 +75,9 @@ public class CustomerManager {
     if (currentOrder == null) {
       return false;
     }
+
     return recipe.getType().equals(currentOrder.getType());
+
   }
 
   /**
@@ -87,6 +90,7 @@ public class CustomerManager {
     if (customerOrders.isEmpty()) {
 
       currentOrder = null;
+
       overlay.updateRecipeCounter(0);
     } else {
       if (GameScreen.customerTime > 60f) {
@@ -103,6 +107,7 @@ public class CustomerManager {
     }
     notifyRecipeStations();
     overlay.updateRecipeUI(currentOrder);
+
     if (currentOrder == null) {
       overlay.finishGameUI();
     }

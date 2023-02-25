@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.Chef;
+import cs.eng1.piazzapanic.chef.ChefManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
@@ -109,17 +110,21 @@ public class UIOverlay {
       }
     });
 
-    ImageButton buyButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+    final ImageButton buyButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
         new Texture(
             Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/shoppingBasket.png"))),
         ButtonManager.ButtonColour.BLUE, -1.5f);
     buyButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        game.loadHomeScreen();
+        if (money.getMoney() > 0) {
+          money.takeMoney(1);
+          ChefManager.chefs.get(3).isLocked = false;
+          buyButton.setVisible(false);
+        }
       }
     });
-    buyButton.setPosition(600, 490);
+    buyButton.setPosition(200, 490);
     buyButton.setSize(40, 40);
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
@@ -147,6 +152,7 @@ public class UIOverlay {
     loseLabel.setVisible(false);
 
     // Add everything
+    uiStage.addActor(buyButton);
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
 
