@@ -27,7 +27,7 @@ public class BakingStation extends Station {
     protected Ingredient currentIngredient;
     protected float timeCooked;
     boolean isLocked;
-    protected final float totalTimeToCook = 10f;
+    public static float totalTimeToCook = 10f;
     private boolean progressVisible = false;
     protected float timeCookedBurn;
 

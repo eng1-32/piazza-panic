@@ -44,7 +44,11 @@ import java.util.HashMap;
 public class GameScreen implements Screen {
   public static float customerTime = 0;
   public static float speedTime = 0;
+  public static float cookTime = 0;
+  public static float chopTime = 0;
   public static boolean speedClick = false;
+  public static boolean cookClick = false;
+  public static boolean chopClick = false;
 
   Button buy;
   Texture Buy;
@@ -240,10 +244,27 @@ public class GameScreen implements Screen {
       speedTime += delta;
 
     }
+
+    if (chopClick) {
+      chopTime += delta;
+
+    }
+    if (cookClick) {
+      cookTime += delta;
+
+    }
+
     if (speedTime > 10f) {
       for (int i = 0; i < ChefManager.chefs.size(); i++) {
         ChefManager.chefs.get(i).speed = 3f;
       }
+    }
+    if (cookTime > 30f) {
+      BakingStation.totalTimeToCook = 10f;
+      CookingStation.totalTimeToCook = 10f;
+    }
+    if (chopTime > 30f) {
+      ChoppingStation.totalTimeToChop = 5f;
     }
 
     if (isFirstFrame) {

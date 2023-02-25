@@ -21,7 +21,7 @@ public class ChoppingStation extends Station {
   protected final Ingredient[] validIngredients;
   protected Ingredient currentIngredient = null;
   protected float timeChopped;
-  protected final float totalTimeToChop = 5f;
+  public static float totalTimeToChop = 5f;
   private boolean progressVisible = false;
   boolean isLocked;
 

@@ -24,6 +24,9 @@ import cs.eng1.piazzapanic.chef.ChefManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.screens.GameScreen;
+import cs.eng1.piazzapanic.stations.BakingStation;
+import cs.eng1.piazzapanic.stations.ChoppingStation;
+import cs.eng1.piazzapanic.stations.CookingStation;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
 import javafx.scene.control.ButtonType;
 
@@ -53,6 +56,8 @@ public class UIOverlay {
   boolean buyClicked = false;
   boolean lifeClicked = false;
   boolean speedClicked = false;
+  boolean cookClicked = false;
+  boolean chopClicked = false;
 
   public UIOverlay(Stage uiStage, final PiazzaPanicGame game) {
     this.game = game;
@@ -176,6 +181,46 @@ public class UIOverlay {
     });
     lifeButton.setPosition(75, 50);
     lifeButton.setSize(40, 40);
+
+    final ImageButton cookButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/wrench.png"))),
+        ButtonManager.ButtonColour.BLUE, -1.5f);
+    cookButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        if (money.getMoney() > 0 && cookClicked == false) {
+          money.takeMoney(1);
+          cookClicked = true;
+          GameScreen.cookClick = true;
+
+          BakingStation.totalTimeToCook = 5f;
+          CookingStation.totalTimeToCook = 5f;
+        }
+      }
+    });
+    cookButton.setPosition(30, 50);
+    cookButton.setSize(40, 40);
+
+    final ImageButton chopButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/knife.png"))),
+        ButtonManager.ButtonColour.BLUE, -1.5f);
+    chopButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        if (money.getMoney() > 0 && chopClicked == false) {
+          money.takeMoney(1);
+          chopClicked = true;
+          GameScreen.chopClick = true;
+
+          ChoppingStation.totalTimeToChop = 2f;
+        }
+      }
+    });
+    chopButton.setPosition(30, 100);
+    chopButton.setSize(40, 40);
+
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 
@@ -205,6 +250,8 @@ public class UIOverlay {
     uiStage.addActor(buyButton);
     uiStage.addActor(speedButton);
     uiStage.addActor(lifeButton);
+    uiStage.addActor(cookButton);
+    uiStage.addActor(chopButton);
 
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
@@ -244,11 +291,20 @@ public class UIOverlay {
     buyClicked = false;
     lifeClicked = false;
     speedClicked = false;
+    cookClicked = false;
+    chopClicked = false;
+    ChoppingStation.totalTimeToChop = 5f;
+    BakingStation.totalTimeToCook = 10f;
+    CookingStation.totalTimeToCook = 10f;
     for (int i = 0; i < ChefManager.chefs.size(); i++) {
       ChefManager.chefs.get(i).speed = 3f;
     }
     GameScreen.speedClick = false;
     GameScreen.speedTime = 0f;
+    GameScreen.chopClick = false;
+    GameScreen.chopTime = 0f;
+    GameScreen.cookClick = false;
+    GameScreen.cookTime = 0f;
     lives.reset();
   }
 
