@@ -1,6 +1,7 @@
 package cs.eng1.piazzapanic.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,7 +23,9 @@ import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.chef.ChefManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
+import cs.eng1.piazzapanic.screens.GameScreen;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
+import javafx.scene.control.ButtonType;
 
 public class UIOverlay {
 
@@ -33,7 +36,9 @@ public class UIOverlay {
   private final VerticalGroup ingredientImages;
   private final TextureRegionDrawable removeBtnDrawable;
   private final Image recipeImagesBG;
+
   private final VerticalGroup recipeImages;
+
   private final Timer timer;
   public static Money money;
   public static Lives lives;
@@ -45,6 +50,9 @@ public class UIOverlay {
 
   private final Timer resultTimer;
   private final PiazzaPanicGame game;
+  boolean buyClicked = false;
+  boolean lifeClicked = false;
+  boolean speedClicked = false;
 
   public UIOverlay(Stage uiStage, final PiazzaPanicGame game) {
     this.game = game;
@@ -103,6 +111,7 @@ public class UIOverlay {
         new Texture(
             Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
         ButtonManager.ButtonColour.BLUE, -1.5f);
+
     homeButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
@@ -114,18 +123,59 @@ public class UIOverlay {
         new Texture(
             Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/shoppingBasket.png"))),
         ButtonManager.ButtonColour.BLUE, -1.5f);
+
     buyButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        if (money.getMoney() > 0) {
+        if (money.getMoney() > 0 && buyClicked == false) {
           money.takeMoney(1);
           ChefManager.chefs.get(3).isLocked = false;
-          buyButton.setVisible(false);
+          buyClicked = true;
+
         }
+
       }
     });
     buyButton.setPosition(200, 490);
     buyButton.setSize(40, 40);
+
+    final ImageButton speedButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/arrowUp.png"))),
+        ButtonManager.ButtonColour.BLUE, -1.5f);
+    speedButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        if (money.getMoney() > 0 && speedClicked == false) {
+          money.takeMoney(1);
+          GameScreen.speedClick = true;
+          speedClicked = true;
+          for (int i = 0; i < ChefManager.chefs.size(); i++) {
+            ChefManager.chefs.get(i).speed = 6f;
+          }
+
+        }
+      }
+    });
+    speedButton.setPosition(75, 100);
+    speedButton.setSize(40, 40);
+
+    final ImageButton lifeButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/heart.png"))),
+        ButtonManager.ButtonColour.BLUE, -1.5f);
+    lifeButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        if (money.getMoney() > 0 && lifeClicked == false) {
+          money.takeMoney(1);
+          lives.addLives();
+          lifeClicked = true;
+        }
+      }
+    });
+    lifeButton.setPosition(75, 50);
+    lifeButton.setSize(40, 40);
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 
@@ -153,6 +203,9 @@ public class UIOverlay {
 
     // Add everything
     uiStage.addActor(buyButton);
+    uiStage.addActor(speedButton);
+    uiStage.addActor(lifeButton);
+
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
 
@@ -188,6 +241,15 @@ public class UIOverlay {
     resultLabel.setVisible(false);
     resultTimer.setVisible(false);
     updateChefUI(null);
+    buyClicked = false;
+    lifeClicked = false;
+    speedClicked = false;
+    for (int i = 0; i < ChefManager.chefs.size(); i++) {
+      ChefManager.chefs.get(i).speed = 3f;
+    }
+    GameScreen.speedClick = false;
+    GameScreen.speedTime = 0f;
+    lives.reset();
   }
 
   /**
@@ -263,6 +325,7 @@ public class UIOverlay {
     }
     recipeImages.clearChildren();
     recipeImages.addActor(recipeCountLabel);
+
     for (String recipeIngredient : recipe.getRecipeIngredients()) {
       Image image = new Image(recipe.getTextureManager().getTexture(recipeIngredient));
       image.getDrawable().setMinHeight(chefDisplay.getHeight());

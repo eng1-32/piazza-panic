@@ -43,6 +43,9 @@ import java.util.HashMap;
  */
 public class GameScreen implements Screen {
   public static float customerTime = 0;
+  public static float speedTime = 0;
+  public static boolean speedClick = false;
+
   Button buy;
   Texture Buy;
   private final Stage stage;
@@ -130,10 +133,10 @@ public class GameScreen implements Screen {
       // Initialize specific station types
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
-        locked1 = tileObject.getProperties().get("locked", String.class);
+          locked1 = tileObject.getProperties().get("locked", String.class);
           locked2 = Boolean.parseBoolean(locked1);
           station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager),locked2);
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager), locked2);
           break;
         case "bakingStation":
           locked1 = tileObject.getProperties().get("locked", String.class);
@@ -147,10 +150,10 @@ public class GameScreen implements Screen {
               alignment, Ingredient.fromString(ingredients, foodTextureManager));
           break;
         case "choppingStation":
-        locked1 = tileObject.getProperties().get("locked", String.class);
+          locked1 = tileObject.getProperties().get("locked", String.class);
           locked2 = Boolean.parseBoolean(locked1);
           station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager),locked2);
+              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager), locked2);
           break;
         case "recipeStation":
           station = new RecipeStation(id, tileObject.getTextureRegion(), stationUIController,
@@ -233,6 +236,16 @@ public class GameScreen implements Screen {
     stage.draw();
     uiStage.draw();
     customerTime += delta;
+    if (speedClick) {
+      speedTime += delta;
+
+    }
+    if (speedTime > 10f) {
+      for (int i = 0; i < ChefManager.chefs.size(); i++) {
+        ChefManager.chefs.get(i).speed = 3f;
+      }
+    }
+
     if (isFirstFrame) {
       customerManager.nextRecipe();
       isFirstFrame = false;

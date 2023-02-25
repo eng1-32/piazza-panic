@@ -15,7 +15,7 @@ public class Money extends Label {
     }
 
     public void reset() {
-        totalMoney = 0;
+        totalMoney = 3;
         setText("£0");
     }
 

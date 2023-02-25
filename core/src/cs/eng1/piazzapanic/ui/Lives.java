@@ -27,6 +27,10 @@ public class Lives extends Label {
         totalLives -= 1;
     }
 
+    public void addLives() {
+        totalLives += 1;
+    }
+
     public float getLives() {
         return totalLives;
     }

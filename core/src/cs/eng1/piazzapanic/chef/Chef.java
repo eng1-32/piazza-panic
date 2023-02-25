@@ -33,7 +33,7 @@ public class Chef extends Actor implements Disposable {
   private final FixedStack<Ingredient> ingredientStack = new FixedStack<>(5);
 
   private final Vector2 inputVector;
-  private final float speed = 3f;
+  public float speed = 3f;
   public boolean isLocked = false;
   /**
    * a parameter which adds a small amount of distance between the chef's
