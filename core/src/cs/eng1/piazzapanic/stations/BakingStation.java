@@ -28,6 +28,8 @@ public class BakingStation extends Station {
     protected float timeCooked;
     boolean isLocked;
     public static float totalTimeToCook = 10f;
+    public static float totalTimeToBurn = 15f;
+
     private boolean progressVisible = false;
     protected float timeCookedBurn;
 
@@ -88,7 +90,7 @@ public class BakingStation extends Station {
             }
         }
         super.act(delta);
-        if (timeCookedBurn >= 15f) {
+        if (timeCookedBurn >= totalTimeToBurn) {
             if (currentIngredient instanceof Dough || currentIngredient instanceof Potato)
 
             {

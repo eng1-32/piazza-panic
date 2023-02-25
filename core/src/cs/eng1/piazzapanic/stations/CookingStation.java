@@ -28,6 +28,7 @@ public class CookingStation extends Station {
   boolean isLocked;
 
   public static float totalTimeToCook = 10f;
+  public static float totalTimeToBurn = 30f;
   private boolean progressVisible = false;
 
   /**
@@ -88,7 +89,7 @@ public class CookingStation extends Station {
       }
     }
 
-    if (timeCookedBurn1 >= 30f) {
+    if (timeCookedBurn1 >= totalTimeToBurn) {
       if (currentIngredient instanceof Patty)
 
       {

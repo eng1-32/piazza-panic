@@ -46,9 +46,12 @@ public class GameScreen implements Screen {
   public static float speedTime = 0;
   public static float cookTime = 0;
   public static float chopTime = 0;
+  public static float burnTime = 0;
+
   public static boolean speedClick = false;
   public static boolean cookClick = false;
   public static boolean chopClick = false;
+  public static boolean burnClick = false;
 
   Button buy;
   Texture Buy;
@@ -249,6 +252,10 @@ public class GameScreen implements Screen {
       chopTime += delta;
 
     }
+    if (burnClick) {
+      burnTime += delta;
+
+    }
     if (cookClick) {
       cookTime += delta;
 
@@ -265,6 +272,10 @@ public class GameScreen implements Screen {
     }
     if (chopTime > 30f) {
       ChoppingStation.totalTimeToChop = 5f;
+    }
+    if (burnTime > 60f) {
+      BakingStation.totalTimeToBurn = 15f;
+      CookingStation.totalTimeToBurn = 30f;
     }
 
     if (isFirstFrame) {

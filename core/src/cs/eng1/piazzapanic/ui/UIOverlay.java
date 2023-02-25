@@ -58,6 +58,7 @@ public class UIOverlay {
   boolean speedClicked = false;
   boolean cookClicked = false;
   boolean chopClicked = false;
+  boolean burnClicked = false;
 
   public UIOverlay(Stage uiStage, final PiazzaPanicGame game) {
     this.game = game;
@@ -221,6 +222,26 @@ public class UIOverlay {
     chopButton.setPosition(30, 100);
     chopButton.setSize(40, 40);
 
+    final ImageButton burnButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/warning.png"))),
+        ButtonManager.ButtonColour.BLUE, -1.5f);
+    burnButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        if (money.getMoney() > 0 && burnClicked == false) {
+          money.takeMoney(1);
+          burnClicked = true;
+          GameScreen.burnClick = true;
+          CookingStation.totalTimeToBurn = 45f;
+          BakingStation.totalTimeToBurn = 25f;
+
+        }
+      }
+    });
+    burnButton.setPosition(30, 150);
+    burnButton.setSize(40, 40);
+
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 
@@ -252,6 +273,7 @@ public class UIOverlay {
     uiStage.addActor(lifeButton);
     uiStage.addActor(cookButton);
     uiStage.addActor(chopButton);
+    uiStage.addActor(burnButton);
 
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
@@ -305,6 +327,10 @@ public class UIOverlay {
     GameScreen.chopTime = 0f;
     GameScreen.cookClick = false;
     GameScreen.cookTime = 0f;
+    GameScreen.burnClick = false;
+    GameScreen.burnTime = 0f;
+    CookingStation.totalTimeToBurn = 30f;
+    BakingStation.totalTimeToBurn = 15f;
     lives.reset();
   }
 
