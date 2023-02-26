@@ -9,7 +9,7 @@ import java.util.Stack;
  */
 public class FixedStack<T> extends Stack<T> {
 
-  private final int maxSize;
+  public final int maxSize;
 
   public FixedStack(int size) {
     super();

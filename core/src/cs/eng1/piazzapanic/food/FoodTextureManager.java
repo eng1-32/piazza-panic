@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class FoodTextureManager implements Disposable {
 
@@ -12,7 +13,7 @@ public class FoodTextureManager implements Disposable {
 
         public FoodTextureManager() {
                 this.foodTextures = new HashMap<>();
-                this.foodTextures.put("patty_grilled",
+                this.foodTextures.put("patty_cooked",
                                 new Texture(Gdx.files.internal("food/original/cooked_patty.png")));
                 this.foodTextures.put("patty_raw",
                                 new Texture(Gdx.files.internal("food/original/uncooked_patty.png")));
