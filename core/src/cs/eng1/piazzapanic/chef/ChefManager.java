@@ -55,9 +55,9 @@ public class ChefManager implements Disposable {
       String sprite = chefSprites[i];
       Texture chefTexture = new Texture(Gdx.files.internal(sprite));
       Chef chef = new Chef(chefTexture, new Vector2(chefTexture.getWidth() * chefScale,
-          chefTexture.getHeight() * chefScale), this);
+              chefTexture.getHeight() * chefScale), this);
       chef.setBounds(chefX[i], chefY[i], chefTexture.getHeight() * chefScale,
-          chefTexture.getHeight() * chefScale);
+              chefTexture.getHeight() * chefScale);
       chef.setInputEnabled(false);
       chefs.add(chef);
     }
@@ -97,6 +97,8 @@ public class ChefManager implements Disposable {
       stage.addActor(chef);
     }
     final ChefManager manager = this;
+    manager.setCurrentChef(chefs.get(0));
+    overlay.updateChefUI(currentChef);
     stage.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
