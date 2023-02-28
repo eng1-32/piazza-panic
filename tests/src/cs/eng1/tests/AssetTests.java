@@ -130,7 +130,7 @@ public class AssetTests {
 
     @Test
     public void cookedPattyFetchTest() {
-        Texture cookedPattyTexture = foodTextureManager.getTexture("patty_cooked");
+        Texture cookedPattyTexture = foodTextureManager.getTexture("patty_grilled");
         TextureData texturedata = cookedPattyTexture.getTextureData();
         if (texturedata instanceof FileTextureData) {
             assertEquals("The foodType should return the texture cooked_patty.png",
