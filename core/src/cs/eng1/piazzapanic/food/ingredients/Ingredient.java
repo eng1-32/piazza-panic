@@ -104,6 +104,14 @@ public class Ingredient implements Holdable {
     return grilled;
   }
 
+  public void setChopped(boolean value) {
+    chopped = value;
+  }
+
+  public boolean getChopped() {
+    return chopped;
+  }
+
   public void setUseable(boolean value) {
     useable = value;
   }

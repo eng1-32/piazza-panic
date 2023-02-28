@@ -38,15 +38,6 @@ public abstract class BasicChoppable extends Ingredient implements Choppable {
         return this;
     }
 
-    @Override
-    public boolean getChopped() {
-        return chopped;
-    }
-
-    public void setChopped(boolean value) {
-        chopped = value;
-    }
-
     /**
      * Get the texture based on whether the lettuce has been chopped.
      *
