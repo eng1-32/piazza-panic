@@ -21,7 +21,7 @@ public abstract class BasicCookable extends Ingredient implements Cookable {
     public boolean cookingTick(float delta) {
         accumulator += delta;
         if (accumulator >= (cookingStepTime + failTime)) {
-            useable = false;
+            setUseable(false);
         } else if (accumulator >= cookingStepTime) {
             if (!getHalfCooked()) {
                 halfCooked = true;

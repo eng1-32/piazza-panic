@@ -21,7 +21,7 @@ public class BasicGrillable extends Ingredient implements Grillable {
     @Override
     public boolean grillTick(float delta) {
         accumulator += delta;
-        if (accumulator >= grillStepTime + failTime) {
+        if (accumulator >= (grillStepTime + failTime)) {
             setUseable(false);
         } else if (accumulator >= grillStepTime) {
             if (!getHalfGrilled()) {
@@ -57,10 +57,13 @@ public class BasicGrillable extends Ingredient implements Grillable {
     @Override
     public Texture getTexture() {
         String name = getType() + "_";
-        if (chopped) {
-            name += "grilled";
-        } else {
+
+        if (!useable) {
+            name += "ruined";
+        } else if (!grilled) {
             name += "raw";
+        } else {
+            name += "grilled";
         }
         return textureManager.getTexture(name);
     }

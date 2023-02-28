@@ -21,7 +21,7 @@ public abstract class BasicChoppable extends Ingredient implements Choppable {
         accumulator += delta;
 
         if (accumulator >= (chopTime + failTime)) {
-            useable = false;
+            setUseable(false);
         } else if (accumulator >= chopTime) {
             chopped = true;
         }
