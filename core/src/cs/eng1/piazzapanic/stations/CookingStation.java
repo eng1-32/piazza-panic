@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.interfaces.Cookable;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
-import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
@@ -169,7 +168,8 @@ public class CookingStation extends Station {
         }
         uiController.showActions(this, getActionTypes());
         break;
-
+      default:
+        break;
     }
   }
 

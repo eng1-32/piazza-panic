@@ -9,7 +9,8 @@ import cs.eng1.piazzapanic.food.interfaces.Holdable;
 public abstract class BasicChoppable extends Ingredient implements Choppable {
 
     private float accumulator = 0f;
-    private float chopTime = 2f;
+    private final float chopTime = 2f;
+    private final float failTime = 3f;
 
     public BasicChoppable(String type, FoodTextureManager textureManager) {
         super(type, textureManager);
@@ -19,7 +20,9 @@ public abstract class BasicChoppable extends Ingredient implements Choppable {
     public boolean choppingTick(float delta) {
         accumulator += delta;
 
-        if (accumulator >= chopTime) {
+        if (accumulator >= (chopTime + failTime)) {
+            setUseable(false);
+        } else if (accumulator >= chopTime) {
             chopped = true;
         }
         return chopped;
@@ -35,11 +38,6 @@ public abstract class BasicChoppable extends Ingredient implements Choppable {
         return this;
     }
 
-    @Override
-    public boolean getChopped() {
-        return chopped;
-    }
-
     /**
      * Get the texture based on whether the lettuce has been chopped.
      *
@@ -48,7 +46,9 @@ public abstract class BasicChoppable extends Ingredient implements Choppable {
     @Override
     public Texture getTexture() {
         String name = getType() + "_";
-        if (chopped) {
+        if (!useable) {
+            name += "ruined";
+        } else if (chopped) {
             name += "chopped";
         } else {
             name += "raw";

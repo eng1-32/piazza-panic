@@ -6,7 +6,6 @@ import cs.eng1.piazzapanic.food.recipes.JacketPotato;
 import cs.eng1.piazzapanic.food.recipes.Pizza;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.food.recipes.Salad;
-import cs.eng1.piazzapanic.stations.RecipeStation;
 import cs.eng1.piazzapanic.stations.SubmitStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.LinkedList;

@@ -7,7 +7,8 @@ import cs.eng1.piazzapanic.food.interfaces.Holdable;
 public abstract class BasicCookable extends Ingredient implements Cookable {
 
     private float accumulator = 0f;
-    private float cookingStepTime = 2f;
+    private final float cookingStepTime = 2f;
+    private final float failTime = 3f;
 
     private boolean halfCooked = false;
     private boolean flipped = false;
@@ -19,8 +20,9 @@ public abstract class BasicCookable extends Ingredient implements Cookable {
     @Override
     public boolean cookingTick(float delta) {
         accumulator += delta;
-
-        if (accumulator >= cookingStepTime) {
+        if (accumulator >= (cookingStepTime + failTime)) {
+            setUseable(false);
+        } else if (accumulator >= cookingStepTime) {
             if (!getHalfCooked()) {
                 halfCooked = true;
             } else if (flipped) {
@@ -56,5 +58,5 @@ public abstract class BasicCookable extends Ingredient implements Cookable {
         accumulator = 0;
         flipped = true;
     }
-    
+
 }

@@ -14,7 +14,9 @@ public class UncookedPizza extends BasicCookable {
 
     @Override
     public Holdable getCookingResult() {
-        if (cooked) {
+        if (!getUseable()) {
+            return this;
+        } else if (cooked) {
             return new Pizza(textureManager);
         } else {
             return null;
@@ -24,7 +26,9 @@ public class UncookedPizza extends BasicCookable {
     @Override
     public Texture getTexture() {
         String name = "";
-        if (!cooked) {
+        if (!useable) {
+            name += "ruined_pizza";
+        } else if (!cooked) {
             name = "uncooked_pizza";
         } else {
             name = "pizza";
