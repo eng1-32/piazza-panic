@@ -18,10 +18,13 @@ public class Patty extends BasicGrillable {
   @Override
   public Texture getTexture() {
     String name = getType() + "_";
-    if (grilled) {
-      name += "grilled";
-    } else {
+
+    if (!useable) {
+      name += "burned";
+    } else if (!grilled) {
       name += "raw";
+    } else {
+      name += "grilled";
     }
     return textureManager.getTexture(name);
   }

@@ -9,6 +9,7 @@ import cs.eng1.piazzapanic.food.interfaces.Holdable;
 public class BasicGrillable extends Ingredient implements Grillable {
     private float accumulator = 0f;
     private final float grillStepTime = 2f;
+    private final float failTime = 3f;
 
     private boolean halfGrilled = false;
     private boolean flipped = false;
@@ -20,8 +21,9 @@ public class BasicGrillable extends Ingredient implements Grillable {
     @Override
     public boolean grillTick(float delta) {
         accumulator += delta;
-
-        if (accumulator >= grillStepTime) {
+        if (accumulator >= grillStepTime + failTime) {
+            setUseable(false);
+        } else if (accumulator >= grillStepTime) {
             if (!getHalfGrilled()) {
                 halfGrilled = true;
             } else if (flipped) {

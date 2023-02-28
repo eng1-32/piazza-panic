@@ -3,7 +3,6 @@ package cs.eng1.piazzapanic.stations;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import cs.eng1.piazzapanic.chef.FixedStack;
-import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.ingredients.UncookedPizza;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
@@ -144,8 +143,12 @@ public class RecipeStation extends Station {
         Holdable item = nearbyChef.getStack().peek();
         if (item instanceof Ingredient) {
           Ingredient checkItem = (Ingredient) item;
-          if (checkItem.getChopped() || checkItem.getCooked() || checkItem.getGrilled() || checkItem.getType() == "bun"
-              || checkItem.getType() == "dough") {
+          if (checkItem.getUseable()
+              && (checkItem.getChopped()
+                  || checkItem.getCooked()
+                  || checkItem.getGrilled()
+                  || checkItem.getType() == "bun"
+                  || checkItem.getType() == "dough")) {
             // If a chef is nearby and is carrying at least one ingredient
             // and the top ingredient is cooked, chopped or a bun then display the action
             actionTypes.add(ActionType.PLACE_INGREDIENT);
@@ -206,6 +209,8 @@ public class RecipeStation extends Station {
           nearbyChef.grabItem(completedRecipe);
           completedRecipe = null;
         }
+        break;
+      default:
         break;
     }
     uiController.showActions(this, getActionTypes());

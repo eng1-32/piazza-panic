@@ -1,6 +1,5 @@
 package cs.eng1.piazzapanic.ui;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,14 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
-import cs.eng1.piazzapanic.ui.ButtonManager;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
 
 public class SettingsOverlay {
 
   private final Table table;
   PiazzaPanicGame game;
-
 
   public SettingsOverlay(final PiazzaPanicGame game) {
     this.game = game;
@@ -60,7 +57,6 @@ public class SettingsOverlay {
     table.row();
     table.add(backButton).padTop(20f);
   }
-
 
   public void addToStage(Stage uiStage) {
     uiStage.addActor(table);

@@ -144,7 +144,8 @@ public class GrillingStation extends Station {
                 }
                 uiController.showActions(this, getActionTypes());
                 break;
-
+            default:
+                break;
         }
     }
 

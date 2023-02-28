@@ -55,7 +55,6 @@ public class SubmitStation extends Station {
                 if (!checkCorrectRecipe(topItem)) {
                     return;
                 }
-
                 customerManager.nextRecipe();
                 break;
 

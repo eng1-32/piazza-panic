@@ -11,7 +11,6 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The ChoppingStation class is a station representing the place in
@@ -57,7 +56,7 @@ public class ChoppingStation extends Station {
       boolean complete = currentIngredient.choppingTick(delta);
 
       uiController.updateProgressValue(this, currentIngredient.getChoppingProgress());
-      
+
       if (complete && progressVisible) {
         uiController.hideProgressBar(this);
         progressVisible = false;
@@ -149,6 +148,8 @@ public class ChoppingStation extends Station {
           inUse = false;
         }
         uiController.showActions(this, getActionTypes());
+        break;
+      default:
         break;
     }
   }
