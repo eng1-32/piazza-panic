@@ -10,15 +10,17 @@ import static org.junit.Assert.assertEquals;
 @RunWith(GdxTestRunner.class)
 public class IngredientTests {
 
+    FoodTextureManager textureManager = new FoodTextureManager();
+
     @Test
     public void testFromString() {
-        Ingredient ingredient = Ingredient.fromString("patty",  new FoodTextureManager());
+        Ingredient ingredient = Ingredient.fromString("patty",  textureManager);
         assertNotNull(ingredient);
         assertEquals(Patty.class, ingredient.getClass());
     }
     @Test
     public void testIsCooked() {
-        Ingredient ingredient = Ingredient.fromString("patty", new FoodTextureManager());
+        Ingredient ingredient = Ingredient.fromString("patty", textureManager);
         assertFalse(ingredient.getCooked());
 
         ingredient.setIsCooked(true);
@@ -29,7 +31,7 @@ public class IngredientTests {
     }
     @Test
     public void testIsChopped() {
-        Ingredient ingredient = Ingredient.fromString("lettuce", new FoodTextureManager());
+        Ingredient ingredient = Ingredient.fromString("lettuce", textureManager);
         assertFalse(ingredient.getChopped());
 
         ingredient.setIsChopped(true);
@@ -40,7 +42,7 @@ public class IngredientTests {
     }
     @Test
     public void testIsGrilled() {
-        Ingredient ingredient = Ingredient.fromString("patty", new FoodTextureManager());
+        Ingredient ingredient = Ingredient.fromString("patty", textureManager);
         assertFalse(ingredient.getGrilled());
 
         ingredient.setIsGrilled(true);
@@ -51,7 +53,7 @@ public class IngredientTests {
     }
     @Test
     public void testToString() {
-        Ingredient ingredient = Ingredient.fromString("patty", new FoodTextureManager());
+        Ingredient ingredient = Ingredient.fromString("patty", textureManager);
         assertEquals("patty_raw", ingredient.toString());
 
         // TODO: Update this test and toString to work consistently.
