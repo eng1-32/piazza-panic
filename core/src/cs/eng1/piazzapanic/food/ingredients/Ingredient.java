@@ -103,7 +103,7 @@ public class Ingredient implements Holdable {
     return grilled;
   }
 
-  public void setIsChopped(boolean value) {
+  public void setChopped(boolean value) {
     chopped = value;
   }
 

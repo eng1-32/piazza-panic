@@ -34,10 +34,10 @@ public class IngredientTests {
         Ingredient ingredient = Ingredient.fromString("lettuce", textureManager);
         assertFalse(ingredient.getChopped());
 
-        ingredient.setIsChopped(true);
+        ingredient.setChopped(true);
         assertTrue(ingredient.getChopped());
 
-        ingredient.setIsChopped(false);
+        ingredient.setChopped(false);
         assertFalse(ingredient.getChopped());
     }
     @Test

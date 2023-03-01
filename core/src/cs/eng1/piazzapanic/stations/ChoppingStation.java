@@ -11,7 +11,6 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The ChoppingStation class is a station representing the place in
