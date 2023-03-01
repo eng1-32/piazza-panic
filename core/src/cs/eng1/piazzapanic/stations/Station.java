@@ -26,7 +26,7 @@ public class Station extends Actor implements Observer<Chef> {
   protected boolean inUse = false;
 
   protected final List<Subject<Chef>> chefSubjects = new LinkedList<>();
-  protected Chef nearbyChef = null;
+  public Chef nearbyChef = null;
   private float imageRotation = 0.0f;
 
   public Station(int id, TextureRegion image, StationUIController uiController,
