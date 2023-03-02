@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.ingredients.Patty;
+import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 import cs.eng1.piazzapanic.ui.UIOverlay;
@@ -69,6 +70,12 @@ public class CookingStation extends Station {
    */
   @Override
   public void act(float delta) {
+    if (HomeScreen.difficulty == 0) {
+      totalTimeToBurn = 35f;
+      totalTimeToCook = 7f;
+    } else if (HomeScreen.difficulty == 2) {
+      totalTimeToCook = 12f;
+    }
 
     if (inUse) {
       timeCookedBurn1 += delta;

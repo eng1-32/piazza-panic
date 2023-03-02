@@ -18,6 +18,7 @@ import cs.eng1.piazzapanic.ui.TutorialOverlay;
 public class HomeScreen implements Screen {
   public static int mode = 0;
   private final Stage uiStage;
+  public static int difficulty = 1;
 
   public HomeScreen(final PiazzaPanicGame game) {
     // Initialize the root UI stage and table
@@ -37,13 +38,40 @@ public class HomeScreen implements Screen {
         new Label.LabelStyle(game.getFontManager().getTitleFont(), null));
 
     // Initialize buttons and callbacks
+    TextButton EasyButton = game.getButtonManager()
+        .createTextButton("Easy", ButtonManager.ButtonColour.BLUE);
+    EasyButton.sizeBy(3f);
+    EasyButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        mode = 0;
+        difficulty = 0;
+        game.loadGameScreen();
+      }
+    });
+
     TextButton startButton = game.getButtonManager()
-        .createTextButton("Start", ButtonManager.ButtonColour.BLUE);
+        .createTextButton("Normal", ButtonManager.ButtonColour.BLUE);
     startButton.sizeBy(3f);
     startButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         mode = 0;
+        difficulty = 1;
+
+        game.loadGameScreen();
+      }
+    });
+
+    TextButton hardButton = game.getButtonManager()
+        .createTextButton("Hard", ButtonManager.ButtonColour.BLUE);
+    hardButton.sizeBy(3f);
+    hardButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        mode = 0;
+        difficulty = 2;
+
         game.loadGameScreen();
       }
     });
@@ -89,13 +117,15 @@ public class HomeScreen implements Screen {
     // Add UI elements to the table and position them
     table.add(welcomeLabel).padBottom(100f);
     table.row();
+    table.add(EasyButton).padBottom(20f);
+    table.row();
     table.add(startButton).padBottom(20f);
+    table.row();
+    table.add(hardButton).padBottom(20f);
     table.row();
     table.add(endlessButton).padBottom(20f);
     table.row();
     table.add(tutorialButton).padBottom(20f);
-    table.row();
-    table.add(settingsButton).padBottom(20f);
     table.row();
     table.add(quitButton);
   }
