@@ -12,12 +12,11 @@ buildscript {
     }
 }
 
-plugins {
-    id 'jacoco'
-}
-
 allprojects {
     apply plugin: "eclipse"
+    apply plugin: "checkstyle"
+
+    def checkstyleVersion = "10.4"
 
     version = '1.0'
     ext {
@@ -38,6 +37,23 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://jitpack.io" }
+    }
+
+    configurations {
+	checkstyleRules
+    }
+
+    dependencies {
+	checkstyleRules(
+		"com.puppycrawl.tools:checkstyle:${checkstyleVersion}") {
+			transitive = false
+		}
+    }
+
+    checkstyle {
+	toolVersion "${checkstyleVersion}"
+    	config = resources.text.fromArchiveEntry(
+		configurations.checkstyleRules, 'google_checks.xml')
     }
 }
 
