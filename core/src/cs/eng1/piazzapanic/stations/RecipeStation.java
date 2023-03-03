@@ -2,7 +2,6 @@ package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import cs.eng1.piazzapanic.chef.FixedStack;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.ingredients.UncookedPizza;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
@@ -15,7 +14,6 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -28,47 +26,11 @@ public class RecipeStation extends Station {
 
   private static final int MAX_ITEMS_PER_GROUP = 3;
 
-  private Holdable completedRecipe = null;
+  public Holdable completedRecipe = null;
 
-  private Stack<Ingredient> displayIngredient = new Stack<>();
+  public Stack<Ingredient> displayIngredient = new Stack<>();
 
-  /**
-   * A hashmap of items grouped by type that does not allow empty lists to exist.
-   * Yes, I'm using hashmaps again.
-   */
-  private Map<String, FixedStack<Ingredient>> heldItems = new HashMap<String, FixedStack<Ingredient>>() {
-    /**
-     * <p>
-     * {@inheritDoc}
-     * <p>
-     * An empty list will always have no mapping, and will result in a {@code null}
-     * return.
-     */
-    @Override
-    public FixedStack<Ingredient> put(String key, FixedStack<Ingredient> value) {
-      if (value.size() != 0) {
-        return super.put(key, value);
-      }
-      return null;
-    };
-
-    /**
-     * <p>
-     * {@inheritDoc}
-     * <p>
-     * If replaced by an empty list, removes the mapping altogether.
-     */
-    public FixedStack<Ingredient> replace(String key, FixedStack<Ingredient> value) {
-      FixedStack<Ingredient> returnVal = this.get(key);
-      if (returnVal != null) {
-        if (this.put(key, value) == null) {
-          this.remove(key);
-        }
-        ;
-      }
-      return returnVal;
-    };
-  };
+  public IngredientStack ingredientStack = new IngredientStack(MAX_ITEMS_PER_GROUP);
 
   HashMap<ActionType, String[]> makeActions = new HashMap<ActionType, String[]>() {
     {
@@ -79,22 +41,13 @@ public class RecipeStation extends Station {
     }
   };
 
-  private void placeIngredient(Ingredient input) {
-    if (heldItems.containsKey(input.getType())) {
-      FixedStack<Ingredient> ingredients = heldItems.get(input.getType());
-      ingredients.add(input);
-    } else {
-      FixedStack<Ingredient> ingredients = new FixedStack<Ingredient>(MAX_ITEMS_PER_GROUP);
-      ingredients.add(input);
-      heldItems.put(input.getType(), ingredients);
-    }
+  public void placeIngredient(Ingredient input) {
+    ingredientStack.addIngredient(input.getType(), input);
     displayIngredient.add(input);
   }
 
   private void removeIngredient(String type) {
-    FixedStack<Ingredient> ingredients = heldItems.get(type);
-    ingredients.pop();
-    heldItems.replace(type, ingredients);
+    ingredientStack.removeIngredient(type);
     displayIngredient.pop();
   }
 
@@ -121,7 +74,7 @@ public class RecipeStation extends Station {
 
   @Override
   public void reset() {
-    heldItems.clear();
+    ingredientStack.reset();
     displayIngredient.clear();
 
     completedRecipe = null;
@@ -159,7 +112,7 @@ public class RecipeStation extends Station {
         for (ActionType makeAction : makeActions.keySet()) {
           boolean canMake = true;
           for (String ingredientType : makeActions.get(makeAction)) {
-            canMake = canMake && heldItems.containsKey(ingredientType);
+            canMake = canMake && ingredientStack.contains(ingredientType);
           }
           if (canMake) {
             actionTypes.add(makeAction);
