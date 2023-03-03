@@ -19,6 +19,8 @@ public class CookingStationTests {
 
     ChefManager chefManager = new ChefManager(0, null, null);
     FoodTextureManager textureManager = new FoodTextureManager();
+    Potato potato = new Potato(textureManager);
+    Chef chef = new Chef(null, null, chefManager);
 
     @Test
     public void testGetActionTypesNoChef() {
@@ -30,16 +32,14 @@ public class CookingStationTests {
     @Test
     public void testGetActionTypeNoIngredient() {
         CookingStation station = new CookingStation(1, null, null, null);
-        Chef chef = new Chef(null, null, null);
         station.nearbyChef = chef;
         List<StationAction.ActionType> actionTypes = station.getActionTypes();
-        assertTrue("nothing is added to action types if the chef has no ingredients" ,actionTypes.isEmpty());
+        assertTrue("nothing is added to action types if the chef and station have no ingredients" ,actionTypes.isEmpty());
     }
     
     @Test
     public void testGetActionTypeWrongIngredient(){
         CookingStation station = new CookingStation(1, null, null, null);
-        Chef chef = new Chef(null, null, chefManager);
         chef.grabItem(new Salad(textureManager));
         station.nearbyChef = chef;
         List<StationAction.ActionType> actionTypes = station.getActionTypes();
@@ -49,8 +49,7 @@ public class CookingStationTests {
     @Test
     public void testGetActionPlaceIngredient(){
         CookingStation station = new CookingStation(1, null, null, null);
-        Chef chef = new Chef(null, null, chefManager);
-        chef.grabItem(new Potato(textureManager));
+        chef.grabItem(potato);
         station.nearbyChef = chef;
         List<StationAction.ActionType> actionTypes = station.getActionTypes();
         assertTrue("adds PLACE_INGREDIENT to actionTypes when a chef is nearby with a cookable ingredient" ,actionTypes.contains(StationAction.ActionType.PLACE_INGREDIENT));
@@ -58,7 +57,11 @@ public class CookingStationTests {
 
     @Test
     public void testGetActionCookAction(){
-        //do this next
+        CookingStation station = new CookingStation(1, null, null, null);
+        station.nearbyChef = chef;
+        station.currentIngredient = potato;
+        List<StationAction.ActionType> actionTypes = station.getActionTypes();
+        assertTrue("adds COOK_ACTION to actionTypes when a chef is nearby and an ingredient is in the station" ,actionTypes.contains(StationAction.ActionType.COOK_ACTION));
     }
 
     @Test

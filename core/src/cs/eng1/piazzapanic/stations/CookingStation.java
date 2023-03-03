@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class CookingStation extends Station {
 
-  protected Cookable currentIngredient;
+  public Cookable currentIngredient;
   private boolean progressVisible = false;
 
   /**
