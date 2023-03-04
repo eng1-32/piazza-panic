@@ -15,7 +15,7 @@ import cs.eng1.piazzapanic.food.FoodTextureManager;
 import cs.eng1.piazzapanic.stations.GrillingStation;
 import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.chef.ChefManager;
-import cs.eng1.piazzapanic.food.ingredients.Potato;
+import cs.eng1.piazzapanic.food.ingredients.Patty;
 import cs.eng1.piazzapanic.food.recipes.Salad;
 
 @RunWith(GdxTestRunner.class)
@@ -42,7 +42,7 @@ public class GrillingStationTests{
 
     @Test
     public void testGetActionPlaceIngredient(){
-        GrillngStation station = new GrillingStation(1, null, null, null);
+        GrillingStation station = new GrillingStation(1, null, null, null);
         chef.grabItem(patty);
         station.nearbyChef = chef;
         List<StationAction.ActionType> actionTypes = station.getActionTypes();
@@ -62,11 +62,11 @@ public class GrillingStationTests{
         actionTypes = station.getActionTypes();
         assertTrue("adds FLIP_ACTION to action types when the ingredient is ready to be flipped", actionTypes.contains(StationAction.ActionType.FLIP_ACTION));
         station.doStationAction(StationAction.ActionType.FLIP_ACTION);
-        station.act(2);
+        station.act(3);
         actionTypes = station.getActionTypes();
         assertTrue("adds GRAB_INGREDIENT to action types when the ingredient is fully cooked", actionTypes.contains(StationAction.ActionType.GRAB_INGREDIENT));
         station.doStationAction(ActionType.GRAB_INGREDIENT);
-        assertTrue("the chef collects a cooked ingredient and the station is empty", patty.getCooked() && station.currentIngredient == null && chef.getStack().peek() == patty);
+        assertTrue("the chef collects a cooked ingredient and the station is empty", patty.getGrilled() && station.currentIngredient == null && chef.getStack().peek() == patty);
     } 
  
     @Test
