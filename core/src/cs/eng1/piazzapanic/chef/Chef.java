@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -37,6 +42,7 @@ public class Chef extends Actor implements Disposable {
 
   private final Vector2 inputVector;
   private final float speed = 3f;
+  private Body body;
 
   /**
    * a parameter which adds a small amount of distance between the chef's
@@ -64,9 +70,29 @@ public class Chef extends Actor implements Disposable {
     inputVector = new Vector2();
   }
 
+  public void createBody() {
+    CircleShape circle = new CircleShape();
+    circle.setRadius(0.5f);
+    FixtureDef fDef = new FixtureDef();
+    fDef.shape = circle;
+    fDef.density = 20f;
+    fDef.friction = 0.4f;
+
+    BodyDef bDef = new BodyDef();
+    bDef.position.set(getX(), getY() + 0.2f);
+    bDef.type = BodyType.DynamicBody;
+    bDef.linearDamping = 20f;
+    bDef.fixedRotation = true;
+
+    body = chefManager.world.createBody(bDef);
+    body.createFixture(fDef);
+
+  }
+
   public void init(float x, float y) {
     setX(x);
     setY(y);
+    createBody();
     getStack().clear();
     imageRotation = 0;
   }
@@ -89,7 +115,16 @@ public class Chef extends Actor implements Disposable {
     getInput();
 
     Vector2 movement = calculateMovement(delta);
-    moveBy(movement.x, movement.y);
+
+    Vector2 bodyVector2 = body.getPosition();
+
+    if (!movement.isZero(0.1f)) {
+      body.applyLinearImpulse(movement.scl(4.5f), bodyVector2, true);
+    }
+
+    bodyVector2 = body.getPosition();
+
+    setPosition(bodyVector2.x - 0.5f, bodyVector2.y - 0.5f);
 
     super.act(delta);
   }
@@ -131,11 +166,11 @@ public class Chef extends Actor implements Disposable {
    * @return the vector representing how far the chef should move
    */
   private Vector2 calculateMovement(float delta) {
-    Vector2 movement = new Vector2(inputVector.x * speed * delta, inputVector.y * speed * delta);
+    Vector2 movement = new Vector2(inputVector.x * speed, inputVector.y * speed);
 
     // Adjust movement for collision
-    movement.x = adjustHorizontalMovementForCollision(movement.x);
-    movement.y = adjustVerticalMovementForCollision(movement.y);
+    // movement.x = adjustHorizontalMovementForCollision(movement.x);
+    // movement.y = adjustVerticalMovementForCollision(movement.y);
 
     return movement;
   }
@@ -319,9 +354,7 @@ public class Chef extends Actor implements Disposable {
   public void setInputVector(float x, float y) {
     inputVector.x = x;
     inputVector.y = y;
-    if (inputVector.len() > 1f) {
-      inputVector.nor();
-    }
+    inputVector.nor();
   }
 
   public boolean isInputEnabled() {

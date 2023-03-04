@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 public class ChefManager implements Disposable {
 
+  public World world;
   private final ArrayList<Chef> chefs;
   private Chef currentChef = null;
   private final TiledMapTileLayer collisionLayer;
@@ -43,9 +45,10 @@ public class ChefManager implements Disposable {
    * @param overlay        the user interface overlay to display information about the current chef
    *                       and time, and to provide more controls.
    */
-  public ChefManager(float chefScale, TiledMapTileLayer collisionLayer, UIOverlay overlay) {
+  public ChefManager(float chefScale, TiledMapTileLayer collisionLayer, UIOverlay overlay, World world) {
     this.collisionLayer = collisionLayer;
     this.overlay = overlay;
+    this.world = world;
 
     // Load chef sprites
     chefs = new ArrayList<>(chefSprites.length);

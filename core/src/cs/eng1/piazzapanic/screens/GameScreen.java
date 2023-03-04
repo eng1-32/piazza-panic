@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -50,9 +51,13 @@ public class GameScreen implements Screen {
   private final FoodTextureManager foodTextureManager;
   private final CustomerManager customerManager;
   private boolean isFirstFrame = true;
+  private final Box2DDebugRenderer box2dDebugRenderer;
+  private final World world;
 
   public GameScreen(final PiazzaPanicGame game) {
-    World world = new World(new Vector2(0, 0), true);
+    world = new World(new Vector2(0, 0), true);
+    box2dDebugRenderer = new Box2DDebugRenderer();
+
     TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
     int sizeX = map.getProperties().get("width", Integer.class);
     int sizeY = map.getProperties().get("height", Integer.class);
@@ -74,7 +79,7 @@ public class GameScreen implements Screen {
     TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get("Foreground");
 
     foodTextureManager = new FoodTextureManager();
-    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay);
+    chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay, world);
     customerManager = new CustomerManager(uiOverlay);
 
     // Add tile objects
@@ -220,6 +225,8 @@ public class GameScreen implements Screen {
 
     stage.draw();
     uiStage.draw();
+    box2dDebugRenderer.render(world, stage.getCamera().combined);
+    world.step(delta, 6, 2);
 
     if (isFirstFrame) {
       customerManager.nextRecipe();
