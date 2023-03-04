@@ -55,14 +55,6 @@ public class IngredientTests {
     public void testToString() {
         Ingredient ingredient = Ingredient.fromString("patty", textureManager);
         assertEquals("patty_raw", ingredient.toString());
-
-        // TODO: Update this test and toString to work consistently.
-        /**
-         * ingredient.setIsGrilled(true);
-
-            assertEquals("patty_grilled", ingredient.toString());
-         */
-        
     }
 
 
