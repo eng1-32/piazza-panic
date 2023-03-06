@@ -67,7 +67,7 @@ public class GameScreen implements Screen {
     chefManager = new ChefManager(mapLoader.unitScale * 2.5f, uiOverlay, world);
     customerManager = new CustomerManager(uiOverlay);
 
-    mapLoader.createStations("Stations", chefManager, 
+    mapLoader.createStations("Stations", "Sensors", chefManager, 
     stage, stationUIController, foodTextureManager, customerManager);
     // Add box2d colliders
     mapLoader.createBox2DBodies("Obstacles", world);

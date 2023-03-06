@@ -44,13 +44,6 @@ public class Chef extends Actor implements Disposable {
   private final float speed = 3f;
   private Body body;
 
-  /**
-   * a parameter which adds a small amount of distance between the chef's
-   * boundaries and any other
-   * objects it can collide with. This helps avoid boundary errors in collision
-   * calculations
-   */
-  private final float collisionSkin = 0.01f;
   private boolean inputEnabled = true;
   private boolean paused = false;
 
@@ -159,18 +152,13 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Calculate how far the chef should move based on the input vector while
-   * avoiding collisions
+   * Calculate how far the chef should move based on the input vector
    *
    * @param delta the time that has passed since the last frame
    * @return the vector representing how far the chef should move
    */
   private Vector2 calculateMovement(float delta) {
     Vector2 movement = new Vector2(inputVector.x * speed, inputVector.y * speed);
-
-    // Adjust movement for collision
-    // movement.x = adjustHorizontalMovementForCollision(movement.x);
-    // movement.y = adjustVerticalMovementForCollision(movement.y);
 
     return movement;
   }

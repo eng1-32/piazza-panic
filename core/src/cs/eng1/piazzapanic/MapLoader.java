@@ -32,6 +32,9 @@ import cs.eng1.piazzapanic.stations.SubmitStation;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 
+/**
+ * Loads the map and initialises objects from map data.
+ */
 public class MapLoader {
     private TiledMap map;
 
@@ -65,29 +68,35 @@ public class MapLoader {
         return MapBodyBuilder.buildShapes(b2dBodyLayer, pixelsPerTile, world);
     }
 
-    public void createStations(String mapLayerName, ChefManager chefManager, Stage stage,
+    public void createStations(String stationLayerName, String colliderLayerName, ChefManager chefManager, Stage stage,
             StationUIController stationUIController, FoodTextureManager foodTextureManager,
             CustomerManager customerManager) {
-        MapLayer objectLayer = map.getLayers().get(mapLayerName);
-        Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects()
+
+        MapLayer stationLayer = map.getLayers().get(stationLayerName);
+
+        Array<TiledMapTileMapObject> tileObjects = stationLayer.getObjects()
                 .getByType(TiledMapTileMapObject.class);
 
-        Array<RectangleMapObject> colliderObjects = objectLayer.getObjects()
+        MapLayer colliderLayer = map.getLayers().get(colliderLayerName);
+
+        Array<RectangleMapObject> colliderObjects = colliderLayer.getObjects()
                 .getByType(RectangleMapObject.class);
 
         HashMap<Integer, StationCollider> colliders = new HashMap<>();
 
-        for (RectangleMapObject colliderObject : new Array.ArrayIterator<>(colliderObjects)) {
-            Integer id = colliderObject.getProperties().get("id", Integer.class);
+        for (RectangleMapObject colliderObject : colliderObjects) {
+            int id = colliderObject.getProperties().get("id", Integer.class);
+
             StationCollider collider = new StationCollider(chefManager);
             Rectangle bounds = colliderObject.getRectangle();
             collider.setBounds(bounds.getX() * unitScale, bounds.getY() * unitScale,
                     bounds.getWidth() * unitScale, bounds.getHeight() * unitScale);
+
             stage.addActor(collider);
             colliders.put(id, collider);
         }
 
-        for (TiledMapTileMapObject tileObject : new Array.ArrayIterator<>(tileObjects)) {
+        for (TiledMapTileMapObject tileObject : tileObjects) {
             // Check if it is actually a station
             if (!tileObject.getProperties().containsKey("stationType")) {
                 continue;
