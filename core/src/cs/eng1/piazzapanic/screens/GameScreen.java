@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
 
     foodTextureManager = new FoodTextureManager();
     chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay);
-    customerManager = new CustomerManager(uiOverlay);
+    customerManager = new CustomerManager(uiOverlay, 1);
 
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
@@ -219,7 +219,7 @@ public class GameScreen implements Screen {
     uiStage.draw();
 
     if (isFirstFrame) {
-      customerManager.nextRecipe();
+      uiOverlay.updateRecipeUI(customerManager.getFirstOrder());
       isFirstFrame = false;
     }
   }
