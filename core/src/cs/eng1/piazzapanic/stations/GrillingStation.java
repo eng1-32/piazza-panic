@@ -14,8 +14,8 @@ import cs.eng1.piazzapanic.ui.StationUIController;
 
 public class GrillingStation extends Station {
 
-    protected Grillable currentIngredient;
-    private boolean progressVisible = false;
+    public Grillable currentIngredient;
+    public boolean progressVisible = false;
 
     public GrillingStation(int id, TextureRegion image, StationUIController uiController,
             StationActionUI.ActionAlignment alignment) {
