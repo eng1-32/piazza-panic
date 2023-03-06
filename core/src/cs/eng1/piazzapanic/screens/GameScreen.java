@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
+import cs.eng1.piazzapanic.box2d.MapBodyBuilder;
 import cs.eng1.piazzapanic.chef.ChefManager;
 import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
@@ -84,7 +85,13 @@ public class GameScreen implements Screen {
 
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
+    // Add box2d colliders
+    initialiseBox2DStaticBodies(map.getProperties().get("tilewidth", Integer.class), map.getLayers().get("Obstacles"), world);
     chefManager.addChefsToStage(stage);
+  }
+
+  private void initialiseBox2DStaticBodies(float tileUnitSize, MapLayer obstacleLayer, World world) {
+    MapBodyBuilder.buildShapes(obstacleLayer, tileUnitSize, world);
   }
 
   /**
