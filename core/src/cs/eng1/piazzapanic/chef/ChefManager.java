@@ -25,7 +25,6 @@ public class ChefManager implements Disposable {
   public World world;
   private final ArrayList<Chef> chefs;
   private Chef currentChef = null;
-  private final TiledMapTileLayer collisionLayer;
   private final UIOverlay overlay;
   final String[] chefSprites = new String[]{
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
@@ -41,12 +40,10 @@ public class ChefManager implements Disposable {
   /**
    * @param chefScale      the amount to scale the texture by so that each chef is an accurate
    *                       size.
-   * @param collisionLayer the tile map layer which the chefs can collide with.
    * @param overlay        the user interface overlay to display information about the current chef
    *                       and time, and to provide more controls.
    */
-  public ChefManager(float chefScale, TiledMapTileLayer collisionLayer, UIOverlay overlay, World world) {
-    this.collisionLayer = collisionLayer;
+  public ChefManager(float chefScale, UIOverlay overlay, World world) {
     this.overlay = overlay;
     this.world = world;
 
@@ -73,17 +70,6 @@ public class ChefManager implements Disposable {
     for (int i = 0; i < chefs.size(); i++) {
       chefs.get(i).init(chefX[i], chefY[i]);
     }
-  }
-
-  /**
-   * Get the tile in the foreground collision layer at the specified point
-   *
-   * @param x the x coordinate of the tile
-   * @param y the y coordinate of the tile
-   * @return the cell/tile at the coordinates
-   */
-  public Cell getCellAtPosition(int x, int y) {
-    return collisionLayer.getCell(x, y);
   }
 
   public List<Chef> getChefs() {

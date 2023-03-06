@@ -171,7 +171,6 @@
    </properties>
   </object>
   <object id="63" x="512" y="128" width="128" height="128"/>
-  <object id="64" x="1664" y="256"/>
   <object id="65" name="Grilling Station 1" class="Station" gid="1073742120" x="640" y="128" width="128" height="128">
    <properties>
     <property name="actionAlignment" propertytype="ActionAlignment" value="BOTTOM"/>
