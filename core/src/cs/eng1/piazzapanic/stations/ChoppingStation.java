@@ -21,9 +21,9 @@ public class ChoppingStation extends Station {
 
   protected final float totalTimeToChop = 5f;
 
-  protected Choppable currentIngredient = null;
+  public Choppable currentIngredient = null;
   protected float timeChopped;
-  private boolean progressVisible = false;
+  public boolean progressVisible = false;
 
   /**
    * The constructor method for the class
