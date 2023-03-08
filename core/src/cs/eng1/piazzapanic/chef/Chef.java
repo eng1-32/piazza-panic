@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,7 +16,6 @@ import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.interfaces.Holdable;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
-import cs.eng1.piazzapanic.stations.Station;
 
 /**
  * The Chef class is an actor representing a chef in the kitchen. It can pick up
@@ -65,7 +62,7 @@ public class Chef extends Actor implements Disposable {
 
   public void createBody() {
     CircleShape circle = new CircleShape();
-    circle.setRadius(0.5f);
+    circle.setRadius(0.4f);
     FixtureDef fDef = new FixtureDef();
     fDef.shape = circle;
     fDef.density = 20f;
