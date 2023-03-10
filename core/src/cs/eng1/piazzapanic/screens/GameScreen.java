@@ -279,7 +279,7 @@ public class GameScreen implements Screen {
     }
 
     if (isFirstFrame) {
-      customerManager.nextRecipe();
+      customerManager.nextRecipe(foodTextureManager);
       isFirstFrame = false;
     }
   }

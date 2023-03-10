@@ -279,7 +279,6 @@ public class UIOverlay {
         prefs.putBoolean("cookClicked", cookClicked);
         prefs.putBoolean("chopClicked", chopClicked);
         prefs.putFloat("speedTime", GameScreen.speedTime);
-        prefs.putInteger("recipe", CustomerManager.recipeIndices.get(0));
         prefs.flush();
       }
     });
@@ -407,7 +406,6 @@ public class UIOverlay {
       cookClicked = prefs.getBoolean("cookClicked");
       chopClicked = prefs.getBoolean("chopClicked");
       GameScreen.speedTime = prefs.getFloat("speedTime");
-      CustomerManager.recipeIndices.set(0, prefs.getInteger("recipe"));
     }
   }
 
