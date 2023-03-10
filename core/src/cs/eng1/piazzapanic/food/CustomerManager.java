@@ -24,6 +24,7 @@ public class CustomerManager {
 
   private final List<RecipeStation> recipeStations;
   private final UIOverlay overlay;
+  public static ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
 
   public CustomerManager(UIOverlay overlay) {
     this.overlay = overlay;
@@ -45,23 +46,30 @@ public class CustomerManager {
     // selecting from
     // possibleRecipes or by using another scenario
     customerOrders.clear();
-    if (HomeScreen.mode == 0) {
-      ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
-      for (int i = 0; i < 5; i++) {
-        recipeIndices.add((int) (Math.random() * ((4))));
+    if (HomeScreen.load == false) {
+      recipeIndices.clear();
+      if (HomeScreen.mode == 0) {
+        for (int i = 0; i < 5; i++) {
+          recipeIndices.add((int) (Math.random() * ((4))));
+        }
+        for (int recipeIndex : recipeIndices) {
+          customerOrders.addLast(possibleRecipes[recipeIndex]);
+        }
       }
+      if (HomeScreen.mode == 1) {
+        ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
+        for (int i = 0; i < 999; i++) {
+          recipeIndices.add((int) (Math.random() * ((4))));
+        }
+        for (int recipeIndex : recipeIndices) {
+          customerOrders.addLast(possibleRecipes[recipeIndex]);
+        }
+      }
+    } else {
       for (int recipeIndex : recipeIndices) {
         customerOrders.addLast(possibleRecipes[recipeIndex]);
       }
-    }
-    if (HomeScreen.mode == 1) {
-      ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
-      for (int i = 0; i < 999; i++) {
-        recipeIndices.add((int) (Math.random() * ((4))));
-      }
-      for (int recipeIndex : recipeIndices) {
-        customerOrders.addLast(possibleRecipes[recipeIndex]);
-      }
+
     }
   }
 

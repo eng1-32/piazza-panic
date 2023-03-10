@@ -1,7 +1,11 @@
 package cs.eng1.piazzapanic.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.LifecycleListener;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,9 +25,11 @@ import com.badlogic.gdx.utils.Scaling;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.chef.ChefManager;
+import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.screens.GameScreen;
+import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.stations.BakingStation;
 import cs.eng1.piazzapanic.stations.ChoppingStation;
 import cs.eng1.piazzapanic.stations.CookingStation;
@@ -59,6 +65,10 @@ public class UIOverlay {
   boolean cookClicked = false;
   boolean chopClicked = false;
   boolean burnClicked = false;
+  public static ArrayList<Float> chefXsave = new ArrayList<Float>(Arrays.asList(3f, 11f, 12f, 3f));
+  public static ArrayList<Float> chefYsave = new ArrayList<Float>(Arrays.asList(3f, 3f, 6f, 7f));
+
+  Preferences prefs = Gdx.app.getPreferences("gameSave");
 
   public UIOverlay(Stage uiStage, final PiazzaPanicGame game) {
     this.game = game;
@@ -242,6 +252,40 @@ public class UIOverlay {
     burnButton.setPosition(30, 150);
     burnButton.setSize(40, 40);
 
+    final ImageButton saveButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
+        new Texture(
+            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/import.png"))),
+        ButtonManager.ButtonColour.BLUE, -1.5f);
+    saveButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+
+        prefs.putFloat("chef1x", ChefManager.chefs.get(0).getX());
+        prefs.putFloat("chef2x", ChefManager.chefs.get(1).getX());
+        prefs.putFloat("chef3x", ChefManager.chefs.get(2).getX());
+        prefs.putFloat("chef4x", ChefManager.chefs.get(3).getX());
+        prefs.putFloat("chef1y", ChefManager.chefs.get(0).getY());
+        prefs.putFloat("chef2y", ChefManager.chefs.get(1).getY());
+        prefs.putFloat("chef3y", ChefManager.chefs.get(2).getY());
+        prefs.putFloat("chef4y", ChefManager.chefs.get(3).getY());
+        prefs.putInteger("difficulty", HomeScreen.difficulty);
+        prefs.putInteger("mode", HomeScreen.mode);
+        prefs.putInteger("lives", (int) UIOverlay.lives.getLives());
+        prefs.putInteger("money", (int) UIOverlay.money.getMoney());
+        prefs.putFloat("timer", timer.getTime());
+        prefs.putBoolean("buyClicked", buyClicked);
+        prefs.putBoolean("lifeClicked", lifeClicked);
+        prefs.putBoolean("speedClicked", speedClicked);
+        prefs.putBoolean("cookClicked", cookClicked);
+        prefs.putBoolean("chopClicked", chopClicked);
+        prefs.putFloat("speedTime", GameScreen.speedTime);
+        prefs.putInteger("recipe", CustomerManager.recipeIndices.get(0));
+        prefs.flush();
+      }
+    });
+    saveButton.setPosition(900, 200);
+    saveButton.setSize(40, 40);
+
     removeBtnDrawable = new TextureRegionDrawable(
         new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 
@@ -274,6 +318,7 @@ public class UIOverlay {
     uiStage.addActor(cookButton);
     uiStage.addActor(chopButton);
     uiStage.addActor(burnButton);
+    uiStage.addActor(saveButton);
 
     Value scale = Value.percentWidth(0.04f, table);
     Value timerWidth = Value.percentWidth(0.2f, table);
@@ -303,35 +348,67 @@ public class UIOverlay {
    * Reset values and UI to be in their default state.
    */
   public void init() {
-    timer.reset();
-    timer.start();
-    money.reset();
-    loseLabel.setVisible(false);
-    resultLabel.setVisible(false);
-    resultTimer.setVisible(false);
-    updateChefUI(null);
-    buyClicked = false;
-    lifeClicked = false;
-    speedClicked = false;
-    cookClicked = false;
-    chopClicked = false;
-    ChoppingStation.totalTimeToChop = 5f;
-    BakingStation.totalTimeToCook = 10f;
-    CookingStation.totalTimeToCook = 10f;
-    for (int i = 0; i < ChefManager.chefs.size(); i++) {
-      ChefManager.chefs.get(i).speed = 3f;
+    if (HomeScreen.load == false) {
+      timer.reset();
+      timer.start();
+      money.reset();
+      loseLabel.setVisible(false);
+      resultLabel.setVisible(false);
+      resultTimer.setVisible(false);
+      updateChefUI(null);
+      buyClicked = false;
+      lifeClicked = false;
+      speedClicked = false;
+      cookClicked = false;
+      chopClicked = false;
+      ChoppingStation.totalTimeToChop = 5f;
+      BakingStation.totalTimeToCook = 10f;
+      CookingStation.totalTimeToCook = 10f;
+      for (int i = 0; i < ChefManager.chefs.size(); i++) {
+        ChefManager.chefs.get(i).speed = 3f;
+      }
+      GameScreen.speedClick = false;
+      GameScreen.speedTime = 0f;
+      GameScreen.chopClick = false;
+      GameScreen.chopTime = 0f;
+      GameScreen.cookClick = false;
+      GameScreen.cookTime = 0f;
+      GameScreen.burnClick = false;
+      GameScreen.burnTime = 0f;
+      CookingStation.totalTimeToBurn = 30f;
+      BakingStation.totalTimeToBurn = 15f;
+      lives.reset();
+      chefXsave.set(0, 3f);
+      chefXsave.set(1, 11f);
+      chefXsave.set(2, 12f);
+      chefXsave.set(3, 3f);
+      chefYsave.set(0, 3f);
+      chefYsave.set(1, 3f);
+      chefYsave.set(2, 6f);
+      chefYsave.set(3, 7f);
+    } else {
+
+      lives.setLives(prefs.getInteger("lives", 3));
+      money.setMoney(prefs.getInteger("money", 0));
+      HomeScreen.difficulty = prefs.getInteger("difficulty", HomeScreen.difficulty);
+      HomeScreen.mode = prefs.getInteger("mode", 0);
+      chefXsave.set(0, prefs.getFloat("chef1x"));
+      chefXsave.set(1, prefs.getFloat("chef2x"));
+      chefXsave.set(2, prefs.getFloat("chef3x"));
+      chefXsave.set(3, prefs.getFloat("chef4x"));
+      chefYsave.set(0, prefs.getFloat("chef1y"));
+      chefYsave.set(1, prefs.getFloat("chef2y"));
+      chefYsave.set(2, prefs.getFloat("chef3y"));
+      chefYsave.set(3, prefs.getFloat("chef4y"));
+      timer.setTime(prefs.getFloat("timer"));
+      buyClicked = prefs.getBoolean("buyClicked");
+      lifeClicked = prefs.getBoolean("lifeClicked");
+      speedClicked = prefs.getBoolean("speedClicked");
+      cookClicked = prefs.getBoolean("cookClicked");
+      chopClicked = prefs.getBoolean("chopClicked");
+      GameScreen.speedTime = prefs.getFloat("speedTime");
+      CustomerManager.recipeIndices.set(0, prefs.getInteger("recipe"));
     }
-    GameScreen.speedClick = false;
-    GameScreen.speedTime = 0f;
-    GameScreen.chopClick = false;
-    GameScreen.chopTime = 0f;
-    GameScreen.cookClick = false;
-    GameScreen.cookTime = 0f;
-    GameScreen.burnClick = false;
-    GameScreen.burnTime = 0f;
-    CookingStation.totalTimeToBurn = 30f;
-    BakingStation.totalTimeToBurn = 15f;
-    lives.reset();
   }
 
   /**

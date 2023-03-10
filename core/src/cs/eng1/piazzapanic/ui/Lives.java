@@ -19,8 +19,8 @@ public class Lives extends Label {
         setText("3");
     }
 
-    public void setMoney(float money) {
-        totalLives = money;
+    public void setLives(float lives) {
+        totalLives = lives;
     }
 
     public void takeLives() {
