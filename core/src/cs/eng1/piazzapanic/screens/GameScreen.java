@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
   private final CustomerManager customerManager;
   private boolean isFirstFrame = true;
 
-  public GameScreen(final PiazzaPanicGame game) {
+  public GameScreen(final PiazzaPanicGame game, int totalCustomers) {
     TiledMap map = new TmxMapLoader().load("main-game-map.tmx");
     int sizeX = map.getProperties().get("width", Integer.class);
     int sizeY = map.getProperties().get("height", Integer.class);
@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
 
     foodTextureManager = new FoodTextureManager();
     chefManager = new ChefManager(tileUnitSize * 2.5f, collisionLayer, uiOverlay);
-    customerManager = new CustomerManager(uiOverlay, 1);
+    customerManager = new CustomerManager(uiOverlay, totalCustomers);
 
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);

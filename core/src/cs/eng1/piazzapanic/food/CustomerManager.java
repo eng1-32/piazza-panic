@@ -65,6 +65,9 @@ public class CustomerManager {
   /**
    * Complete the current order nad move on to the next one. Then update the UI.
    * If all the recipes are completed, then show the winning UI.
+   * 
+   * With the current implementation, it is possible to have endless mode use the
+   * totalCustomers value of 0 without requiring changes
    */
   public void nextRecipe() {
     completedOrders++;
