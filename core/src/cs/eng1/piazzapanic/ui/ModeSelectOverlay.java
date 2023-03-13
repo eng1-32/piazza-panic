@@ -64,9 +64,6 @@ public class ModeSelectOverlay {
             }
         });
 
-        // TextField scenarioNumber = new TextField("", skin);
-        // scenarioNumber.setPosition(24, 24);
-        // scenarioNumber.setSize(88, 14);
 
         table.add(scenarioCheckbox);
         table.add(scenarioNumber);

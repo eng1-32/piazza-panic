@@ -19,7 +19,6 @@ public class CustomerManager {
   private final UIOverlay overlay;
   private int totalCustomers;
   private int completedOrders = 0;
-  // hashmap?
   private Recipe[] possibleRecipes;
 
   public CustomerManager(UIOverlay overlay, int customers) {
