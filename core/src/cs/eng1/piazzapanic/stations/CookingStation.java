@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class CookingStation extends Station {
 
-  protected Cookable currentIngredient;
-  private boolean progressVisible = false;
+  public Cookable currentIngredient;
+  public boolean progressVisible = false;
 
   /**
    * The constructor method for the class
