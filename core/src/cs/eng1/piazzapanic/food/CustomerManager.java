@@ -10,7 +10,8 @@ import cs.eng1.piazzapanic.stations.SubmitStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
+
 
 public class CustomerManager {
 
@@ -21,11 +22,19 @@ public class CustomerManager {
   private int completedOrders = 0;
   private Recipe[] possibleRecipes;
 
+  private Random random;
+
   public CustomerManager(UIOverlay overlay, int customers) {
     this.overlay = overlay;
     this.recipeStations = new LinkedList<>();
     customerOrders = new Queue<>();
     totalCustomers = customers;
+    random = new Random();
+  }
+
+  public CustomerManager(UIOverlay overlay, int customers, long seed) {
+    this(overlay, customers);
+    random.setSeed(seed);
   }
 
   /**
@@ -104,7 +113,7 @@ public class CustomerManager {
 
     // implement random generation of two or three customers at once here
 
-    customerOrders.addLast(possibleRecipes[ThreadLocalRandom.current().nextInt(4)]);
+    customerOrders.addLast(possibleRecipes[random.nextInt(4)]);
 
   }
 
