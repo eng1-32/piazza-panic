@@ -10,18 +10,22 @@ import cs.eng1.piazzapanic.stations.SubmitStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
-  private Recipe currentOrder;
   private final List<SubmitStation> recipeStations;
   private final UIOverlay overlay;
+  private int totalCustomers;
+  private int completedOrders = 0;
+  private Recipe[] possibleRecipes;
 
-  public CustomerManager(UIOverlay overlay) {
+  public CustomerManager(UIOverlay overlay, int customers) {
     this.overlay = overlay;
     this.recipeStations = new LinkedList<>();
     customerOrders = new Queue<>();
+    totalCustomers = customers;
   }
 
   /**
@@ -31,17 +35,14 @@ public class CustomerManager {
    *                       recipes
    */
   public void init(FoodTextureManager textureManager) {
-    Recipe[] possibleRecipes = new Recipe[] { new Burger(textureManager), new Salad(textureManager),
-        new Pizza(textureManager), new JacketPotato(textureManager) };
-
     // Salad, Burger, Burger, Salad, Burger. This can be replaced by randomly
-    // selecting from
-    // possibleRecipes or by using another scenario
+    // selecting from possibleRecipes or by using another scenario
     customerOrders.clear();
-    int[] recipeIndices = new int[] { 3, 2, 1, 0, 2 };
-    for (int recipeIndex : recipeIndices) {
-      customerOrders.addLast(possibleRecipes[recipeIndex]);
-    }
+
+    possibleRecipes = new Recipe[] { new Burger(textureManager), new Salad(textureManager), new Pizza(textureManager),
+        new JacketPotato(textureManager) };
+
+    generateOrders();
   }
 
   /**
@@ -51,36 +52,43 @@ public class CustomerManager {
    * @return a boolean signifying if the recipe is correct.
    */
   public boolean checkRecipe(Recipe recipe) {
-    if (currentOrder == null) {
+    if (customerOrders.isEmpty()) {
       return false;
     }
-    return recipe.getType().equals(currentOrder.getType());
+
+    // could be changed to allow entering in any order, allowing you to do later
+    // recipes by checking with .contains and then getting first index.
+    return recipe.getType().equals(customerOrders.first().getType());
   }
 
   /**
    * Complete the current order nad move on to the next one. Then update the UI.
-   * If all the recipes
-   * are completed, then show the winning UI.
+   * If all the recipes are completed, then show the winning UI.
+   * 
+   * With the current implementation, it is possible to have endless mode use the
+   * totalCustomers value of 0 without requiring changes
    */
   public void nextRecipe() {
-    if (customerOrders.isEmpty()) {
-      currentOrder = null;
-      overlay.updateRecipeCounter(0);
-    } else {
-      overlay.updateRecipeCounter(customerOrders.size);
-      currentOrder = customerOrders.removeFirst();
+    completedOrders++;
+    overlay.updateRecipeCounter(completedOrders);
+    if (completedOrders != totalCustomers) {
+      customerOrders.removeFirst();
+      generateOrders();
     }
+
     notifySubmitStations();
-    overlay.updateRecipeUI(currentOrder);
-    if (currentOrder == null) {
+    // requires updating overlay to allow for multiple orders being displayed at
+    // once
+    overlay.updateRecipeUI(customerOrders.first());
+    if (completedOrders == totalCustomers) {
+      overlay.updateRecipeUI(null);
       overlay.finishGameUI();
     }
   }
 
   /**
    * If one recipe station has been updated, let all the other ones know that
-   * there is a new recipe
-   * to be built.
+   * there is a new recipe to be built.
    */
   private void notifySubmitStations() {
     for (SubmitStation recipeStation : recipeStations) {
@@ -90,5 +98,17 @@ public class CustomerManager {
 
   public void addStation(SubmitStation station) {
     recipeStations.add(station);
+  }
+
+  public void generateOrders() {
+
+    // implement random generation of two or three customers at once here
+
+    customerOrders.addLast(possibleRecipes[ThreadLocalRandom.current().nextInt(4)]);
+
+  }
+
+  public Recipe getFirstOrder() {
+    return customerOrders.first();
   }
 }

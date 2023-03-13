@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
   private final Box2DDebugRenderer box2dDebugRenderer;
   private final World world;
 
-  public GameScreen(final PiazzaPanicGame game) {
+  public GameScreen(final PiazzaPanicGame game, int totalCustomers) {
     world = new World(new Vector2(0, 0), true);
     box2dDebugRenderer = new Box2DDebugRenderer();
 
@@ -64,8 +64,9 @@ public class GameScreen implements Screen {
     this.tileMapRenderer = mapLoader.createMapRenderer();
 
     foodTextureManager = new FoodTextureManager();
+
     chefManager = new ChefManager(mapLoader.unitScale * 2.5f, uiOverlay, world);
-    customerManager = new CustomerManager(uiOverlay);
+    customerManager = new CustomerManager(uiOverlay, totalCustomers);
 
     mapLoader.createStations("Stations", "Sensors", chefManager, 
     stage, stationUIController, foodTextureManager, customerManager);
@@ -113,7 +114,7 @@ public class GameScreen implements Screen {
     world.step(delta, 6, 2);
 
     if (isFirstFrame) {
-      customerManager.nextRecipe();
+      uiOverlay.updateRecipeUI(customerManager.getFirstOrder());
       isFirstFrame = false;
     }
   }
