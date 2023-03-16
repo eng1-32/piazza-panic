@@ -42,6 +42,10 @@ public class Ingredient {
         return new Lettuce(textureManager);
       case "bun":
         return new Bun(textureManager);
+      case "cheese":
+        return new Cheese(textureManager);
+      case "potato":
+        return new Potato(textureManager);
       default:
         return null;
     }
