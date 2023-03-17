@@ -15,7 +15,7 @@ public class Money extends Label {
     }
 
     public void reset() {
-        totalMoney = 0;
+        totalMoney = 3;
         setText("£0");
     }
 
@@ -27,7 +27,11 @@ public class Money extends Label {
         totalMoney += money;
     }
 
-    public float getTime() {
+    public void takeMoney(float money) {
+        totalMoney -= money;
+    }
+
+    public float getMoney() {
         return totalMoney;
     }
 

@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.ingredients.Patty;
+import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
+import cs.eng1.piazzapanic.ui.UIOverlay;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,8 +26,10 @@ public class CookingStation extends Station {
   protected float timeCookedBurn1;
   protected float timeCookedBurn2;
   protected int on = 0;
+  boolean isLocked;
 
-  protected final float totalTimeToCook = 10f;
+  public static float totalTimeToCook = 10f;
+  public static float totalTimeToBurn = 30f;
   private boolean progressVisible = false;
 
   /**
@@ -41,9 +45,10 @@ public class CookingStation extends Station {
    *                     can be cooked
    */
   public CookingStation(int id, TextureRegion image, StationUIController uiController,
-      StationActionUI.ActionAlignment alignment, Ingredient[] ingredients) {
+      StationActionUI.ActionAlignment alignment, Ingredient[] ingredients, boolean locked) {
     super(id, image, uiController, alignment);
     validIngredients = ingredients; // A list of the ingredients that can be used by this station.
+    isLocked = locked;
   }
 
   @Override
@@ -65,6 +70,12 @@ public class CookingStation extends Station {
    */
   @Override
   public void act(float delta) {
+    if (HomeScreen.difficulty == 0) {
+      totalTimeToBurn = 35f;
+      totalTimeToCook = 7f;
+    } else if (HomeScreen.difficulty == 2) {
+      totalTimeToCook = 12f;
+    }
 
     if (inUse) {
       timeCookedBurn1 += delta;
@@ -85,7 +96,7 @@ public class CookingStation extends Station {
       }
     }
 
-    if (timeCookedBurn1 >= 30f) {
+    if (timeCookedBurn1 >= totalTimeToBurn) {
       if (currentIngredient instanceof Patty)
 
       {
@@ -133,21 +144,26 @@ public class CookingStation extends Station {
     if (nearbyChef == null) {
       return actionTypes;
     }
-    if (currentIngredient == null) {
-      if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
-        actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
-      }
-    } else {
-      // check to see if total number of seconds has passed to progress the state of
-      // the patty.
-      if (currentIngredient instanceof Patty && ((Patty) currentIngredient).getIsHalfCooked()
-          && !currentIngredient.getIsCooked() && !progressVisible && !currentIngredient.getIsBurned()) {
-        actionTypes.add(StationAction.ActionType.FLIP_ACTION);
-      } else if (currentIngredient.getIsCooked() || currentIngredient.getIsBurned()) {
-        actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
-      }
-      if (!inUse && !currentIngredient.getIsBurned()) {
-        actionTypes.add(StationAction.ActionType.COOK_ACTION);
+    if (isLocked && UIOverlay.money.getMoney() > 0) {
+      actionTypes.add(StationAction.ActionType.UNLOCK);
+    }
+    if (!(isLocked)) {
+      if (currentIngredient == null) {
+        if (nearbyChef.hasIngredient() && isCorrectIngredient(nearbyChef.getStack().peek())) {
+          actionTypes.add(StationAction.ActionType.PLACE_INGREDIENT);
+        }
+      } else {
+        // check to see if total number of seconds has passed to progress the state of
+        // the patty.
+        if (currentIngredient instanceof Patty && ((Patty) currentIngredient).getIsHalfCooked()
+            && !currentIngredient.getIsCooked() && !progressVisible && !currentIngredient.getIsBurned()) {
+          actionTypes.add(StationAction.ActionType.FLIP_ACTION);
+        } else if (currentIngredient.getIsCooked() || currentIngredient.getIsBurned()) {
+          actionTypes.add(StationAction.ActionType.GRAB_INGREDIENT);
+        }
+        if (!inUse && !currentIngredient.getIsBurned()) {
+          actionTypes.add(StationAction.ActionType.COOK_ACTION);
+        }
       }
     }
     return actionTypes;
@@ -163,6 +179,12 @@ public class CookingStation extends Station {
   @Override
   public void doStationAction(StationAction.ActionType action) {
     switch (action) {
+      case UNLOCK:
+        UIOverlay.money.takeMoney(1);
+        isLocked = false;
+        uiController.hideActions(this);
+
+        break;
       case COOK_ACTION:
         // timeCooked is used to track how long the
         // ingredient has been cooking for.

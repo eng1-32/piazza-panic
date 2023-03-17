@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import cs.eng1.piazzapanic.ui.UIOverlay;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,20 +23,15 @@ import java.util.List;
  */
 public class ChefManager implements Disposable {
 
-  private final ArrayList<Chef> chefs;
+  public static ArrayList<Chef> chefs;
   private Chef currentChef = null;
   private final TiledMapTileLayer collisionLayer;
   private final UIOverlay overlay;
   final String[] chefSprites = new String[] {
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Brown/manBrown_hold.png",
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Woman Green/womanGreen_hold.png",
+      "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Blue/manBlue_hold.png",
       "Kenney-Game-Assets-2/2D assets/Topdown Shooter (620 assets)/PNG/Man Blue/manBlue_hold.png"
-  };
-  final float[] chefX = new float[] {
-      3f, 10f, 12f
-  };
-  final float[] chefY = new float[] {
-      3f, 3f, 6f
   };
 
   /**
@@ -60,7 +56,7 @@ public class ChefManager implements Disposable {
       Texture chefTexture = new Texture(Gdx.files.internal(sprite));
       Chef chef = new Chef(chefTexture, new Vector2(chefTexture.getWidth() * chefScale,
           chefTexture.getHeight() * chefScale), this);
-      chef.setBounds(chefX[i], chefY[i], chefTexture.getHeight() * chefScale,
+      chef.setBounds(UIOverlay.chefXsave.get(i), UIOverlay.chefYsave.get(i), chefTexture.getHeight() * chefScale,
           chefTexture.getHeight() * chefScale);
       chef.setInputEnabled(false);
       chefs.add(chef);
@@ -72,8 +68,9 @@ public class ChefManager implements Disposable {
    */
   public void init() {
     for (int i = 0; i < chefs.size(); i++) {
-      chefs.get(i).init(chefX[i], chefY[i]);
+      chefs.get(i).init(UIOverlay.chefXsave.get(i), UIOverlay.chefYsave.get(i));
     }
+    chefs.get(3).isLocked = true;
   }
 
   /**

@@ -21,8 +21,10 @@ public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
   private Recipe currentOrder;
+
   private final List<RecipeStation> recipeStations;
   private final UIOverlay overlay;
+  public static ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
 
   public CustomerManager(UIOverlay overlay) {
     this.overlay = overlay;
@@ -40,12 +42,9 @@ public class CustomerManager {
     Recipe[] possibleRecipes = new Recipe[] { new Burger(textureManager), new Salad(textureManager),
         new BakedPotato(textureManager), new Pizza(textureManager) };
 
-    // Salad, Burger, Burger, Salad, Burger. This can be replaced by randomly
-    // selecting from
-    // possibleRecipes or by using another scenario
     customerOrders.clear();
+    recipeIndices.clear();
     if (HomeScreen.mode == 0) {
-      ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
       for (int i = 0; i < 5; i++) {
         recipeIndices.add((int) (Math.random() * ((4))));
       }
@@ -54,8 +53,7 @@ public class CustomerManager {
       }
     }
     if (HomeScreen.mode == 1) {
-      ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
-      for (int i = 0; i < 999; i++) {
+      for (int i = 0; i < 1; i++) {
         recipeIndices.add((int) (Math.random() * ((4))));
       }
       for (int recipeIndex : recipeIndices) {
@@ -74,7 +72,9 @@ public class CustomerManager {
     if (currentOrder == null) {
       return false;
     }
+
     return recipe.getType().equals(currentOrder.getType());
+
   }
 
   /**
@@ -82,12 +82,29 @@ public class CustomerManager {
    * If all the recipes
    * are completed, then show the winning UI.
    */
-  public void nextRecipe() {
+  public void nextRecipe(FoodTextureManager textureManager) {
 
     if (customerOrders.isEmpty()) {
+      if (HomeScreen.mode == 1) {
 
-      currentOrder = null;
-      overlay.updateRecipeCounter(0);
+        recipeIndices.clear();
+        customerOrders.clear();
+        Recipe[] possibleRecipes1 = new Recipe[] { new Burger(textureManager), new Salad(textureManager),
+            new BakedPotato(textureManager), new Pizza(textureManager) };
+        for (int j = 0; j < 1; j++) {
+          recipeIndices.add((int) (Math.random() * ((4))));
+        }
+        for (int recipeIndex1 : recipeIndices) {
+          customerOrders.addLast(possibleRecipes1[recipeIndex1]);
+        }
+        currentOrder = customerOrders.removeFirst();
+
+      } else {
+
+        currentOrder = null;
+
+        overlay.updateRecipeCounter(0);
+      }
     } else {
       if (GameScreen.customerTime > 60f) {
         UIOverlay.lives.takeLives();
@@ -103,6 +120,7 @@ public class CustomerManager {
     }
     notifyRecipeStations();
     overlay.updateRecipeUI(currentOrder);
+
     if (currentOrder == null) {
       overlay.finishGameUI();
     }

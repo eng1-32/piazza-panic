@@ -13,10 +13,13 @@ public class StationAction {
     SUBMIT_ORDER,
     MAKE_POTATO,
     MAKE_PIZZA,
+    UNLOCK
   }
 
   public static String getActionDescription(ActionType actionType) {
     switch (actionType) {
+      case UNLOCK:
+        return "unlock";
       case CHOP_ACTION:
         return "Chop";
       case COOK_ACTION:

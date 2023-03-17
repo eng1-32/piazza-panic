@@ -19,12 +19,16 @@ public class Lives extends Label {
         setText("3");
     }
 
-    public void setMoney(float money) {
-        totalLives = money;
+    public void setLives(float lives) {
+        totalLives = lives;
     }
 
     public void takeLives() {
         totalLives -= 1;
+    }
+
+    public void addLives() {
+        totalLives += 1;
     }
 
     public float getLives() {

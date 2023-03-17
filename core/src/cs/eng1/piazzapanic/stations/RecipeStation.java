@@ -188,7 +188,7 @@ public class RecipeStation extends Station {
         if (completedRecipe != null) {
           if (customerManager.checkRecipe(completedRecipe)) {
             UIOverlay.money.addMoney(1);
-            customerManager.nextRecipe();
+            customerManager.nextRecipe(textureManager);
             completedRecipe = null;
           }
         }
