@@ -34,7 +34,6 @@ import cs.eng1.piazzapanic.stations.BakingStation;
 import cs.eng1.piazzapanic.stations.ChoppingStation;
 import cs.eng1.piazzapanic.stations.CookingStation;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
-import javafx.scene.control.ButtonType;
 
 public class UIOverlay {
 

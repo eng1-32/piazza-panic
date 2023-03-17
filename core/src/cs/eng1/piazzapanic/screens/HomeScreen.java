@@ -98,8 +98,9 @@ public class HomeScreen implements Screen {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         mode = 1;
-        game.loadGameScreen();
         load = false;
+
+        game.loadGameScreen();
 
       }
     });
