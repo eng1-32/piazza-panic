@@ -56,6 +56,14 @@ public class TutorialOverlay {
         hide();
       }
     });
+    TextButton nextButon = game.getButtonManager()
+        .createTextButton("Next", ButtonManager.ButtonColour.GREY);
+    nextButon.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        hide();
+      }
+    });
 
     // Add items to table
     table.pad(100f);
@@ -64,6 +72,8 @@ public class TutorialOverlay {
     table.add(stationUsage).fillX().expandX().pad(20f).padTop(0f);
     table.row();
     table.add(recipeLabel).fillX().expandX().pad(20f).padTop(0f);
+    table.row();
+    table.add(nextButon).padTop(20f);
     table.row();
     table.add(backButton).padTop(20f);
   }
