@@ -42,7 +42,7 @@ public class Recipe {
   public List<String> getRecipeIngredients() {
     LinkedList<String> ingredientTypes = new LinkedList<>();
     switch (getType()) {
-      case "burger":
+      case "humborge":
         ingredientTypes.add("bun");
         ingredientTypes.add("patty_cooked");
         break;
