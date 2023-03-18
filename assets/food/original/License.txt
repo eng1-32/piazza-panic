@@ -1,5 +1,7 @@
 All: CC0
 cooked_patty.png - own work
 uncooked_patty.png - own work
+cooked_pizza_base.png - own work
+uncooked_pizza_base.png - own work
 chopped_tomato.png - modified from glitch tomato.png (also CC0)
 chopped_lettuce.png - modified from glitch lettuce.png (also CC0)
