@@ -2,7 +2,7 @@ package cs.eng1.piazzapanic.stations;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import cs.eng1.piazzapanic.food.recipes.Burger;
+import cs.eng1.piazzapanic.food.recipes.Humborge;
 import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
@@ -126,7 +126,7 @@ public class RecipeStation extends Station {
 
         break;
       case MAKE_BURGER:
-        completedRecipe = new Burger(textureManager);
+        completedRecipe = new Humborge(textureManager);
         pattyCount -= 1;
         bunCount -= 1;
         break;
