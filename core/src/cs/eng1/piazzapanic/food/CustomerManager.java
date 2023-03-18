@@ -1,7 +1,7 @@
 package cs.eng1.piazzapanic.food;
 
 import com.badlogic.gdx.utils.Queue;
-import cs.eng1.piazzapanic.food.recipes.Burger;
+import cs.eng1.piazzapanic.food.recipes.Humborge;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.food.recipes.Salad;
 import cs.eng1.piazzapanic.stations.RecipeStation;
@@ -28,7 +28,7 @@ public class CustomerManager {
    * @param textureManager The manager of food textures that can be passed to the recipes
    */
   public void init(FoodTextureManager textureManager) {
-    Recipe[] possibleRecipes = new Recipe[]{new Burger(textureManager), new Salad(textureManager)};
+    Recipe[] possibleRecipes = new Recipe[]{new Humborge(textureManager), new Salad(textureManager)};
 
     // Salad, Burger, Burger, Salad, Burger. This can be replaced by randomly selecting from
     // possibleRecipes or by using another scenario
