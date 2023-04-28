@@ -79,12 +79,13 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 
     }
+    jar {
+        manifest {
+	     attributes(
+		'Main-Class': 'desktop.src.cs.eng1.piazzapanic.DesktopLauncher'
+	     )
+        }
+     }
+
 }
 
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'com.mypackage.MyClass'
-        )
-    }
-}
