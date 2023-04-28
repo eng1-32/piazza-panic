@@ -81,11 +81,6 @@ project(":core") {
     }
 }
 
-
-plugins {
-    id 'java'
-}
-
 jar {
     manifest {
         attributes(
