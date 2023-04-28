@@ -71,7 +71,7 @@ project(":desktop") {
     
     jar {
         manifest {
-	     attributes('Main-Class': 'desktop.src.cs.eng1.piazzapanic.DesktopLauncher')
+	     attributes('Main-Class': 'cs.eng1.piazzapanic.DesktopLauncher')
         }
      }
 }
