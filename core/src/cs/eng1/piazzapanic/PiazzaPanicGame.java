@@ -6,6 +6,7 @@ import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.ui.SettingsOverlay;
 import cs.eng1.piazzapanic.ui.TutorialOverlay;
 import cs.eng1.piazzapanic.ui.ButtonManager;
+import cs.eng1.piazzapanic.ui.EndlessTutorialOverlay;
 import cs.eng1.piazzapanic.ui.FontManager;
 
 public class PiazzaPanicGame extends Game {
@@ -15,6 +16,7 @@ public class PiazzaPanicGame extends Game {
   private GameScreen gameScreen;
   private HomeScreen homeScreen;
   private TutorialOverlay tutorialOverlay;
+  private EndlessTutorialOverlay endlessTutorialOverlay;
   private SettingsOverlay settingsOverlay;
 
   @Override
@@ -22,6 +24,7 @@ public class PiazzaPanicGame extends Game {
     fontManager = new FontManager();
     buttonManager = new ButtonManager(fontManager);
     tutorialOverlay = new TutorialOverlay(this);
+    endlessTutorialOverlay = new EndlessTutorialOverlay(this);
     settingsOverlay = new SettingsOverlay(this);
     loadHomeScreen();
   }
@@ -54,6 +57,10 @@ public class PiazzaPanicGame extends Game {
 
   public TutorialOverlay getTutorialOverlay() {
     return tutorialOverlay;
+  }
+
+  public EndlessTutorialOverlay getEndlessTutorialOverlay() {
+    return endlessTutorialOverlay;
   }
 
   public SettingsOverlay getSettingsOverlay() {
