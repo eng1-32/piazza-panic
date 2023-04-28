@@ -68,6 +68,12 @@ project(":desktop") {
         implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
     }
+    
+    jar {
+        manifest {
+	     attributes('Main-Class': 'cs.eng1.piazzapanic.DesktopLauncher')
+        }
+     }
 }
 
 project(":core") {
@@ -80,3 +86,4 @@ project(":core") {
 
     }
 }
+
