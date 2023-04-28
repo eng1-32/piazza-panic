@@ -31,7 +31,7 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@3fbe033aaae657f011f88f29be9e65ed26bd29ef
       with:
-        arguments: build check
+        arguments: desktop:dist
     - name: Upload game JAR
       uses: actions/upload-artifact@v3.1.2
       with:
