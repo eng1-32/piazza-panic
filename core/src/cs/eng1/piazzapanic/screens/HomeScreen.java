@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.ui.ButtonManager;
+import cs.eng1.piazzapanic.ui.EndlessTutorialOverlay;
 import cs.eng1.piazzapanic.ui.SettingsOverlay;
 import cs.eng1.piazzapanic.ui.TutorialOverlay;
 import cs.eng1.piazzapanic.ui.UIOverlay;
@@ -32,6 +33,9 @@ public class HomeScreen implements Screen {
 
     final TutorialOverlay tutorialOverlay = game.getTutorialOverlay();
     tutorialOverlay.addToStage(uiStage);
+
+    final EndlessTutorialOverlay endlessTutorialOverlay = game.getEndlessTutorialOverlay();
+    endlessTutorialOverlay.addToStage(uiStage);
 
     final SettingsOverlay settingsOverlay = game.getSettingsOverlay();
     settingsOverlay.addToStage(uiStage);
@@ -114,6 +118,16 @@ public class HomeScreen implements Screen {
         tutorialOverlay.show();
       }
     });
+
+    TextButton endlessTutorialButton = game.getButtonManager()
+        .createTextButton("Endless Tutorial", ButtonManager.ButtonColour.BLUE);
+    endlessTutorialButton.sizeBy(3f);
+    endlessTutorialButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        endlessTutorialOverlay.show();
+      }
+    });
     TextButton settingsButton = game.getButtonManager()
         .createTextButton("Settings", ButtonManager.ButtonColour.BLUE);
     settingsButton.sizeBy(3f);
@@ -134,19 +148,21 @@ public class HomeScreen implements Screen {
     });
 
     // Add UI elements to the table and position them
-    table.add(welcomeLabel).padBottom(60f);
+    table.add(welcomeLabel).padBottom(10f);
     table.row();
-    table.add(EasyButton).padBottom(20f);
+    table.add(EasyButton).padBottom(10f);
     table.row();
-    table.add(startButton).padBottom(20f);
+    table.add(startButton).padBottom(10f);
     table.row();
-    table.add(hardButton).padBottom(20f);
+    table.add(hardButton).padBottom(10f);
     table.row();
-    table.add(loadButton).padBottom(20f);
+    table.add(loadButton).padBottom(10f);
     table.row();
-    table.add(endlessButton).padBottom(20f);
+    table.add(endlessButton).padBottom(10f);
     table.row();
-    table.add(tutorialButton).padBottom(20f);
+    table.add(tutorialButton).padBottom(10f);
+    table.row();
+    table.add(endlessTutorialButton).padBottom(10f);
     table.row();
     table.add(quitButton);
   }
